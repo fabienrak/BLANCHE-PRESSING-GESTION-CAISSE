@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import org.controlsfx.control.MaskerPane?>
+
+<AnchorPane fx:id="content_enregistrement" prefHeight="634.0" prefWidth="1200.0" style="-fx-background-color: #5869c5;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.app.bp.controller.MarchandisesController">
+    <children>
+        <Button fx:id="btn_retour" layoutX="24.0" layoutY="11.0" mnemonicParsing="false" onAction="#backToInfoClient" prefHeight="35.0" prefWidth="121.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #cea716;" text="Retour" textFill="WHITE">
+            <font>
+                <Font name="Lato Bold" size="13.0" />
+            </font>
+            <graphic>
+                <ImageView fitHeight="19.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../img/back.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+      <HBox layoutX="10.0" layoutY="121.0" prefHeight="523.0" prefWidth="1199.0">
+         <children>
+            <StackPane prefHeight="568.0" prefWidth="679.0">
+               <children>
+                  <MaskerPane fx:id="table_client_loading" />
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Pane prefHeight="71.0" prefWidth="679.0">
+                           <children>
+                              <Label fx:id="lbl_client" layoutX="22.0" layoutY="8.0" prefHeight="25.0" prefWidth="424.0" text="Client : " textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lbl_client_info" layoutX="22.0" layoutY="38.0" prefHeight="25.0" prefWidth="424.0" text="Adresse &amp; Contact : " textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                        <TableView fx:id="table_client" prefHeight="277.0" prefWidth="679.0">
+                           <columns>
+                              <TableColumn fx:id="COL_NUMERO_CLIENT" prefWidth="75.0" text="NUMERO" />
+                              <TableColumn fx:id="COL_NOM_CLIENT" prefWidth="75.0" text="TYPE" />
+                              <TableColumn fx:id="COL_PRIX_UNITAIRE" prefWidth="122.0" text="PRIX UNITAIRE" />
+                              <TableColumn fx:id="COL_PRENOM_CLIENT" prefWidth="122.0" text="DESIGNATION" />
+                              <TableColumn fx:id="COL_CONTACT_CLIENT_2" prefWidth="85.0" text="CODE" />
+                              <TableColumn fx:id="COL_PRENOM_CLIENT1" prefWidth="122.0" text="PRIX TOTAL" />
+                              <TableColumn fx:id="COL_PRENOM_CLIENT11" prefWidth="122.0" text="SERVICE" />
+                           </columns>
+                        </TableView>
+                        <Pane prefHeight="170.0" prefWidth="679.0">
+                           <children>
+                              <Button fx:id="btn_suivant" layoutX="513.0" layoutY="114.0" mnemonicParsing="false" onAction="#goToFacturation" prefHeight="41.0" prefWidth="152.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #cea716;" text="Suivant" textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="15.0" />
+                                 </font>
+                                 <graphic>
+                                    <ImageView fitHeight="33.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../img/forward.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Label fx:id="lbl_type_article" layoutX="14.0" layoutY="14.0" prefHeight="30.0" prefWidth="479.0" text="Type" textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lbl_nbr_article" layoutX="340.0" layoutY="14.0" prefHeight="30.0" prefWidth="479.0" text="Nombre" textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lbl_code_article" layoutX="14.0" layoutY="54.0" prefHeight="30.0" prefWidth="479.0" text="Code" textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lbl_service_article" layoutX="340.0" layoutY="54.0" prefHeight="30.0" prefWidth="479.0" text="Service" textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lbl_prix_unitaire_article" layoutX="14.0" layoutY="94.0" prefHeight="30.0" prefWidth="479.0" text="Prix unitaire" textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lbl_prix_total" layoutX="14.0" layoutY="134.0" prefHeight="30.0" prefWidth="479.0" text="Prix total" textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                     </children>
+                  </VBox>
+               </children>
+               <HBox.margin>
+                  <Insets bottom="10.0" />
+               </HBox.margin>
+            </StackPane>
+            <StackPane prefHeight="568.0" prefWidth="499.0">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #2f4aa1;">
+                     <children>
+                        <Pane prefHeight="106.0" prefWidth="489.0">
+                           <children>
+                              <ImageView fitHeight="78.0" fitWidth="96.0" layoutX="97.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../img/article.png" />
+                                 </image>
+                              </ImageView>
+                              <Label layoutX="200.0" layoutY="34.0" prefHeight="30.0" prefWidth="291.0" text="Ajout article client" textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="24.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="330.0" prefWidth="498.0">
+                           <children>
+                              <Label layoutX="14.0" layoutY="11.0" prefHeight="25.0" prefWidth="86.0" text="Type :" textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="14.0" layoutY="101.0" prefHeight="25.0" prefWidth="86.0" text="Code :" textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="txt_code_article" editable="false" layoutX="161.0" layoutY="96.0" prefHeight="35.0" prefWidth="163.0">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </TextField>
+                              <Label layoutX="14.0" layoutY="51.0" prefHeight="25.0" prefWidth="86.0" text="Nombre :" textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="txt_nbr_article" layoutX="161.0" layoutY="51.0" prefHeight="35.0" prefWidth="300.0">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </TextField>
+                              <ComboBox fx:id="cbx_type_article" layoutX="161.0" layoutY="6.0" prefHeight="35.0" prefWidth="300.0" promptText="Selectionner type d'article" />
+                              <Button fx:id="btn_generer_code" layoutX="335.0" layoutY="94.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="127.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #cea716;" text="Generer" textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="15.0" />
+                                 </font>
+                                 <graphic>
+                                    <ImageView fitHeight="27.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../img/add.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Label layoutX="14.0" layoutY="151.0" prefHeight="25.0" prefWidth="86.0" text="Service :" textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <ComboBox fx:id="cbx_type_services" layoutX="161.0" layoutY="146.0" prefHeight="35.0" prefWidth="300.0" promptText="Selectionner type de services" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="74.0" prefWidth="499.0">
+                           <children>
+                              <Button fx:id="btn_enregistrer_client" layoutX="284.0" layoutY="-116.0" mnemonicParsing="false" onAction="#enregistrerCommandeClient" prefHeight="41.0" prefWidth="177.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #cea716;" text="Enregistrer" textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="15.0" />
+                                 </font>
+                                 <graphic>
+                                    <ImageView fitHeight="33.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../img/add.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </Pane>
+                     </children>
+                     <StackPane.margin>
+                        <Insets left="10.0" />
+                     </StackPane.margin>
+                  </VBox>
+               </children>
+               <HBox.margin>
+                  <Insets bottom="10.0" />
+               </HBox.margin>
+            </StackPane>
+         </children>
+      </HBox>
+      <Label alignment="CENTER" layoutX="382.0" layoutY="39.0" prefHeight="46.0" prefWidth="571.0" text="Enregistrement articles" textFill="WHITE">
+         <font>
+            <Font name="Lato Bold" size="36.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="43.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/merchandise.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Label>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="438.0" layoutY="85.0" prefHeight="16.0" prefWidth="479.0" text="(Enregistrement des article du client)" textFill="WHITE">
+         <font>
+            <Font name="Lato Bold" size="13.0" />
+         </font>
+      </Label>
+    </children>
+</AnchorPane>

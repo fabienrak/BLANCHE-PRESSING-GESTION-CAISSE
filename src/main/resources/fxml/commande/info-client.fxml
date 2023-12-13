@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import org.controlsfx.control.MaskerPane?>
+
+<AnchorPane fx:id="content_info_client" prefHeight="634.0" prefWidth="1200.0" style="-fx-background-color: #5869c5;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.app.bp.controller.ClientController">
+   <children>
+      <Button fx:id="btn_retour" layoutX="24.0" layoutY="11.0" mnemonicParsing="false" onAction="#retourVersPremiereScene" prefHeight="35.0" prefWidth="121.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #cea716;" text="Retour" textFill="WHITE">
+         <font>
+            <Font name="Lato Bold" size="13.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="19.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/back.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <HBox layoutX="9.0" layoutY="111.0" prefHeight="523.0" prefWidth="1190.0">
+         <children>
+            <StackPane prefHeight="568.0" prefWidth="679.0">
+               <children>
+                  <MaskerPane fx:id="table_client_loading" />
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Pane prefHeight="71.0" prefWidth="679.0">
+                           <children>
+                              <Label layoutX="14.0" layoutY="25.0" prefHeight="25.0" prefWidth="199.0" text="Recherche :" textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../img/search.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Label>
+                              <TextField fx:id="txt_search_client" layoutX="134.0" layoutY="19.0" prefHeight="35.0" prefWidth="291.0" promptText="Nom, Prenom, Contact, Adresse, ...">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                        </Pane>
+                        <TableView fx:id="table_client" onMouseClicked="#handleSelectedClient" prefHeight="277.0" prefWidth="679.0">
+                          <columns>
+                            <TableColumn fx:id="COL_NUMERO_CLIENT" prefWidth="75.0" text="NUMERO" />
+                            <TableColumn fx:id="COL_NOM_CLIENT" prefWidth="75.0" text="NOM" />
+                              <TableColumn fx:id="COL_PRENOM_CLIENT" prefWidth="75.0" text="PRENOM" />
+                              <TableColumn fx:id="COL_CONTACT_CLIENT_1" prefWidth="101.0" text="CONTACT 1" />
+                              <TableColumn fx:id="COL_CONTACT_CLIENT_2" prefWidth="117.0" text="CONTACT 2" />
+                              <TableColumn fx:id="COL_ADRESSE_CLIENT_1" prefWidth="85.0" text="ADRESSE 1" />
+                              <TableColumn fx:id="COL_ADRESSE_CLIENT_2" prefWidth="85.0" text="ADRESSE 2" />
+                          </columns>
+                        </TableView>
+                        <Pane prefHeight="170.0" prefWidth="679.0">
+                           <children>
+                              <Button fx:id="btn_suivant" layoutX="513.0" layoutY="114.0" mnemonicParsing="false" onAction="#nextSceneCommande" prefHeight="41.0" prefWidth="152.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #cea716;" text="Suivant" textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="15.0" />
+                                 </font>
+                                 <graphic>
+                                    <ImageView fitHeight="33.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../img/forward.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Label fx:id="lbl_nom_client" layoutX="14.0" layoutY="14.0" prefHeight="30.0" prefWidth="479.0" text="Nom client" textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lbl_prenom_client" layoutX="340.0" layoutY="14.0" prefHeight="30.0" prefWidth="479.0" text="Prenom client" textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lbl_contact_client_1" layoutX="14.0" layoutY="54.0" prefHeight="30.0" prefWidth="479.0" text="Contact 1 " textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lbl_contact_client_2" layoutX="340.0" layoutY="54.0" prefHeight="30.0" prefWidth="479.0" text="Contact 2" textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lbl_adresse_client_1" layoutX="14.0" layoutY="94.0" prefHeight="30.0" prefWidth="479.0" text="Adresse 1" textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lbl_adresse_client_2" layoutX="14.0" layoutY="124.0" prefHeight="30.0" prefWidth="479.0" text="Adresse 2" textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                     </children>
+                  </VBox>
+               </children>
+               <HBox.margin>
+                  <Insets bottom="10.0" />
+               </HBox.margin>
+            </StackPane>
+            <StackPane prefHeight="568.0" prefWidth="499.0">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #2f4aa1;">
+                     <children>
+                        <Pane prefHeight="106.0" prefWidth="489.0">
+                           <children>
+                              <ImageView fitHeight="78.0" fitWidth="96.0" layoutX="97.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../img/target.png" />
+                                 </image>
+                              </ImageView>
+                              <Label layoutX="200.0" layoutY="34.0" prefHeight="30.0" prefWidth="291.0" text="Ajout client" textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="24.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="330.0" prefWidth="499.0">
+                           <children>
+                              <Label layoutX="14.0" layoutY="11.0" prefHeight="25.0" prefWidth="86.0" text="Nom :" textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="txt_nom_client" layoutX="161.0" layoutY="6.0" prefHeight="35.0" prefWidth="300.0">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </TextField>
+                              <Label layoutX="14.0" layoutY="101.0" prefHeight="25.0" prefWidth="86.0" text="Contact 1 :" textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="txt_contact_client_1" layoutX="161.0" layoutY="96.0" prefHeight="35.0" prefWidth="300.0">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </TextField>
+                              <Label layoutX="14.0" layoutY="196.0" prefHeight="25.0" prefWidth="86.0" text="Adresse 1 :" textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="txt_adresse_client_1" layoutX="161.0" layoutY="186.0" prefHeight="35.0" prefWidth="300.0">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </TextField>
+                              <Label layoutX="14.0" layoutY="51.0" prefHeight="25.0" prefWidth="86.0" text="Prenom :" textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="txt_prenom_client" layoutX="161.0" layoutY="51.0" prefHeight="35.0" prefWidth="300.0">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </TextField>
+                              <Label layoutX="14.0" layoutY="236.0" prefHeight="25.0" prefWidth="86.0" text="Adresse 2 :" textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="txt_adresse_client_2" layoutX="161.0" layoutY="231.0" prefHeight="35.0" prefWidth="300.0">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </TextField>
+                              <Label layoutX="14.0" layoutY="146.0" prefHeight="25.0" prefWidth="86.0" text="Contact 2 :" textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="txt_contact_client_2" layoutX="161.0" layoutY="141.0" prefHeight="35.0" prefWidth="300.0">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="74.0" prefWidth="499.0">
+                           <children>
+                              <Button fx:id="btn_enregistrer_client" layoutX="262.0" layoutY="24.0" mnemonicParsing="false" onAction="#handleSaveClientButton" prefHeight="41.0" prefWidth="199.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #cea716;" text="Enregistrer" textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="15.0" />
+                                 </font>
+                                 <graphic>
+                                    <ImageView fitHeight="33.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../img/add.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </Pane>
+                     </children>
+                     <StackPane.margin>
+                        <Insets left="10.0" />
+                     </StackPane.margin>
+                  </VBox>
+               </children>
+               <HBox.margin>
+                  <Insets bottom="10.0" />
+               </HBox.margin>
+            </StackPane>
+         </children>
+      </HBox>
+      <Label alignment="CENTER" layoutX="372.0" layoutY="29.0" prefHeight="46.0" prefWidth="571.0" text="Information clients" textFill="WHITE">
+         <font>
+            <Font name="Lato Bold" size="36.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="43.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/clerk-with-tie.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Label>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="429.0" layoutY="83.0" prefHeight="16.0" prefWidth="479.0" text="(Choisir un client existant ou enregistrer un nouveau client)" textFill="WHITE">
+         <font>
+            <Font name="Lato Bold" size="13.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
