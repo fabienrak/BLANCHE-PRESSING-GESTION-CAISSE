@@ -50,7 +50,16 @@ public class ServiceControlleur implements Initializable {
     
     }
     private ObservableList<Service>  getServiceList() {
-         ObservableList<Service> list = FXCollections.observableArrayList(new Service(1,"LAVAGE"), new Service(2,"compression"));
+         ObservableList<Service> list = FXCollections.observableArrayList(new Service(1,"LAVAGE"), new Service(2,"compression")
+         , new Service(2,"compression"), new Service(2,"compression")
+         , new Service(2,"compression"), new Service(2,"compression")
+         , new Service(2,"compression"), new Service(2,"compression"), new Service(2,"compression")
+         , new Service(2,"compression"), new Service(2,"compression"), new Service(2,"compression")
+         , new Service(2,"compression"), new Service(2,"compression"), new Service(2,"compression")
+         , new Service(2,"compression"), new Service(2,"compression"), new Service(2,"compression")
+         , new Service(2,"compression"), new Service(2,"compression"), new Service(2,"compression")
+         , new Service(2,"compression"), new Service(2,"compression"), new Service(2,"compression")
+         , new Service(2,"compression"), new Service(2,"compression"), new Service(2,"lavage"));
       return list;
     }
 
