@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.control.Button?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.app.bp.controller.ServiceControlleur">
+    <children>
+        <Button fx:id="btn_retour" layoutX="24.0" layoutY="11.0" mnemonicParsing="false" onAction="#backToDashboard" prefHeight="35.0" prefWidth="121.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #cea716;" text="Retour" textFill="WHITE">
+            <font>
+                <Font name="Lato Bold" size="13.0" />
+            </font>
+            <graphic>
+                <ImageView fitHeight="19.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../img/back.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+        <HBox layoutX="10.0" layoutY="121.0" prefHeight="523.0" prefWidth="1199.0">
+            <children>
+                <StackPane prefHeight="523.0" prefWidth="679.0">
+                    <children>
+                        <TableView fx:id="tableService" prefHeight="277.0" prefWidth="679.0">
+                            
+                        </TableView>
+                    </children>
+                </StackPane>
+                <StackPane prefHeight="568.0" prefWidth="499.0">
+                    <children>
+                        
+                    </children>
+                </StackPane>
+            </children>
+        </HBox>
+    </children>
+</AnchorPane>

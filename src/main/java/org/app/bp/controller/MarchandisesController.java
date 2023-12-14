@@ -1,6 +1,17 @@
 package org.app.bp.controller;
 
-import javafx.application.Platform;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+
+import org.app.bp.models.Articles;
+import org.app.bp.models.Clients;
+import org.app.bp.models.Services;
+import org.app.bp.services.MarchandisesServices;
+import org.app.bp.utils.Utils;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
@@ -10,25 +21,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import org.app.bp.models.Articles;
-import org.app.bp.models.Clients;
-import org.app.bp.models.Services;
-import org.app.bp.services.MarchandisesServices;
-import org.app.bp.utils.Utils;
-import org.controlsfx.control.MaskerPane;
-import org.w3c.dom.Text;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
 
 public class MarchandisesController implements Initializable {
 
@@ -36,6 +35,7 @@ public class MarchandisesController implements Initializable {
     private Button btn_retour;
     @FXML
     private AnchorPane content_enregistrement;
+
     @FXML
     private ComboBox cbx_type_article;
     @FXML

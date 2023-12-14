@@ -77,6 +77,16 @@ public class DashboardController {
     }
 
     @FXML
+    private void sceneGestionService(ActionEvent actionEvent) throws IOException {
+        Node node_source = (Node) actionEvent.getSource();
+        stage = (Stage) node_source.getScene().getWindow();
+        Parent parent = FXMLLoader.load(getClass().getResource("/fxml/service/gestion-service.fxml"));
+        stage.setTitle("GESTION SERVICE");
+        content_home.getChildren().removeAll();
+        content_home.getChildren().setAll(parent);
+    }
+
+    @FXML
     private void sceneGestionMarchandises(ActionEvent actionEvent) throws IOException {
         Node node_source = (Node) actionEvent.getSource();
         stage = (Stage) node_source.getScene().getWindow();
