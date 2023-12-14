@@ -1,5 +1,13 @@
 package org.app.bp.controller;
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
+import org.app.bp.utils.Utils;
+
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -8,20 +16,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.app.bp.utils.Utils;
-import org.controlsfx.control.action.Action;
-
-import java.io.IOException;
-import java.text.DateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 public class DashboardController {
 
@@ -50,7 +49,7 @@ public class DashboardController {
 
     Utils appUtils = new Utils();
 
-
+    
     @FXML
     public void initialize(){
 
