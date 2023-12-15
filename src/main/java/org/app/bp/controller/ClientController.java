@@ -1,5 +1,15 @@
 package org.app.bp.controller;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
+
+import org.app.bp.models.Clients;
+import org.app.bp.services.ClientServices;
+import org.app.bp.utils.Utils;
+import org.controlsfx.control.MaskerPane;
+
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.event.ActionEvent;
@@ -9,19 +19,16 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import org.app.bp.models.Clients;
-import org.app.bp.services.ClientServices;
-import org.app.bp.utils.Utils;
-import org.controlsfx.control.MaskerPane;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
 
 public class ClientController implements Initializable {
 
@@ -203,6 +210,18 @@ public class ClientController implements Initializable {
             content_info_client.getChildren().removeAll();
             content_info_client.getChildren().setAll(parent);
     }
+
+    @FXML
+    private void detailsClientCommande(ActionEvent event) throws IOException {
+              Node node_source = (Node) event.getSource();
+            Stage stage = (Stage) node_source.getScene().getWindow();
+            Parent parent = FXMLLoader.load(getClass().getResource("/fxml/commande/nouveau-commande.fxml"));
+            stage.setTitle("NOUVEAU COMMANDE");
+            content_info_client.getChildren().removeAll();
+            content_info_client.getChildren().setAll(parent);
+    
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
