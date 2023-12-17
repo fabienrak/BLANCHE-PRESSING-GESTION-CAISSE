@@ -30,8 +30,6 @@ public class Clients {
         this.adresse_client_2 = adresse_client_2;
     }
 
-
-
     public int getId_client() {
         return id_client;
     }

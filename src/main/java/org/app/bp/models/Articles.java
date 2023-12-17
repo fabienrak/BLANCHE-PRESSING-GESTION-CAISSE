@@ -1,5 +1,7 @@
 package org.app.bp.models;
 
+import java.text.NumberFormat;
+
 public class Articles {
 
     private int id_article;
@@ -51,5 +53,9 @@ public class Articles {
 
     public void setPrefix_code(String prefix_code) {
         this.prefix_code = prefix_code;
+    }
+
+    public String toString(){
+        return this.nom_article +" ( "+NumberFormat.getInstance(java.util.Locale.FRENCH).format(this.prix)+" Ar )";
     }
 }

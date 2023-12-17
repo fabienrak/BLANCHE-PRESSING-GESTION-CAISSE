@@ -71,7 +71,7 @@
                         </TableView>
                         <Pane prefHeight="170.0" prefWidth="679.0">
                            <children>
-                              <Button fx:id="btn_suivant" layoutX="513.0" layoutY="114.0" mnemonicParsing="false" onAction="#detailsClientCommande" prefHeight="41.0" prefWidth="152.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #cea716;" text="Suivant" textFill="WHITE">
+                              <Button fx:id="btn_suivant" layoutX="513.0" layoutY="114.0" mnemonicParsing="false" onAction="#detailsClientPourNouveauCommande" prefHeight="41.0" prefWidth="152.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #cea716;" text="Suivant" textFill="WHITE">
                                  <font>
                                     <Font name="Lato Bold" size="15.0" />
                                  </font>

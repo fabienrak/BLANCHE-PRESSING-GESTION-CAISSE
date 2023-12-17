@@ -2,5 +2,6 @@
     -fx-background-color: #2bff00;
 }
 .stackpane-droite{
-    -fx-background-color: #080808;
+    -fx-background-color: red;
+    -fx-border-color:white;
 }

@@ -40,6 +40,7 @@ public class MarchandisesController implements Initializable {
     private ComboBox cbx_type_article;
     @FXML
     private ComboBox cbx_type_services;
+    
     @FXML
     private Label lbl_prix_unitaire;
     @FXML

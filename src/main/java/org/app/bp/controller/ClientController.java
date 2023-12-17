@@ -80,9 +80,9 @@ public class ClientController implements Initializable {
     private Label lbl_adresse_client_1;
     @FXML
     private Label lbl_adresse_client_2;
-    ClientServices clientServices = new ClientServices();
-    Utils appUtils = new Utils();
-
+    private ClientServices clientServices = new ClientServices();
+    private Utils appUtils = new Utils();
+    private Clients clientSelected = null;
     @FXML
     private AnchorPane content_info_client;
 
@@ -162,7 +162,7 @@ public class ClientController implements Initializable {
     }
     @FXML
     private void handleSelectedClient(){
-        Clients clientSelected = table_client.getSelectionModel().getSelectedItem();
+        clientSelected = table_client.getSelectionModel().getSelectedItem();
         if(clientSelected != null){
 
             lbl_nom_client.setVisible(true);
@@ -189,9 +189,6 @@ public class ClientController implements Initializable {
         }
     }
 
-    private Clients getSelectedClientFromTable() {
-        return table_client.getSelectionModel().getSelectedItem();
-    }
 
     @FXML
     private void nextSceneCommande(ActionEvent actionEvent) throws IOException {
@@ -202,7 +199,7 @@ public class ClientController implements Initializable {
 
             MarchandisesController marchandisesController = MarchandisesController.getInstance();
             if (marchandisesController != null){
-                marchandisesController.setClientData(getSelectedClientFromTable());
+                marchandisesController.setClientData(clientSelected);
             } else {
                 appUtils.erreurAlertDialog("ERREUR","UNE ERREUR EST SURVENUE, VEUILLEZ CHOISIR OU AJOUTER UN CLIENT");
             }
@@ -212,10 +209,18 @@ public class ClientController implements Initializable {
     }
 
     @FXML
-    private void detailsClientCommande(ActionEvent event) throws IOException {
-              Node node_source = (Node) event.getSource();
+    private void detailsClientPourNouveauCommande(ActionEvent event) throws IOException {
+            Node node_source = (Node) event.getSource();
             Stage stage = (Stage) node_source.getScene().getWindow();
-            Parent parent = FXMLLoader.load(getClass().getResource("/fxml/commande/nouveau-commande.fxml"));
+            System.out.println("Nom = "+clientSelected.getNom_client());
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/commande/nouveau-commande.fxml"));
+            Parent parent = loader.load();
+            System.out.println("Contact = "+clientSelected.getNom_client());
+            Commande2Controlleur commande2Controlleur = loader.getController();
+            commande2Controlleur.setClients(clientSelected);
+            commande2Controlleur.initializeComboboxArticle();
+            commande2Controlleur.initializeComboboxService();
+            commande2Controlleur.initializeTableCommande();
             stage.setTitle("NOUVEAU COMMANDE");
             content_info_client.getChildren().removeAll();
             content_info_client.getChildren().setAll(parent);

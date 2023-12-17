@@ -20,6 +20,8 @@ public class Service {
     public void setNomService(String nomService) {
         this.nomService = nomService;
     }
-
+    public String toString(){
+        return this.nomService;
+    }
     
 }
