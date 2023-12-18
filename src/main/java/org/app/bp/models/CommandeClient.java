@@ -23,7 +23,7 @@ public class CommandeClient {
      * @return the prixUnitaireAffiche
      */
     public String getPrixUnitaireAffiche() {
-        return NumberFormat.getInstance(java.util.Locale.FRENCH).format(prixUnitaire);
+        return NumberFormat.getInstance(java.util.Locale.FRENCH).format(prixUnitaire)+" Ar ";
     }
     /**
      * @param prixUnitaireAffiche the prixUnitaireAffiche to set
@@ -35,7 +35,7 @@ public class CommandeClient {
      * @return the prixTotalAffiche
      */
     public String getPrixTotalAffiche() {
-        return NumberFormat.getInstance(java.util.Locale.FRENCH).format(prixTotal);
+        return NumberFormat.getInstance(java.util.Locale.FRENCH).format(prixTotal) + " Ar ";
     }
     /**
      * @param prixTotalAffiche the prixTotalAffiche to set
@@ -139,6 +139,7 @@ public class CommandeClient {
      */
     public void setNombre(int nombre) {
         this.nombre = nombre;
+        this.prixTotal = nombre * prixUnitaire;
     }
    
     /**
@@ -152,6 +153,7 @@ public class CommandeClient {
      */
     public void setPrixUnitaire(double prixUnitaire) {
         this.prixUnitaire = prixUnitaire;
+        this.prixTotal = nombre * prixUnitaire;
     }
     /**
      * @return the prixTotal

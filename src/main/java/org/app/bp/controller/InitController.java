@@ -1,5 +1,16 @@
 package org.app.bp.controller;
 
+import java.io.IOException;
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.app.bp.Init;
+import org.app.bp.utils.DBUtils;
+
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
@@ -11,16 +22,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.app.bp.Init;
-import org.app.bp.utils.DBUtils;
-
-import java.io.IOException;
-import java.net.URL;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class InitController implements Initializable {
 
@@ -41,6 +42,9 @@ public class InitController implements Initializable {
         fadeTransition.setToValue(0.0);
         fadeTransition.setCycleCount(Animation.INDEFINITE);
         fadeTransition.play();
+    
+    
+        
     }
 
     public String checkFunction(){

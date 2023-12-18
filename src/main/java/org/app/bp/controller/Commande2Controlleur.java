@@ -13,8 +13,10 @@ import org.app.bp.models.CommandeClient;
 import org.app.bp.models.CommandeFinal;
 import org.app.bp.models.FactureAvance;
 import org.app.bp.models.Service;
+import org.app.bp.services.CommandeService;
 import org.app.bp.services.MarchandisesServices;
 import org.app.bp.services.ServiceServices;
+import org.app.bp.utils.Erreur;
 import org.app.bp.utils.Utils;
 
 import javafx.collections.FXCollections;
@@ -61,6 +63,8 @@ public class Commande2Controlleur implements Initializable{
     @FXML
     private DatePicker datePicker_livraison;
     @FXML
+    private TextField txt_code;
+    @FXML
     private Label lbl_client_adresse;
     @FXML
     private Label lbl_client_contact;
@@ -75,6 +79,7 @@ public class Commande2Controlleur implements Initializable{
     private ObservableList<Service> listeService;
     private MarchandisesServices marchandisesServices = new MarchandisesServices();
     private ServiceServices serviceService = new ServiceServices();
+    private CommandeService commandeServ = new CommandeService();
     private ObservableList<CommandeClient> listeCommande ;
     private CommandeFinal commande = new CommandeFinal();
         Utils appUtils = new Utils();
@@ -125,24 +130,38 @@ public void initializeComboboxArticle(){
 private void generationDeFactureAvance(ActionEvent actionEvent) throws IOException {
       enregistrementCommande();
       FactureAvance factureAvance = generateFactureAvance();
-      
+      //PdfService.generationFactureAccompte(factureAvance);;      
+      //PdfService.generationDeFactureFinal(commande);
 }
+
 private FactureAvance generateFactureAvance(){
       FactureAvance factureAvance =  new FactureAvance();
       factureAvance.setCommande(commande);
-      factureAvance.setNumeroFacture("15");
+      //factureAvance.setNumeroFacture("15");
       factureAvance.setDateFacturation(LocalDate.now());
       factureAvance.setPrixAvance(prixAvance);
-      return factureAvance;
+      if(prixAvance > 0){
+            return factureAvance;      
+      }else{
+            return null;
+      }
 }
 private void enregistrementCommande(){
-      if(datePicker_livraison.getValue() == null){
-            
-      }
-      commande.setDateCommande(datePicker_commande.getValue());
-      commande.setDateLivraison(datePicker_livraison.getValue());
-      commande.setClient(clients);
-      commande.setListeCommandeClient(listeCommande);
+      try {      
+            if(datePicker_livraison.getValue() == null){
+                  throw new Erreur("Veuiller remplir le date de livraison");
+                  
+            }
+            commande.setDateCommande(datePicker_commande.getValue());
+            commande.setDateLivraison(datePicker_livraison.getValue());
+            commande.setClient(clients);
+            commande.setListeCommandeClient(listeCommande);
+            commandeServ.nouveauCommande(commande);
+      } catch (Erreur e) {
+                  // TODO Auto-generated catch block
+            //      e.printStackTrace();
+            appUtils.warningAlertDialog("AVERTISSEMENT",e.getMessage().toUpperCase());
+            }
 }
 
 private void ecritureAvance(){
@@ -216,6 +235,9 @@ private void initializeClientInfo(){
       lbl_client.setText("Clients : "+clients.getNom_client() +"  "+ clients.getPrenom_client());
       lbl_client_adresse.setText("Adresse : "+clients.getAdresse_client_1()+" | "+clients.getAdresse_client_2());
       lbl_client_contact.setText("Contact : "+clients.getContact_client_1()+" | "+clients.getContact_client_2());
+      datePicker_commande.setValue(LocalDate.now());
+      txt_code.setEditable(false);
+      txt_code.setText(commande.getCode());
 }
 
 

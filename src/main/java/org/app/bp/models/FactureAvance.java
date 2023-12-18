@@ -1,6 +1,8 @@
 package org.app.bp.models;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class FactureAvance {
     private int idFacture = 0;
@@ -9,6 +11,12 @@ public class FactureAvance {
     private double prixAvance = 0.0;
     private LocalDate dateFacturation = null;
 
+    public FactureAvance(){
+   
+        LocalDateTime now = LocalDateTime.now();
+        this.numeroFacture = "FABP_"+now.format(DateTimeFormatter.ofPattern("YYYYMMDD-hhmm")); 
+    }
+    
     /**
      * @return the numeroFacture
      */

@@ -223,8 +223,24 @@ public class ClientController implements Initializable {
             commande2Controlleur.initializeTableCommande();
             stage.setTitle("NOUVEAU COMMANDE");
             content_info_client.getChildren().removeAll();
-            content_info_client.getChildren().setAll(parent);
-    
+            content_info_client.getChildren().setAll(parent);  
+    }
+
+
+    @FXML
+    private void detailsClientCommande(ActionEvent event) throws IOException {
+            Node node_source = (Node) event.getSource();
+            Stage stage = (Stage) node_source.getScene().getWindow();
+            System.out.println("Nom = "+clientSelected.getNom_client());
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/facture/liste-commande.fxml"));
+            Parent parent = loader.load();
+            System.out.println("Contact = "+clientSelected.getNom_client());
+            ListeCommande listeCommande = loader.getController();
+            listeCommande.setClient(clientSelected);
+            listeCommande.initializeTableCommande();
+            stage.setTitle("FACTURATION");
+            content_info_client.getChildren().removeAll();
+            content_info_client.getChildren().setAll(parent);  
     }
 
     @Override

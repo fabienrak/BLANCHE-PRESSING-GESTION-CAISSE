@@ -1,7 +1,12 @@
 package org.app.bp.models;
 
+import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import org.app.bp.utils.Erreur;
 
 import javafx.collections.ObservableList;
 
@@ -14,9 +19,36 @@ public class CommandeFinal {
     private ObservableList<CommandeClient> listeCommandeClient = null;
     private List<FactureAvance> listeFactureAvance = null;
     private double prixTotal = 0.0;
+    private double avance = 0.0;
+    private String prixTotalAffiche = null;
+
+
+    /**
+     * @return the prixTotalAffiche
+     */
+    public String getPrixTotalAffiche() {
+        return NumberFormat.getInstance(java.util.Locale.FRENCH).format(prixTotal) +" Ar ";
+    }
+
+    /**
+     * @param prixTotalAffiche the prixTotalAffiche to set
+     */
+    public void setPrixTotalAffiche(String prixTotalAffiche) {
+        this.prixTotalAffiche = prixTotalAffiche;
+    }
+
+    public double getTotalAvance(){
+        
+        return avance;
+    }
+
+    public double getResteApayer(){
+        return getPrixTotal() - getTotalAvance();
+    }
 
     public CommandeFinal(){
-        this.code = "BP_000001";
+        LocalDateTime now = LocalDateTime.now();
+        this.code = "BP_"+now.format(DateTimeFormatter.ofPattern("YYYYMMDD-hhmm"));
     }
     
     /**
@@ -63,9 +95,13 @@ public class CommandeFinal {
     }
     /**
      * @param dateLivraison the dateLivraison to set
+     * @throws Erreur
      */
-    public void setDateLivraison(LocalDate dateLivraison) {
+    public void setDateLivraison(LocalDate dateLivraison) throws Erreur {
         this.dateLivraison = dateLivraison;
+        if(dateLivraison.isBefore(dateCommande) == true){
+            throw new Erreur("Date de livraison invalide");
+        }
     }
     /**
      * @return the code
@@ -99,9 +135,13 @@ public class CommandeFinal {
     }
     /**
      * @param listeCommandeClient the listeCommandeClient to set
+     * @throws Erreur
      */
-    public void setListeCommandeClient(ObservableList<CommandeClient> listeCommandeClient) {
+    public void setListeCommandeClient(ObservableList<CommandeClient> listeCommandeClient) throws Erreur {
         this.listeCommandeClient = listeCommandeClient;
+        if(listeCommandeClient.size() <= 0){
+            throw new Erreur("Vous n'avez aucun commande");
+        }
         int i = 0;
         prixTotal = 0;
         for(i = 0 ; i < listeCommandeClient.size() ; i++){
@@ -119,6 +159,13 @@ public class CommandeFinal {
      */
     public void setListeFactureAvance(List<FactureAvance> listeFactureAvance) {
         this.listeFactureAvance = listeFactureAvance;
+        avance = 0.0;
+        if(listeFactureAvance != null){
+            for(FactureAvance fac : listeFactureAvance){
+                avance = avance + fac.getPrixAvance();
+            }
+        }
+
     }        
     
 }

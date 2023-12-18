@@ -1,5 +1,13 @@
 package org.app.bp.controller;
 
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+
+import org.app.bp.models.Sites;
+import org.app.bp.services.SiteServices;
+
 import javafx.concurrent.Service;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,14 +17,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
-import org.app.bp.models.Articles;
-import org.app.bp.models.Sites;
-import org.app.bp.services.SiteServices;
-
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
 
 public class AuthLoginController implements Initializable {
 

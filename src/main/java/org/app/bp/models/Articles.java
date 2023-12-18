@@ -6,6 +6,13 @@ public class Articles {
 
     private int id_article;
     private String nom_article;
+    /**
+     * @param nom_article
+     */
+    public Articles(String nom_article) {
+        this.nom_article = nom_article;
+    }
+
     private int prix;
     private String prefix_code;
 

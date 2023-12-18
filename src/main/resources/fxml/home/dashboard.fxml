@@ -120,7 +120,7 @@
                                     <Font name="Lato Bold" size="16.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="btn_commande11" contentDisplay="TOP" layoutX="50.0" layoutY="420.0" mnemonicParsing="false" onAction="#sceneCommande" prefHeight="125.0" prefWidth="194.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #cea716;" text="Facturation" textFill="WHITE">
+                              <Button fx:id="btn_commande11" contentDisplay="TOP" layoutX="50.0" layoutY="420.0" mnemonicParsing="false" onAction="#sceneFacturation" prefHeight="125.0" prefWidth="194.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #cea716;" text="Facturation" textFill="WHITE">
                                  <graphic>
                                     <ImageView fitHeight="85.0" fitWidth="78.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
