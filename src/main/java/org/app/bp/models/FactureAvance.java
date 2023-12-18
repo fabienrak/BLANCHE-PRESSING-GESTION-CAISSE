@@ -1,8 +1,12 @@
 package org.app.bp.models;
 
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
+import org.app.bp.services.FacturationService;
+import org.app.bp.utils.Erreur;
 
 public class FactureAvance {
     private int idFacture = 0;
@@ -10,6 +14,25 @@ public class FactureAvance {
     private CommandeFinal commande;
     private double prixAvance = 0.0;
     private LocalDate dateFacturation = null;
+    private String prixAvanceAffiche = null;
+    
+    public String getPrixAvanceAffiche() {
+        return NumberFormat.getInstance(java.util.Locale.FRENCH).format(prixAvance) + " Ar ";
+    }
+
+    public void setPrixAvanceAffiche(String prixAvanceAffiche) {
+        this.prixAvanceAffiche = prixAvanceAffiche;
+    }
+    
+    public void ajout(FacturationService factureServ,CommandeFinal commande)throws Erreur{
+        if(prixAvance > commande.getResteApayer()){
+            throw new Erreur("Avance très élevée ");
+        }
+        if(prixAvance == 0){
+            throw new Erreur("Votre avance est insuffisant");    
+        }
+        factureServ.nouveauFactureAvance(this, commande);
+    }
 
     public FactureAvance(){
    

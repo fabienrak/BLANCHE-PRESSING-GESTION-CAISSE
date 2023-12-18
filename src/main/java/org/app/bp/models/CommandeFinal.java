@@ -4,7 +4,6 @@ import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 import org.app.bp.utils.Erreur;
 
@@ -17,7 +16,7 @@ public class CommandeFinal {
     private String code = null;
     private Clients client = null;
     private ObservableList<CommandeClient> listeCommandeClient = null;
-    private List<FactureAvance> listeFactureAvance = null;
+    private ObservableList<FactureAvance> listeFactureAvance = null;
     private double prixTotal = 0.0;
     private double avance = 0.0;
     private double reste = 0.0;
@@ -179,13 +178,13 @@ public class CommandeFinal {
     /**
      * @return the listeFactureAvance
      */
-    public List<FactureAvance> getListeFactureAvance() {
+    public ObservableList<FactureAvance> getListeFactureAvance() {
         return listeFactureAvance;
     }
     /**
      * @param listeFactureAvance the listeFactureAvance to set
      */
-    public void setListeFactureAvance(List<FactureAvance> listeFactureAvance) {
+    public void setListeFactureAvance(ObservableList<FactureAvance> listeFactureAvance) {
         this.listeFactureAvance = listeFactureAvance;
         avance = 0.0;
         if(listeFactureAvance != null){

@@ -1,5 +1,7 @@
 package org.app.bp.services;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.text.NumberFormat;
@@ -50,7 +52,7 @@ public class PdfService {
             document.add(new Paragraph("\n"));
             addListeCommandeClient(document, commande.getListeCommandeClient());
             document.add(new Paragraph("\n"));
-            addListeFactureAvance(document, list);
+            addListeFactureAvancePourFactureFinal(document, list,commande);
             document.add(new Paragraph("\n"));
             PdfPTable table = new PdfPTable(3);
             table.setWidthPercentage(100);
@@ -93,6 +95,10 @@ public class PdfService {
             document.close();
             writer.close();
             
+
+            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
+                Desktop.getDesktop().open(new File(pdfFilePath));
+            }
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -105,7 +111,7 @@ public class PdfService {
     }
 
 
-    public static void generationFactureAccompte(FactureAvance facture){
+    public static void generationFactureAccompte(FactureAvance facture,CommandeFinal commande){
         String pdfFilePath = facture.getNumeroFacture()+".pdf";
             Document document = new Document();
         try {
@@ -116,7 +122,7 @@ public class PdfService {
             list.add(facture);
             document.add(new Paragraph("\n"));
             
-            addListeFactureAvance(document, list);
+            addListeFactureAvance(document, list,commande);
             
             
             document.add(new Paragraph("\n"));
@@ -196,7 +202,7 @@ public class PdfService {
         document.add(table);
     }
 
-    private static void addListeFactureAvance(Document document,List<FactureAvance> listeFact)throws Exception{
+    private static void addListeFactureAvance(Document document,List<FactureAvance> listeFact,CommandeFinal commande)throws Exception{
          PdfPTable table = new PdfPTable(4);
          table.setWidthPercentage(100);
          float[] columnWidths = {4f, 1f,1f,1f};
@@ -223,7 +229,54 @@ public class PdfService {
          PdfPCell pU = null;
          PdfPCell totalPU = null;
          for(i = 0 ; i < listeFact.size() ; i++){
-            desc = new PdfPCell(new Paragraph("Avance pour le commande "+listeFact.get(i).getCommande().getCode()+" avec montant total de "+NumberFormat.getInstance(java.util.Locale.FRENCH).format(listeFact.get(i).getCommande().getPrixTotal()) + " Ar",fontNomPrenom));
+            desc = new PdfPCell(new Paragraph("Avance pour le commande "+commande.getCode()+" avec montant total de "+NumberFormat.getInstance(java.util.Locale.FRENCH).format(commande.getPrixTotal()) + " Ar",fontNomPrenom));
+            aligementGauche(cell);
+            desc.setPadding(5);
+            table.addCell(desc);
+            qt = new PdfPCell(new Paragraph("1",fontNomPrenom));
+            aligementdROITE(qt);
+            qt.setPadding(5);
+            table.addCell(qt);
+            pU = new PdfPCell(new Paragraph(NumberFormat.getInstance(java.util.Locale.FRENCH).format(listeFact.get(i).getPrixAvance())+" Ar ",fontNomPrenom));
+            totalPU = new PdfPCell(new Paragraph(NumberFormat.getInstance(java.util.Locale.FRENCH).format(listeFact.get(i).getPrixAvance())+" Ar ",fontNomPrenom));
+            pU.setPadding(5);
+            totalPU.setPadding(5);
+            aligementdROITE(pU);
+            aligementdROITE(totalPU);
+            table.addCell(pU);
+            table.addCell(totalPU);
+        }
+        document.add(table);
+    }
+
+        private static void addListeFactureAvancePourFactureFinal(Document document,List<FactureAvance> listeFact,CommandeFinal commande)throws Exception{
+         PdfPTable table = new PdfPTable(4);
+         table.setWidthPercentage(100);
+         float[] columnWidths = {4f, 1f,1f,1f};
+         table.setWidths(columnWidths);
+         String[] titre = new String[]{"Description avance","Quantité","Prix","Total"};
+         int i = 0;
+         PdfPCell cell = null;
+         for(i = 0 ; i < titre.length ; i++){
+            cell = new PdfPCell(new Paragraph(titre[i],fontTitreTableau));
+            if(i == 0){
+                cell.setBackgroundColor(BaseColor.GREEN);
+                aligementGauche(cell);
+            
+            }else{
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER); 
+                aligementdROITE(cell);
+            }
+            cell.setBackgroundColor(BaseColor.GREEN);
+           cell.setPadding(5);
+            table.addCell(cell);
+         }
+         PdfPCell desc = null;
+         PdfPCell qt = null;
+         PdfPCell pU = null;
+         PdfPCell totalPU = null;
+         for(i = 0 ; i < listeFact.size() ; i++){
+            desc = new PdfPCell(new Paragraph("Facture "+listeFact.get(i).getNumeroFacture()+" le "+listeFact.get(i).getDateFacturation(),fontNomPrenom));
             aligementGauche(cell);
             desc.setPadding(5);
             table.addCell(desc);

@@ -23,7 +23,7 @@ public class Erreur extends Exception{
      */
     public Erreur(String message) {
         super(message);
-        message = message;
+        this.message = message;
     }
 
 }

@@ -8,6 +8,8 @@ module org.app.bp.gestioncaisse {
     requires java.logging;
     requires java.sql;
     requires itextpdf;
+    requires javafx.graphics;
+    requires java.desktop;
 
     opens org.app.bp to javafx.fxml, javafx.graphics, java.base;
     opens org.app.bp.utils to javafx.fxml, javafx.graphics, java.base;

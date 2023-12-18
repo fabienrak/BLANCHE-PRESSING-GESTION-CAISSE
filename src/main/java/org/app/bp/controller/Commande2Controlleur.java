@@ -14,6 +14,7 @@ import org.app.bp.models.CommandeFinal;
 import org.app.bp.models.FactureAvance;
 import org.app.bp.models.Service;
 import org.app.bp.services.CommandeService;
+import org.app.bp.services.FacturationService;
 import org.app.bp.services.MarchandisesServices;
 import org.app.bp.services.ServiceServices;
 import org.app.bp.utils.Erreur;
@@ -83,7 +84,8 @@ public class Commande2Controlleur implements Initializable{
     private ObservableList<CommandeClient> listeCommande ;
     private CommandeFinal commande = new CommandeFinal();
         Utils appUtils = new Utils();
-    /**
+    private FacturationService factureServ = new FacturationService();
+        /**
  * @return the clients
  */
 public Clients getClients() {
@@ -130,17 +132,18 @@ public void initializeComboboxArticle(){
 private void generationDeFactureAvance(ActionEvent actionEvent) throws IOException {
       enregistrementCommande();
       FactureAvance factureAvance = generateFactureAvance();
-      //PdfService.generationFactureAccompte(factureAvance);;      
-      //PdfService.generationDeFactureFinal(commande);
 }
 
 private FactureAvance generateFactureAvance(){
       FactureAvance factureAvance =  new FactureAvance();
-      factureAvance.setCommande(commande);
-      //factureAvance.setNumeroFacture("15");
       factureAvance.setDateFacturation(LocalDate.now());
       factureAvance.setPrixAvance(prixAvance);
       if(prixAvance > 0){
+            try {
+                  factureAvance.ajout(factureServ, commande);
+            } catch (Erreur e) {
+                  appUtils.warningAlertDialog("AVERTISSEMENT",e.getMessage().toUpperCase());
+            }
             return factureAvance;      
       }else{
             return null;
