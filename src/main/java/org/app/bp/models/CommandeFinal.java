@@ -20,6 +20,34 @@ public class CommandeFinal {
     private List<FactureAvance> listeFactureAvance = null;
     private double prixTotal = 0.0;
     private double avance = 0.0;
+    private double reste = 0.0;
+    /**
+     * @return the reste
+     */
+    public double getReste() {
+        return (prixTotal - avance);
+    }
+
+    /**
+     * @param reste the reste to set
+     */
+    public void setReste(double reste) {
+        this.reste = reste;
+    }
+
+    /**
+     * @return the avance
+     */
+    public double getAvance() {
+        return avance;
+    }
+
+    /**
+     * @param avance the avance to set
+     */
+    public void setAvance(double avance) {
+        this.avance = avance;
+    }
     private String prixTotalAffiche = null;
 
 

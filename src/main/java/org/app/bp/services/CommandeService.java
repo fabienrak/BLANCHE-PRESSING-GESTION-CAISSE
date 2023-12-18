@@ -78,7 +78,7 @@ public class CommandeService {
                 commandeFinal.setDateCommande(LocalDate.parse(resultSet.getString("date_commande")));
                 commandeFinal.setDateLivraison(LocalDate.parse(resultSet.getString("date_livraison")));
                 commandeFinal.setPrixTotal(getPrixTotalCommandeFinal(commandeFinal));
-                
+                commandeFinal.setAvance(getPrixTotalAvance(commandeFinal));
                 data.add(commandeFinal);
             }
         } catch (SQLException sqlException) {
@@ -88,6 +88,23 @@ public class CommandeService {
         }
         return data;
     
+    }
+
+    public double getPrixTotalAvance(CommandeFinal commande){
+        double t = 0;
+        String liste_site_query = "SELECT sum(avance) from facturation where id_commande="+commande.getIdCommande();
+        System.out.println(liste_site_query);
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(liste_site_query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                t = resultSet.getDouble("sum(avance)");
+                System.out.println(t);
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return t;
     }
 
     public double getPrixTotalCommandeFinal(CommandeFinal commande){

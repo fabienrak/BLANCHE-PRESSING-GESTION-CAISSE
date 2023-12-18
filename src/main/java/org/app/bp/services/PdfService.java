@@ -37,7 +37,7 @@ public class PdfService {
     private static Font fontMontantFin = new Font(FontFamily.TIMES_ROMAN,16,Font.BOLD,BaseColor.BLACK);
     
     public static void generationDeFactureFinal(CommandeFinal commande){
-        String pdfFilePath = commande.getCode()+".pdf";
+        String pdfFilePath = "./facture/"+commande.getCode()+".pdf";
             Document document = new Document();
         try {
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(pdfFilePath));

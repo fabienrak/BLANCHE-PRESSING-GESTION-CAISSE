@@ -2,12 +2,16 @@ package org.app.bp.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import org.app.bp.models.Clients;
 import org.app.bp.models.CommandeClient;
 import org.app.bp.models.CommandeFinal;
 import org.app.bp.services.CommandeService;
+import org.app.bp.services.PdfService;
+import org.app.bp.utils.Erreur;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -36,6 +40,16 @@ public class ListeCommande implements Initializable{
     private Pane paneD1;
     @FXML
     private Pane paneD2;
+    @FXML
+    private Pane paneD3;
+    @FXML
+    private Label val_prix_avance;
+    
+    @FXML
+    private Label val_prix_total;
+    
+    @FXML
+    private Label val_reste;
     
     @FXML
     private Label lbl_client_adresse;
@@ -129,11 +143,28 @@ public class ListeCommande implements Initializable{
         afficheDetailsCommandeFinal();
         }
 
+
+      @FXML
+      private void handleFacturerTout(ActionEvent actionEvent) throws IOException {
+        if(commandeFinal.getListeFactureAvance() == null){
+            commandeFinal.setListeFactureAvance(new ArrayList<>());
+        }
+        if(commandeFinal.getListeCommandeClient() == null){
+            try {
+                commandeFinal.setListeCommandeClient(commandeServ.getListCommandeClient(commandeFinal));
+            } catch (Erreur e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        PdfService.generationDeFactureFinal(commandeFinal);
+      }
+
       private void afficheDetailsCommandeFinal(){
         if(commandeFinal != null){
-
             paneD1.setVisible(true);
             paneD2.setVisible(true);
+            paneD3.setVisible(true);
             datePicker_commande.setValue(commandeFinal.getDateCommande());
             datePicker_commande.setEditable(false);
             datePicker_livraison.setValue(commandeFinal.getDateLivraison());
@@ -141,9 +172,14 @@ public class ListeCommande implements Initializable{
             txt_code.setText(commandeFinal.getCode());
             txt_code.setEditable(false);
             affichageListeCommandeClient();
+            val_prix_total.setText(NumberFormat.getInstance(java.util.Locale.FRENCH).format(commandeFinal.getPrixTotal())+" Ar ");
+            val_prix_avance.setText(NumberFormat.getInstance(java.util.Locale.FRENCH).format(commandeFinal.getAvance())+" Ar ");
+            val_reste.setText(NumberFormat.getInstance(java.util.Locale.FRENCH).format(commandeFinal.getReste())+" Ar ");
+
         }else{
             paneD1.setVisible(false);
             paneD2.setVisible(false);
+            paneD3.setVisible(false);
         }
       }
 
