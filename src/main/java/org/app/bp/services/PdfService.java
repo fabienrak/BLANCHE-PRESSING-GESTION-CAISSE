@@ -13,6 +13,7 @@ import org.app.bp.models.Clients;
 import org.app.bp.models.CommandeClient;
 import org.app.bp.models.CommandeFinal;
 import org.app.bp.models.FactureAvance;
+import org.app.bp.models.Sites;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -310,12 +311,13 @@ public class PdfService {
             logo.scaleAbsolute(100,100);
             logo.setBackgroundColor(colorFont());
             logo.setBorderColor(BaseColor.BLACK);
-
+        SiteServices siteServices = new SiteServices();
+        Sites site = siteServices.getSites();
         // definition du details
         Paragraph nomEntreprise = new Paragraph("BLANCHE PRESSING",fontNomEntreprise);
-        Paragraph adresseEntreprise = new Paragraph("Analakely",fontNomPrenom);
-        Paragraph telephoneEntreprise = new Paragraph("Tél : 034 89 009 01",fontNomPrenom);
-        Paragraph mailEntreprise = new Paragraph("Email : blanchePressing@gmail.com",fontNomPrenom);
+        Paragraph adresseEntreprise = new Paragraph(site.getLieu(),fontNomPrenom);
+        Paragraph telephoneEntreprise = new Paragraph("Tél : "+site.getContact(),fontNomPrenom);
+        Paragraph mailEntreprise = new Paragraph("Email : "+site.getEmail(),fontNomPrenom);
         
         // definition Numero facture
         Paragraph dateFacture = new Paragraph("Date : "+dateFac.toString(),fontNomPrenom);

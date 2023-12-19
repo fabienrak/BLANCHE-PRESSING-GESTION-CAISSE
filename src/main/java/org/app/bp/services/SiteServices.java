@@ -1,17 +1,12 @@
 package org.app.bp.services;
 
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
-import org.app.bp.models.Clients;
-import org.app.bp.models.Sites;
-import org.app.bp.utils.DBUtils;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+
+import org.app.bp.models.Sites;
+import org.app.bp.utils.DBUtils;
 
 public class SiteServices {
 
@@ -19,37 +14,38 @@ public class SiteServices {
     ResultSet resultSet = null;
     Connection connection = DBUtils.getConnection();
 
-    public Service<List<Sites>> getSitesData(){
-        Service<List<Sites>> site_service = new Service(){
-            @Override
-            protected Task<List<Sites>> createTask() {
-                return new Task<>() {
-                    @Override
-                    protected List<Sites> call() {
-                        String liste_site_query = "SELECT * FROM sites";
-                        List<Sites> data_site = new ArrayList<>();
-                        try {
-                            preparedStatement = connection.prepareStatement(liste_site_query);
-                            resultSet = preparedStatement.executeQuery();
-                            while (resultSet.next()) {
-                                Sites liste_site = new Sites(
-                                        resultSet.getInt("id_site"),
-                                        resultSet.getString("nom_site"),
-                                        resultSet.getString("lieu"),
-                                        resultSet.getString("contact"),
-                                        resultSet.getString("code_site")
-                                );
-                                data_site.add(liste_site);
-                                System.out.println("TAILLE SITE : " + data_site.size());
-                            }
-                        } catch (SQLException sqlException) {
-                            sqlException.printStackTrace();
-                        }
-                        return data_site;
-                    }
-                };
+    public void modificationSite(Sites site){
+        String ajout_client_query = "UPDATE sites set lieu=? , contact=?,email=? where id_site="+site.getId_site();
+        try{
+            preparedStatement = connection.prepareStatement(ajout_client_query);
+            preparedStatement.setString(1, site.getLieu());
+            preparedStatement.setString(2, site.getContact());
+            preparedStatement.setString(3,site.getEmail());
+            preparedStatement.executeUpdate();;
+        } catch (SQLException sqlException){
+            sqlException.printStackTrace();
+        }
+    }
+
+    public Sites getSites(){
+        Sites sites = new Sites();
+        String liste_site_query = "select * from sites";
+        System.out.println(liste_site_query);
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(liste_site_query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                sites.setLieu(resultSet.getString("lieu"));
+                sites.setId_site(resultSet.getInt("id_site"));
+                sites.setContact(resultSet.getString("contact"));
+                sites.setEmail(resultSet.getString("email"));
+                break;
             }
-        };
-        return site_service;
-    };
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+       
+        return sites;
+    }
+    
 }

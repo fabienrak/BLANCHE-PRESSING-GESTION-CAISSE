@@ -33,21 +33,52 @@
       </Button>
       <HBox layoutX="21.0" layoutY="143.0" prefHeight="491.0" prefWidth="1178.0">
          <children>
-            <StackPane prefHeight="568.0" prefWidth="679.0">
+            <StackPane prefHeight="568.0" prefWidth="679.0" style="-fx-background-color: '#2f4aa1'">
                <children>
-                  <MaskerPane fx:id="table_loading" />
-                  <TableView fx:id="table_users" prefHeight="481.0" prefWidth="692.0">
-                     <columns>
-                        <TableColumn fx:id="COL_NOM_SITE" prefWidth="89.0" text="SITES" />
-                        <TableColumn fx:id="COL_LOCATION_SITE" prefWidth="134.0" text="LOCATION" />
-                        <TableColumn fx:id="COL_CODE_SITE" prefWidth="122.0" text="CODE SITE" />
-                        <TableColumn fx:id="COL_RESPONSABLE_SITE" prefWidth="176.0" text="RESPONSABLE" />
-                        <TableColumn fx:id="COL_CONTACT_SITE" prefWidth="122.0" text="CONTACT" />
-                     </columns>
-                     <StackPane.margin>
-                        <Insets bottom="10.0" />
-                     </StackPane.margin>
-                  </TableView>
+                  <VBox spacing="2">
+                     <Label fx:id="lbl_nom" layoutX="22.0" layoutY="8.0" prefHeight="40.0" prefWidth="339.0" text="BLANCHE PRESSING" textFill="WHITE">
+                         <font>
+                            <Font name="Lato Bold" size="27.0" />
+                         </font>
+                      </Label>
+                      <HBox>
+                        <Label layoutX="22.0" layoutY="8.0" prefHeight="40.0" prefWidth="100.0" text="lieu :" textFill="WHITE">
+                           <font>
+                              <Font name="Lato Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbl_lieu" layoutX="22.0" layoutY="8.0" prefHeight="40.0" prefWidth="400.0" text="Analakely" textFill="WHITE">
+                           <font>
+                              <Font name="Lato Bold" size="24.0" />
+                           </font>
+                        </Label>     
+                      </HBox>
+                      <HBox>
+                        <Label layoutX="22.0" layoutY="8.0" prefHeight="40.0" prefWidth="100.0" text="Contact :" textFill="WHITE">
+                           <font>
+                              <Font name="Lato Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbl_contact" layoutX="22.0" layoutY="8.0" prefHeight="40.0" prefWidth="400.0" text="" textFill="WHITE">
+                           <font>
+                              <Font name="Lato Bold" size="24.0" />
+                           </font>
+                        </Label>     
+                      </HBox>
+                      <HBox>
+                        <Label layoutX="22.0" layoutY="8.0" prefHeight="40.0" prefWidth="100.0" text="Email :" textFill="WHITE">
+                           <font>
+                              <Font name="Lato Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbl_email" layoutX="22.0" layoutY="8.0" prefHeight="40.0" prefWidth="400.0" text="" textFill="WHITE">
+                           <font>
+                              <Font name="Lato Bold" size="24.0" />
+                           </font>
+                        </Label>     
+                      </HBox>
+                 </VBox>   
+               
                </children>
             </StackPane>
             <StackPane prefHeight="568.0" prefWidth="499.0">
@@ -61,7 +92,7 @@
                                     <Image url="@../../img/your-location.png" />
                                  </image>
                               </ImageView>
-                              <Label layoutX="200.0" layoutY="34.0" prefHeight="30.0" prefWidth="291.0" text="Ajout nouveau sites" textFill="WHITE">
+                              <Label layoutX="200.0" layoutY="34.0" prefHeight="30.0" prefWidth="291.0" text="Modification site" textFill="WHITE">
                                  <font>
                                     <Font name="Lato Bold" size="24.0" />
                                  </font>
@@ -70,41 +101,25 @@
                         </Pane>
                         <Pane prefHeight="330.0" prefWidth="499.0">
                            <children>
-                              <Label layoutX="14.0" layoutY="21.0" prefHeight="25.0" prefWidth="86.0" text="Nom  site :" textFill="WHITE">
+                              <Label layoutX="14.0" layoutY="21.0" prefHeight="25.0" prefWidth="86.0" text="Lieu :" textFill="WHITE">
                                  <font>
                                     <Font name="Lato Bold" size="16.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="txt_nom" layoutX="161.0" layoutY="11.0" prefHeight="35.0" prefWidth="300.0" />
-                              <Label layoutX="14.0" layoutY="111.0" prefHeight="25.0" prefWidth="152.0" text="Contact :" textFill="WHITE">
+                              <TextField fx:id="txt_lieu" layoutX="161.0" layoutY="11.0" prefHeight="35.0" prefWidth="300.0" />
+                              <Label layoutX="14.0" layoutY="111.0" prefHeight="25.0" prefWidth="152.0" text="Email:" textFill="WHITE">
                                  <font>
                                     <Font name="Lato Bold" size="16.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="txt_username" layoutX="161.0" layoutY="106.0" prefHeight="35.0" prefWidth="300.0" />
-                              <Label layoutX="14.0" layoutY="211.0" prefHeight="25.0" prefWidth="108.0" text="Responsable :" textFill="WHITE">
+                              <TextField fx:id="txt_mail" layoutX="161.0" layoutY="106.0" prefHeight="35.0" prefWidth="300.0" />
+                              <Label layoutX="14.0" layoutY="61.0" prefHeight="25.0" prefWidth="86.0" text="Contact :" textFill="WHITE">
                                  <font>
                                     <Font name="Lato Bold" size="16.0" />
                                  </font>
                               </Label>
-                              <ComboBox fx:id="cbx_sites" layoutX="161.0" layoutY="206.0" prefHeight="35.0" prefWidth="300.0" />
-                              <Label layoutX="14.0" layoutY="61.0" prefHeight="25.0" prefWidth="86.0" text="Location :" textFill="WHITE">
-                                 <font>
-                                    <Font name="Lato Bold" size="16.0" />
-                                 </font>
-                              </Label>
-                              <TextField fx:id="txt_prenom" layoutX="161.0" layoutY="59.0" prefHeight="35.0" prefWidth="300.0" />
-                              <Label layoutX="14.0" layoutY="161.0" prefHeight="25.0" prefWidth="152.0" text="Code site :" textFill="WHITE">
-                                 <font>
-                                    <Font name="Lato Bold" size="16.0" />
-                                 </font>
-                              </Label>
-                              <TextField fx:id="txt_username1" layoutX="161.0" layoutY="156.0" prefHeight="35.0" prefWidth="300.0" />
-                           </children>
-                        </Pane>
-                        <Pane prefHeight="74.0" prefWidth="499.0">
-                           <children>
-                              <Button fx:id="btn_enregistrer" layoutX="251.0" layoutY="-56.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="160.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #cea716;" text="Enregistrer" textFill="WHITE">
+                              <TextField fx:id="txt_contact" layoutX="161.0" layoutY="59.0" prefHeight="35.0" prefWidth="300.0" />
+                              <Button fx:id="btn_enregistrer" onAction="#enregistrer" layoutX="251.0" layoutY="161.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="160.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #cea716;" text="Enregistrer" textFill="WHITE">
                                  <font>
                                     <Font name="Lato Bold" size="15.0" />
                                  </font>
@@ -116,8 +131,10 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
+                           
                            </children>
                         </Pane>
+                        
                      </children>
                      <StackPane.margin>
                         <Insets bottom="10.0" left="10.0" />
@@ -139,7 +156,7 @@
             </ImageView>
          </graphic>
       </Label>
-      <Label layoutX="553.0" layoutY="101.0" prefHeight="18.0" prefWidth="341.0" text="(Ajout, Modification, Suppression site)" textFill="#fffefe">
+      <Label layoutX="553.0" layoutY="101.0" prefHeight="18.0" prefWidth="341.0" text="(Vous pouvez modifier le site)" textFill="#fffefe">
          <font>
             <Font name="Lato Bold" size="14.0" />
          </font>

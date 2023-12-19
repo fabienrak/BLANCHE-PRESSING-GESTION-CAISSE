@@ -1,14 +1,10 @@
 package org.app.bp.controller;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
-import org.app.bp.models.Sites;
 import org.app.bp.services.SiteServices;
 
-import javafx.concurrent.Service;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -43,14 +39,6 @@ public class AuthLoginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Service<List<Sites>> listeSites = siteServices.getSitesData();
-        listeSites.setOnSucceeded(s -> {
-            List<String> site_data = new ArrayList<>();
-            for (Sites sites : listeSites.getValue()){
-                site_data.add(sites.getNom_site());
-            }
-            cbx_site.getItems().addAll(site_data);
-        });
-        listeSites.start();
+        
     }
 }
