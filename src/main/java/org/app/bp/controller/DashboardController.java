@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
+import org.app.bp.models.Sites;
+import org.app.bp.services.SiteServices;
 import org.app.bp.utils.Utils;
 
 import javafx.animation.Animation;
@@ -45,18 +47,24 @@ public class DashboardController {
     @FXML
     private Button btn_configuration;
 
+    @FXML
+    private Label lbl_site;
+
     private Stage stage;
 
     Utils appUtils = new Utils();
-
-    
+    SiteServices siteServ = new SiteServices();
+    public void affichageSite(){
+        Sites sites = siteServ.getSites();
+        lbl_site.setText("Site : "+sites.getLieu());
+    }
     @FXML
     public void initialize(){
 
         Date androany = new Date();
         DateFormat fullDateFormat = DateFormat.getDateInstance(DateFormat.FULL);
         label_date.setText(fullDateFormat.format(androany).toUpperCase());
-
+        affichageSite();
         Timeline timeline = new Timeline(
                 new KeyFrame(
                         Duration.ZERO, event -> label_time.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")))),
@@ -100,7 +108,10 @@ public class DashboardController {
     private void sceneGestionSite(ActionEvent actionEvent) throws IOException {
         Node node_source = (Node) actionEvent.getSource();
         stage = (Stage) node_source.getScene().getWindow();
-        Parent parent = FXMLLoader.load(getClass().getResource("/fxml/sites/gestion-sites.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/sites/gestion-sites.fxml"));
+            Parent parent = loader.load();
+        SitesController sitesController = loader.getController();
+        sitesController.setDashboard(this);
         stage.setTitle("GESTION SITES");
         content_home.getChildren().removeAll();
         content_home.getChildren().setAll(parent);

@@ -38,6 +38,15 @@ public class SitesController implements Initializable {
     private Sites site;
     private SiteServices siteServ  = new SiteServices();
 
+    private DashboardController dashboard;
+
+    /**
+     * @param dashboard the dashboard to set
+     */
+    public void setDashboard(DashboardController dashboard) {
+        this.dashboard = dashboard;
+    }
+
     @FXML
     private void retourVersPremiereScene(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/home/dashboard.fxml"));
@@ -56,6 +65,10 @@ public class SitesController implements Initializable {
         txt_lieu.setText(site.getLieu());
         txt_contact.setText(site.getContact());
         txt_mail.setText(site.getEmail());
+        if(dashboard != null){
+        dashboard.affichageSite();
+    
+        }
     }
 
     @FXML
