@@ -12,7 +12,6 @@ import org.app.bp.models.CommandeFinal;
 import org.app.bp.models.FactureAvance;
 import org.app.bp.services.CommandeService;
 import org.app.bp.services.FacturationService;
-import org.app.bp.services.PdfService;
 import org.app.bp.utils.Erreur;
 import org.app.bp.utils.Utils;
 
@@ -32,6 +31,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -70,6 +70,14 @@ public class ListeCommande implements Initializable{
     private DatePicker datePicker_livraison;
     @FXML
     private TextField txt_code;
+
+    @FXML
+    private Label lbl_payement_avance;
+    @FXML
+    private HBox hbox_payement_avance;
+
+    @FXML
+    private Button bt_facture_tout;
     @FXML
     private TableView tableDroite;
     private TableView tableCommandeClient;
@@ -135,6 +143,39 @@ public class ListeCommande implements Initializable{
             appUtils.warningAlertDialog("AVERTISSEMENT",e.getMessage().toUpperCase());
         }
     }
+
+
+      @FXML
+      private void handleFacturerTout(ActionEvent actionEvent) throws IOException {
+                FactureAvance factureAvance = new FactureAvance();
+        factureAvance.setDateFacturation(LocalDate.now());   
+        try {
+            factureAvance.ajoutFactureFinal(factureServ, commandeFinal);
+            afficheListeAvance();
+            avanceProposer = 0;
+            txt_avance.setText("");
+        } catch (Erreur e) {
+            appUtils.warningAlertDialog("AVERTISSEMENT",e.getMessage().toUpperCase());
+        }
+        }
+    private void verificationReste(){
+        if(commandeFinal.getReste() == 0){
+            lbl_payement_avance.setVisible(false);
+            hbox_payement_avance.setVisible(false);
+            bt_facture_tout.setVisible(false);
+        }else{
+            if(commandeServ.presenceFactureFinale(commandeFinal) == true){
+                lbl_payement_avance.setVisible(false);
+                hbox_payement_avance.setVisible(false);
+                bt_facture_tout.setVisible(false);
+            }else{
+                lbl_payement_avance.setVisible(true);
+            hbox_payement_avance.setVisible(true);
+            bt_facture_tout.setVisible(true);    
+        
+            }
+        }
+    }
     private void ecritureAvance(){
         txt_avance.textProperty().addListener((observable, oldValue, newValue) -> {
               if(newValue.isEmpty()){
@@ -165,6 +206,8 @@ public class ListeCommande implements Initializable{
         val_prix_avance.setAlignment(Pos.CENTER_RIGHT);
         val_prix_total.setAlignment(Pos.CENTER_RIGHT);
         val_reste.setAlignment(Pos.CENTER_RIGHT);
+        datePicker_commande.setEditable(false);
+        datePicker_livraison.setEditable(false);
         ecritureAvance();
         
     }
@@ -194,15 +237,19 @@ public class ListeCommande implements Initializable{
         TableColumn<FactureAvance,String> date_facture = new TableColumn<FactureAvance,String>("Date Facturation");
         TableColumn<FactureAvance,Button> button_facture = new TableColumn<FactureAvance,Button>("");
         TableColumn<FactureAvance,Button> button_supprimer = new TableColumn<FactureAvance,Button>("");
+        TableColumn<FactureAvance,Button> button_payer = new TableColumn<FactureAvance,Button>("");
+        TableColumn<FactureAvance,String> type = new TableColumn<FactureAvance,String>("type");
         
         numFact.setCellValueFactory(new PropertyValueFactory<>("numeroFacture"));
         avanceColumn.setCellValueFactory(new PropertyValueFactory<>("prixAvanceAffiche"));
         date_facture.setCellValueFactory(new PropertyValueFactory<>("dateFacturation"));
         button_facture.setCellValueFactory(new PropertyValueFactory<>("buttonFacturer"));
         button_supprimer.setCellValueFactory(new PropertyValueFactory<>("button_supprimer"));
-    
+        button_payer.setCellValueFactory(new PropertyValueFactory<>("valider"));
+        type.setCellValueFactory(new PropertyValueFactory<>("afficheType"));
+
         tableAvance = new TableView<>();
-        tableAvance.getColumns().addAll(numFact,date_facture,avanceColumn,button_facture,button_supprimer);
+        tableAvance.getColumns().addAll(numFact,type,date_facture,avanceColumn,button_facture,button_supprimer,button_payer);
         
     }
 
@@ -236,20 +283,6 @@ public class ListeCommande implements Initializable{
         }
 
 
-      @FXML
-      private void handleFacturerTout(ActionEvent actionEvent) throws IOException {
-        commandeFinal.setListeFactureAvance(factureServ.getListeFactureAvance(commandeFinal));
-        if(commandeFinal.getListeCommandeClient() == null){
-            try {
-                commandeFinal.setListeCommandeClient(commandeServ.getListCommandeClient(commandeFinal));
-            } catch (Erreur e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        PdfService.generationDeFactureFinal(commandeFinal);
-      }
-
 
       private void afficheDetailsCommandeFinal(){
         if(commandeFinal != null){
@@ -266,7 +299,7 @@ public class ListeCommande implements Initializable{
             val_prix_total.setText(NumberFormat.getInstance(java.util.Locale.FRENCH).format(commandeFinal.getPrixTotal())+" Ar ");
             val_prix_avance.setText(NumberFormat.getInstance(java.util.Locale.FRENCH).format(commandeFinal.getAvance())+" Ar ");
             val_reste.setText(NumberFormat.getInstance(java.util.Locale.FRENCH).format(commandeFinal.getReste())+" Ar ");
-
+            verificationReste();
         }else{
             paneD1.setVisible(false);
             paneD2.setVisible(false);
@@ -285,10 +318,11 @@ public class ListeCommande implements Initializable{
         tableDroite.setItems(commandeFinal.getListeFactureAvance());
         val_prix_total.setText(NumberFormat.getInstance(java.util.Locale.FRENCH).format(commandeFinal.getPrixTotal())+" Ar ");
         val_prix_avance.setText(NumberFormat.getInstance(java.util.Locale.FRENCH).format(commandeFinal.getAvance())+" Ar ");
-        val_reste.setText(NumberFormat.getInstance(java.util.Locale.FRENCH).format(commandeFinal.getReste())+" Ar ");
-        
+        val_reste.setText(NumberFormat.getInstance(java.util.Locale.FRENCH).format(commandeFinal.getReste())+" Ar ");        
+        verificationReste();
         commandeListEstAfficher = false;
       }
+      
       private FactureAvance factureAvanceSelected;
       @FXML
       private void handleSelectedListeAvance(){
@@ -302,21 +336,6 @@ public class ListeCommande implements Initializable{
             if(factureAvanceSelected != null){
                 factureAvanceSelected.modifierFactureAvance(this);
             }
-            
-            /*System.out.println("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj");
-            ObservableList<FactureAvance> list = tableDroite.getItems();
-
-            int i = 0;
-            for(i = 0 ; i < list.size() ; i++){
-                if( factureAvance != null && list.get(i).getIdFacture() == factureAvance.getIdFacture()){
-                    factureAvance.modifierFactureAvance(this);
-                    list.set(i, factureAvance);
-                }else{
-                    FactureAvance av = list.get(i);
-                    av.nonAfficheModification();
-                    list.set(i, av);
-                }
-            }*/
         }
       }
 

@@ -75,7 +75,7 @@ public class CommandeFinal {
 
     public CommandeFinal(){
         LocalDateTime now = LocalDateTime.now();
-        this.code = "BP_"+now.format(DateTimeFormatter.ofPattern("YYYYMMDD-hhmm"));
+        this.code = "CBP_"+now.format(DateTimeFormatter.ofPattern("YYYYMMDD-hhmmssSSS"));
     }
     
     /**

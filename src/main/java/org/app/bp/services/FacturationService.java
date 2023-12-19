@@ -19,13 +19,14 @@ public class FacturationService {
     Connection connection = DBUtils.getConnection();
 
     public void nouveauFactureAvance(FactureAvance facture,CommandeFinal commande){
-        String ajout_client_query = "INSERT INTO facturation (etat,id_commande,avance,date_payement,num_facture) VALUES (0,?,?,?,?)";
+        String ajout_client_query = "INSERT INTO facturation (etat,type,id_commande,prix,date_payement,num_facture) VALUES (0,?,?,?,?,?)";
         try{
             preparedStatement = connection.prepareStatement(ajout_client_query);
-            preparedStatement.setInt(1, commande.getIdCommande());
-            preparedStatement.setDouble(2, facture.getPrixAvance());
-            preparedStatement.setString(3, facture.getDateFacturation().toString());
-            preparedStatement.setString(4, facture.getNumeroFacture());
+            preparedStatement.setInt(1, facture.getType());
+            preparedStatement.setInt(2, commande.getIdCommande());
+            preparedStatement.setDouble(3, facture.getPrixAvance());
+            preparedStatement.setString(4, facture.getDateFacturation().toString());
+            preparedStatement.setString(5, facture.getNumeroFacture());
             preparedStatement.executeUpdate();;
         } catch (SQLException sqlException){
             sqlException.printStackTrace();
@@ -65,10 +66,12 @@ public class FacturationService {
                 factureAvance.setNumeroFacture(resultSet.getString("num_facture"));
                 factureAvance.setIdFacture(resultSet.getInt("id_facturation"));
                 factureAvance.setDateFacturation(LocalDate.parse(resultSet.getString("date_payement")));
-                factureAvance.setPrixAvance(resultSet.getDouble("avance"));
+                factureAvance.setPrixAvance(resultSet.getDouble("prix"));
+                factureAvance.setType(resultSet.getInt("type"));
                 factureAvance.setEtat(resultSet.getInt("etat"));
                 factureAvance.generationButtonFacturer(commande,this);
                 factureAvance.generationButtonSupprimer(commande, this);
+                factureAvance.generationButtonValider(commande, this);
                 data.add(factureAvance);
             }
         } catch (SQLException sqlException) {

@@ -92,19 +92,39 @@ public class CommandeService {
 
     public double getPrixTotalAvance(CommandeFinal commande){
         double t = 0;
-        String liste_site_query = "SELECT sum(avance) from facturation where etat=1 and id_commande="+commande.getIdCommande();
+        String liste_site_query = "SELECT sum(prix) from facturation where etat=1 and id_commande="+commande.getIdCommande();
         System.out.println(liste_site_query);
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(liste_site_query);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                t = resultSet.getDouble("sum(avance)");
+                t = resultSet.getDouble("sum(prix)");
                 System.out.println(t);
             }
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
         return t;
+    }
+
+    public boolean presenceFactureFinale(CommandeFinal commande){
+        double t = 0;
+        boolean is = false;
+        String liste_site_query = "SELECT * from facturation where type=1 and id_commande="+commande.getIdCommande();
+        System.out.println(liste_site_query);
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(liste_site_query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                t = 1;
+                System.out.println(t);
+                is = true;
+                break;
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return is;
     }
 
     public double getPrixTotalCommandeFinal(CommandeFinal commande){

@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.app.bp.controller.ListeCommande;
+import org.app.bp.services.CommandeService;
 import org.app.bp.services.FacturationService;
 import org.app.bp.services.PdfService;
 import org.app.bp.utils.Erreur;
@@ -19,10 +20,62 @@ public class FactureAvance {
     private CommandeFinal commande;
     private double prixAvance = 0.0;
     private LocalDate dateFacturation = null;
+    private int type = 0;
+
     private String prixAvanceAffiche = null;
     private Button buttonFacturer = null;
     private int etat = 0;
     private Button button_supprimer = null;
+    private Button valider = null;
+    private String afficheType = null;
+    
+
+        /**
+     * @return the afficheType
+     */
+    public String getAfficheType() {
+        if(type == 0){
+            afficheType = "avance";
+        }else{
+            afficheType = "final";
+        }
+        return afficheType.toUpperCase();
+    }
+
+    /**
+     * @param afficheType the afficheType to set
+     */
+    public void setAfficheType(String afficheType) {
+        this.afficheType = afficheType;
+    }
+
+        /**
+     * @return the valider
+     */
+    public Button getValider() {
+        return valider;
+    }
+
+    /**
+     * @param valider the valider to set
+     */
+    public void setValider(Button valider) {
+        this.valider = valider;
+    }
+
+        /**
+     * @return the type
+     */
+    public int getType() {
+        return type;
+    }
+
+    /**
+     * @param type the type to set
+     */
+    public void setType(int type) {
+        this.type = type;
+    }
 
     /**
      * @return the button_supprimer
@@ -69,19 +122,48 @@ public class FactureAvance {
     private ListeCommande listeCommandeControlleur;
 
     public void generationButtonFacturer(CommandeFinal commandeFinal,FacturationService factureServ){
-        /////
-        
+        ///// 
         this.buttonFacturer = new Button("Facturer");
         this.buttonFacturer.setStyle("-fx-background-color: green;");
         this.buttonFacturer.setTextFill(Paint.valueOf("black"));
         buttonFacturer.setVisible(false);
+        CommandeService comServ = new CommandeService();
         this.buttonFacturer.setOnAction(event->{
-            if(etat == 0){
-                factureServ.validerEtatFacture(this);
+    //        listeCommandeControlleur.afficheListeAvance();
+            if(type == 0){
+                    PdfService.generationFactureAccompte(this, commandeFinal);
+        
+            }else{
+                try {
+                    commandeFinal.setListeCommandeClient(comServ.getListCommandeClient(commandeFinal));
+                } catch (Erreur e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+                commandeFinal.setListeFactureAvance(factureServ.getListeFactureAvance(commandeFinal));
+                PdfService.generationDeFactureFinal(commandeFinal, this);
             }
+        });
+    }
+
+    public double getDejaPayerFinal(){
+        double  t = 0;
+        if(etat == 1){
+            t = prixAvance;
+        }
+        return t;
+    }
+    
+    public void generationButtonValider(CommandeFinal commandeFinal,FacturationService factureServ){
+        /////
+        this.valider = new Button("Payer");
+        this.valider.setStyle("-fx-background-color: yellow;");
+        this.valider.setTextFill(Paint.valueOf("black"));
+        this.valider.setVisible(false);
+        this.valider.setOnAction(event->{
+            factureServ.validerEtatFacture(this);
             listeCommandeControlleur.afficheListeAvance();
-            PdfService.generationFactureAccompte(this, commandeFinal);
-            
         });
     }
     public void generationButtonSupprimer(CommandeFinal commandeFinal,FacturationService factureServ){
@@ -103,12 +185,13 @@ public class FactureAvance {
         this.buttonFacturer.setVisible(true);
         if(etat == 0){
             this.button_supprimer.setVisible(true);
+            this.valider.setVisible(true);
         }
     }
     public void nonAfficheModification(){
         this.buttonFacturer.setVisible(false);
             this.button_supprimer.setVisible(false);
-        
+        this.valider.setVisible(false);        
     }
     public String getPrixAvanceAffiche() {
         return NumberFormat.getInstance(java.util.Locale.FRENCH).format(prixAvance) + " Ar ";
@@ -118,6 +201,7 @@ public class FactureAvance {
         this.prixAvanceAffiche = prixAvanceAffiche;
     }
     
+    ///// facture avance
     public void ajout(FacturationService factureServ,CommandeFinal commande)throws Erreur{
         if(prixAvance > commande.getResteApayer()){
             throw new Erreur("Avance très élevée ");
@@ -128,13 +212,20 @@ public class FactureAvance {
         if(prixAvance == 0){
             throw new Erreur("Votre avance est insuffisant");    
         }
+        this.type = 0;
+        factureServ.nouveauFactureAvance(this, commande);
+    }
+    /// facturation final
+    public void ajoutFactureFinal(FacturationService factureServ,CommandeFinal commande)throws Erreur{
+        prixAvance = commande.getResteApayer();
+        this.type = 1;
         factureServ.nouveauFactureAvance(this, commande);
     }
 
     public FactureAvance(){
    
         LocalDateTime now = LocalDateTime.now();
-        this.numeroFacture = "FABP_"+now.format(DateTimeFormatter.ofPattern("YYYYMMDD-hhmm")); 
+        this.numeroFacture = "FBP_"+now.format(DateTimeFormatter.ofPattern("YYYYMMDD-hhmmssSSS")); 
     }
     
     /**

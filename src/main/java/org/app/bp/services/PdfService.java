@@ -38,13 +38,13 @@ public class PdfService {
     
     private static Font fontMontantFin = new Font(FontFamily.TIMES_ROMAN,16,Font.BOLD,BaseColor.BLACK);
     
-    public static void generationDeFactureFinal(CommandeFinal commande){
-        String pdfFilePath = "./facture/"+commande.getCode()+".pdf";
+    public static void generationDeFactureFinal(CommandeFinal commande,FactureAvance facture){
+        String pdfFilePath = "./facture/"+"F_Final_"+facture.getNumeroFacture()+".pdf";
             Document document = new Document();
         try {
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(pdfFilePath));
             document.open();
-            addDetailsBlanchePressing(document,commande.getClient(),LocalDate.now(),"FACTURE FINAL : "+commande.getCode(),"Facture final du commande "+commande.getCode());
+            addDetailsBlanchePressing(document,commande.getClient(),facture.getDateFacturation(),"FACTURE FINAL : "+facture.getNumeroFacture(),"Facture final du commande "+commande.getCode());
             List<FactureAvance> list = commande.getListeFactureAvance();
             if(list == null){
                 list = new ArrayList<>();
@@ -65,7 +65,7 @@ public class PdfService {
             PdfPCell lbl_montant = new PdfPCell(new Paragraph("Total Avance ",fontNomPrenom));
             aligementGauche(lbl_montant);
             table.addCell(lbl_montant);
-            PdfPCell montant = new PdfPCell(new Paragraph(NumberFormat.getInstance(java.util.Locale.FRENCH).format(commande.getTotalAvance()) +" Ar ",fontNomPrenom));
+            PdfPCell montant = new PdfPCell(new Paragraph(NumberFormat.getInstance(java.util.Locale.FRENCH).format(commande.getTotalAvance() - facture.getDejaPayerFinal()) +" Ar ",fontNomPrenom));
             aligementdROITE(montant);
             table.addCell(montant); 
 
@@ -87,7 +87,7 @@ public class PdfService {
             aligementGauche(lbl_montant);
             lbl_montant.setBackgroundColor(BaseColor.GRAY);
             table.addCell(lbl_montant);
-             montant = new PdfPCell(new Paragraph(NumberFormat.getInstance(java.util.Locale.FRENCH).format(commande.getResteApayer()) +" Ar ",fontMontantFin));
+             montant = new PdfPCell(new Paragraph(NumberFormat.getInstance(java.util.Locale.FRENCH).format(facture.getPrixAvance()) +" Ar ",fontMontantFin));
             aligementdROITE(montant);
             montant.setBackgroundColor(BaseColor.GRAY);
             table.addCell(montant);
@@ -182,14 +182,14 @@ public class PdfService {
          for(i = 0 ; i < titre.length ; i++){
             cell = new PdfPCell(new Paragraph(titre[i],fontTitreTableau));
             if(i == 0 || i == 1){
-                cell.setBackgroundColor(BaseColor.GREEN);
+                cell.setBackgroundColor(colorFont());
                 aligementGauche(cell);
             
             }else{
                 cell.setHorizontalAlignment(Element.ALIGN_CENTER); 
                 aligementdROITE(cell);
             }
-            cell.setBackgroundColor(BaseColor.GREEN);
+            cell.setBackgroundColor(colorFont());
             cell.setPadding(5);
             table.addCell(cell);
          }
@@ -216,14 +216,14 @@ public class PdfService {
          for(i = 0 ; i < titre.length ; i++){
             cell = new PdfPCell(new Paragraph(titre[i],fontTitreTableau));
             if(i == 0){
-                cell.setBackgroundColor(BaseColor.GREEN);
+                cell.setBackgroundColor(colorFont());
                 aligementGauche(cell);
             
             }else{
                 cell.setHorizontalAlignment(Element.ALIGN_CENTER); 
                 aligementdROITE(cell);
             }
-            cell.setBackgroundColor(BaseColor.GREEN);
+            cell.setBackgroundColor(colorFont());
            cell.setPadding(5);
             table.addCell(cell);
          }
@@ -263,14 +263,14 @@ public class PdfService {
          for(i = 0 ; i < titre.length ; i++){
             cell = new PdfPCell(new Paragraph(titre[i],fontTitreTableau));
             if(i == 0){
-                cell.setBackgroundColor(BaseColor.GREEN);
+                cell.setBackgroundColor(colorFont());
                 aligementGauche(cell);
             
             }else{
                 cell.setHorizontalAlignment(Element.ALIGN_CENTER); 
                 aligementdROITE(cell);
             }
-            cell.setBackgroundColor(BaseColor.GREEN);
+            cell.setBackgroundColor(colorFont());
            cell.setPadding(5);
             table.addCell(cell);
          }
@@ -279,7 +279,7 @@ public class PdfService {
          PdfPCell pU = null;
          PdfPCell totalPU = null;
          for(i = 0 ; i < listeFact.size() ; i++){
-            if(listeFact.get(i).getEtat() == 1){
+            if(listeFact.get(i).getEtat() == 1 && listeFact.get(i).getType() == 0 ){
                 desc = new PdfPCell(new Paragraph("Facture "+listeFact.get(i).getNumeroFacture()+" le "+listeFact.get(i).getDateFacturation(),fontNomPrenom));
                 aligementGauche(cell);
                 desc.setPadding(5);
@@ -308,7 +308,7 @@ public class PdfService {
         // definition de logo
         Image logo = Image.getInstance("E:\\STAGE\\BLANCHE_PRESSING_GESTION_CAISSE\\gestion-caisse-final\\src\\main\\resources\\img\\logo.png");
             logo.scaleAbsolute(100,100);
-            logo.setBackgroundColor(BaseColor.GREEN);
+            logo.setBackgroundColor(colorFont());
             logo.setBorderColor(BaseColor.BLACK);
 
         // definition du details
@@ -378,6 +378,10 @@ public class PdfService {
         document.add(new Paragraph("\n"));
         Paragraph objet = new Paragraph("Objet : "+objetFac,fontNomPrenom);
         document.add(objet);
+    }
+
+    private static BaseColor colorFont(){
+        return BaseColor.BLUE;
     }
 
 }
