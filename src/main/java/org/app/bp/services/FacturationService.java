@@ -19,13 +19,34 @@ public class FacturationService {
     Connection connection = DBUtils.getConnection();
 
     public void nouveauFactureAvance(FactureAvance facture,CommandeFinal commande){
-        String ajout_client_query = "INSERT INTO facturation (id_commande,avance,date_payement,num_facture) VALUES (?,?,?,?)";
+        String ajout_client_query = "INSERT INTO facturation (etat,id_commande,avance,date_payement,num_facture) VALUES (0,?,?,?,?)";
         try{
             preparedStatement = connection.prepareStatement(ajout_client_query);
             preparedStatement.setInt(1, commande.getIdCommande());
             preparedStatement.setDouble(2, facture.getPrixAvance());
             preparedStatement.setString(3, facture.getDateFacturation().toString());
             preparedStatement.setString(4, facture.getNumeroFacture());
+            preparedStatement.executeUpdate();;
+        } catch (SQLException sqlException){
+            sqlException.printStackTrace();
+        }
+    }
+
+    public void deleteFactureAvance(FactureAvance facture){
+        String query = "DELETE FROM facturation where id_facturation="+facture.getIdFacture();
+        try{
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.executeUpdate();;
+        } catch (SQLException sqlException){
+            sqlException.printStackTrace();
+        }
+    }
+
+    public void validerEtatFacture(FactureAvance facture){
+        String query = "UPDATE  facturation set etat=1 where id_facturation="+facture.getIdFacture();
+        System.out.println(query);
+        try{
+            preparedStatement = connection.prepareStatement(query);
             preparedStatement.executeUpdate();;
         } catch (SQLException sqlException){
             sqlException.printStackTrace();
@@ -45,6 +66,9 @@ public class FacturationService {
                 factureAvance.setIdFacture(resultSet.getInt("id_facturation"));
                 factureAvance.setDateFacturation(LocalDate.parse(resultSet.getString("date_payement")));
                 factureAvance.setPrixAvance(resultSet.getDouble("avance"));
+                factureAvance.setEtat(resultSet.getInt("etat"));
+                factureAvance.generationButtonFacturer(commande,this);
+                factureAvance.generationButtonSupprimer(commande, this);
                 data.add(factureAvance);
             }
         } catch (SQLException sqlException) {

@@ -92,7 +92,7 @@ public class CommandeService {
 
     public double getPrixTotalAvance(CommandeFinal commande){
         double t = 0;
-        String liste_site_query = "SELECT sum(avance) from facturation where id_commande="+commande.getIdCommande();
+        String liste_site_query = "SELECT sum(avance) from facturation where etat=1 and id_commande="+commande.getIdCommande();
         System.out.println(liste_site_query);
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(liste_site_query);

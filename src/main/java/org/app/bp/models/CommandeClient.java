@@ -52,7 +52,6 @@ public class CommandeClient {
             listeCommande.remove(this);
             c.miseAJourTableViewCommande();
         });
-    
     }
     /**
      * @return the bouttonSupprimer

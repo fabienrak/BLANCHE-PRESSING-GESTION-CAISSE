@@ -117,7 +117,7 @@ public class PdfService {
         try {
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(pdfFilePath));
             document.open();
-            addDetailsBlanchePressing(document,facture.getCommande().getClient(),facture.getDateFacturation(),"FACTURE D'AVANCE : "+facture.getNumeroFacture(),"Avance du commande "+facture.getCommande().getCode());
+            addDetailsBlanchePressing(document,commande.getClient(),facture.getDateFacturation(),"FACTURE D'AVANCE : "+facture.getNumeroFacture(),"Avance du commande "+commande.getCode());
             List<FactureAvance> list = new ArrayList<>();
             list.add(facture);
             document.add(new Paragraph("\n"));
@@ -146,6 +146,9 @@ public class PdfService {
             document.close();
             writer.close();
             
+            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
+                Desktop.getDesktop().open(new File(pdfFilePath));
+            }
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -276,23 +279,26 @@ public class PdfService {
          PdfPCell pU = null;
          PdfPCell totalPU = null;
          for(i = 0 ; i < listeFact.size() ; i++){
-            desc = new PdfPCell(new Paragraph("Facture "+listeFact.get(i).getNumeroFacture()+" le "+listeFact.get(i).getDateFacturation(),fontNomPrenom));
-            aligementGauche(cell);
-            desc.setPadding(5);
-            table.addCell(desc);
-            qt = new PdfPCell(new Paragraph("1",fontNomPrenom));
-            aligementdROITE(qt);
-            qt.setPadding(5);
-            table.addCell(qt);
-            pU = new PdfPCell(new Paragraph(NumberFormat.getInstance(java.util.Locale.FRENCH).format(listeFact.get(i).getPrixAvance())+" Ar ",fontNomPrenom));
-            totalPU = new PdfPCell(new Paragraph(NumberFormat.getInstance(java.util.Locale.FRENCH).format(listeFact.get(i).getPrixAvance())+" Ar ",fontNomPrenom));
-            pU.setPadding(5);
-            totalPU.setPadding(5);
-            aligementdROITE(pU);
-            aligementdROITE(totalPU);
-            table.addCell(pU);
-            table.addCell(totalPU);
-        }
+            if(listeFact.get(i).getEtat() == 1){
+                desc = new PdfPCell(new Paragraph("Facture "+listeFact.get(i).getNumeroFacture()+" le "+listeFact.get(i).getDateFacturation(),fontNomPrenom));
+                aligementGauche(cell);
+                desc.setPadding(5);
+                table.addCell(desc);
+                qt = new PdfPCell(new Paragraph("1",fontNomPrenom));
+                aligementdROITE(qt);
+                qt.setPadding(5);
+                table.addCell(qt);
+                pU = new PdfPCell(new Paragraph(NumberFormat.getInstance(java.util.Locale.FRENCH).format(listeFact.get(i).getPrixAvance())+" Ar ",fontNomPrenom));
+                totalPU = new PdfPCell(new Paragraph(NumberFormat.getInstance(java.util.Locale.FRENCH).format(listeFact.get(i).getPrixAvance())+" Ar ",fontNomPrenom));
+                pU.setPadding(5);
+                totalPU.setPadding(5);
+                aligementdROITE(pU);
+                aligementdROITE(totalPU);
+                table.addCell(pU);
+                table.addCell(totalPU);
+        
+            }
+            }
         document.add(table);
     }
 

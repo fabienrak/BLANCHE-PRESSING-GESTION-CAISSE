@@ -21,8 +21,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -82,6 +84,7 @@ public class ListeCommande implements Initializable{
     private CommandeService commandeServ = new CommandeService();
     private CommandeFinal commandeFinal = null;
     private FacturationService factureServ = new FacturationService();
+    private boolean commandeListEstAfficher = true;
 
     public CommandeFinal getCommandeFinal() {
         return commandeFinal;
@@ -91,12 +94,28 @@ public class ListeCommande implements Initializable{
         this.commandeFinal = commandeFinal;
     }
 
+    private Class classInitial;
+
+    /**
+     * @param classInitial the classInitial to set
+     */
+    public void setClassInitial(Class classInitial) {
+        this.classInitial = classInitial;
+    }
+
     @FXML
     private void backToInfoClient(ActionEvent actionEvent) throws IOException {
         Node node_source = (Node) actionEvent.getSource();
         Stage stage = (Stage) node_source.getScene().getWindow();
-        Parent parent = FXMLLoader.load(getClass().getResource("/fxml/facture/info-client.fxml"));
-        stage.setTitle("FACTURATION");
+        Parent parent = null;
+        if(classInitial == ClientController.class){
+            parent = FXMLLoader.load(getClass().getResource("/fxml/facture/info-client.fxml"));
+            stage.setTitle("FACTURATION");
+        
+        }else if(classInitial == Commande2Controlleur.class){
+            parent = FXMLLoader.load(getClass().getResource("/fxml/commande/info-client.fxml"));
+      stage.setTitle("COMMANDE");
+        }
         content_liste_commande.getChildren().removeAll();
         content_liste_commande.getChildren().setAll(parent);
     }
@@ -110,9 +129,6 @@ public class ListeCommande implements Initializable{
         try {
             factureAvance.ajout(factureServ, commandeFinal);
             afficheListeAvance();
-            val_prix_total.setText(NumberFormat.getInstance(java.util.Locale.FRENCH).format(commandeFinal.getPrixTotal())+" Ar ");
-            val_prix_avance.setText(NumberFormat.getInstance(java.util.Locale.FRENCH).format(commandeFinal.getAvance())+" Ar ");
-            val_reste.setText(NumberFormat.getInstance(java.util.Locale.FRENCH).format(commandeFinal.getReste())+" Ar ");
             avanceProposer = 0;
             txt_avance.setText("");
         } catch (Erreur e) {
@@ -146,6 +162,9 @@ public class ListeCommande implements Initializable{
         creationTablePourListeCommandeClient();
         creationTablePourListeAvance();
         lbl_erreur_avance.setVisible(false);
+        val_prix_avance.setAlignment(Pos.CENTER_RIGHT);
+        val_prix_total.setAlignment(Pos.CENTER_RIGHT);
+        val_reste.setAlignment(Pos.CENTER_RIGHT);
         ecritureAvance();
         
     }
@@ -173,12 +192,17 @@ public class ListeCommande implements Initializable{
         TableColumn<FactureAvance,String> numFact = new TableColumn<FactureAvance,String>("Code Facture");
         TableColumn<FactureAvance,String> avanceColumn = new TableColumn<FactureAvance,String>("Avance");
         TableColumn<FactureAvance,String> date_facture = new TableColumn<FactureAvance,String>("Date Facturation");
+        TableColumn<FactureAvance,Button> button_facture = new TableColumn<FactureAvance,Button>("");
+        TableColumn<FactureAvance,Button> button_supprimer = new TableColumn<FactureAvance,Button>("");
         
         numFact.setCellValueFactory(new PropertyValueFactory<>("numeroFacture"));
         avanceColumn.setCellValueFactory(new PropertyValueFactory<>("prixAvanceAffiche"));
         date_facture.setCellValueFactory(new PropertyValueFactory<>("dateFacturation"));
+        button_facture.setCellValueFactory(new PropertyValueFactory<>("buttonFacturer"));
+        button_supprimer.setCellValueFactory(new PropertyValueFactory<>("button_supprimer"));
+    
         tableAvance = new TableView<>();
-        tableAvance.getColumns().addAll(numFact,avanceColumn,date_facture);
+        tableAvance.getColumns().addAll(numFact,date_facture,avanceColumn,button_facture,button_supprimer);
         
     }
 
@@ -253,13 +277,47 @@ public class ListeCommande implements Initializable{
       private void clickAfficheListeAvance(ActionEvent actionEvent) throws IOException {
         afficheListeAvance();
       }
-      private void afficheListeAvance(){
+      public void afficheListeAvance(){
         commandeFinal.setListeFactureAvance(factureServ.getListeFactureAvance(commandeFinal));
         tableDroite.getColumns().clear();
         tableDroite.getColumns().addAll(tableAvance.getColumns());
         tableDroite.getItems().clear();
         tableDroite.setItems(commandeFinal.getListeFactureAvance());
+        val_prix_total.setText(NumberFormat.getInstance(java.util.Locale.FRENCH).format(commandeFinal.getPrixTotal())+" Ar ");
+        val_prix_avance.setText(NumberFormat.getInstance(java.util.Locale.FRENCH).format(commandeFinal.getAvance())+" Ar ");
+        val_reste.setText(NumberFormat.getInstance(java.util.Locale.FRENCH).format(commandeFinal.getReste())+" Ar ");
         
+        commandeListEstAfficher = false;
+      }
+      private FactureAvance factureAvanceSelected;
+      @FXML
+      private void handleSelectedListeAvance(){
+        if (commandeListEstAfficher == false) {
+            System.out.println("-----------------------------------------");
+            if(factureAvanceSelected != null){
+                factureAvanceSelected.nonAfficheModification();
+            }
+
+            factureAvanceSelected = (FactureAvance)tableDroite.getSelectionModel().getSelectedItem();
+            if(factureAvanceSelected != null){
+                factureAvanceSelected.modifierFactureAvance(this);
+            }
+            
+            /*System.out.println("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj");
+            ObservableList<FactureAvance> list = tableDroite.getItems();
+
+            int i = 0;
+            for(i = 0 ; i < list.size() ; i++){
+                if( factureAvance != null && list.get(i).getIdFacture() == factureAvance.getIdFacture()){
+                    factureAvance.modifierFactureAvance(this);
+                    list.set(i, factureAvance);
+                }else{
+                    FactureAvance av = list.get(i);
+                    av.nonAfficheModification();
+                    list.set(i, av);
+                }
+            }*/
+        }
       }
 
       private void affichageListeCommandeClient(){
@@ -275,7 +333,7 @@ public class ListeCommande implements Initializable{
         tableDroite.getColumns().addAll(tableCommandeClient.getColumns());
         tableDroite.getItems().clear();
         tableDroite.setItems(list);
-         
+        commandeListEstAfficher = true;
     }
     
         /**

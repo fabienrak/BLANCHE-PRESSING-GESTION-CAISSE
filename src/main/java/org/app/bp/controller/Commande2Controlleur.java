@@ -132,6 +132,7 @@ public void initializeComboboxArticle(){
 private void generationDeFactureAvance(ActionEvent actionEvent) throws IOException {
       enregistrementCommande();
       FactureAvance factureAvance = generateFactureAvance();
+      detailsClientCommande(actionEvent, commande);
 }
 
 private FactureAvance generateFactureAvance(){
@@ -209,6 +210,22 @@ private void enregistrementCommandeArticle(ActionEvent actionEvent) throws IOExc
             miseAJourTableViewCommande();
       }
 }
+
+    private void detailsClientCommande(ActionEvent event,CommandeFinal com) throws IOException {
+            Node node_source = (Node) event.getSource();
+            Stage stage = (Stage) node_source.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/facture/liste-commande.fxml"));
+            Parent parent = loader.load();
+            ListeCommande listeCommande = loader.getController();
+            listeCommande.setClient(clients);
+            listeCommande.initializeTableCommande();
+            listeCommande.setCommandeFinal(com);
+            listeCommande.setClassInitial(getClass());
+            stage.setTitle("FACTURATION");
+            content_nouveau_commande.getChildren().removeAll();
+            content_nouveau_commande.getChildren().setAll(parent);  
+    }
+
 public void miseAJourTableViewCommande(){
             tableCommande.setItems(listeCommande);
             calculPrixTotal();

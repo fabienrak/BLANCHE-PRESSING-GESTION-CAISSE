@@ -238,6 +238,7 @@ public class ClientController implements Initializable {
             ListeCommande listeCommande = loader.getController();
             listeCommande.setClient(clientSelected);
             listeCommande.initializeTableCommande();
+            listeCommande.setClassInitial(getClass());
             stage.setTitle("FACTURATION");
             content_info_client.getChildren().removeAll();
             content_info_client.getChildren().setAll(parent);  

@@ -189,7 +189,9 @@ public class CommandeFinal {
         avance = 0.0;
         if(listeFactureAvance != null){
             for(FactureAvance fac : listeFactureAvance){
-                avance = avance + fac.getPrixAvance();
+                if(fac.getEtat() == 1){
+                    avance = avance + fac.getPrixAvance();
+                }
             }
         }
 
