@@ -112,7 +112,7 @@ public class PdfService {
 
 
     public static void generationFactureAccompte(FactureAvance facture,CommandeFinal commande){
-        String pdfFilePath = facture.getNumeroFacture()+".pdf";
+        String pdfFilePath = "./facture/"+facture.getNumeroFacture()+".pdf";
             Document document = new Document();
         try {
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(pdfFilePath));
