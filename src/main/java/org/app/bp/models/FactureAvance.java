@@ -132,7 +132,6 @@ public class FactureAvance {
     //        listeCommandeControlleur.afficheListeAvance();
             if(type == 0){
                     PdfService.generationFactureAccompte(this, commandeFinal);
-        
             }else{
                 try {
                     commandeFinal.setListeCommandeClient(comServ.getListCommandeClient(commandeFinal));
@@ -180,12 +179,17 @@ public class FactureAvance {
         });
     }
 
-    public void modifierFactureAvance(ListeCommande lc){
+    public void modifierFactureAvance(CommandeFinal com,ListeCommande lc,CommandeService comServ){
         this.listeCommandeControlleur = lc;
         this.buttonFacturer.setVisible(true);
         if(etat == 0){
-            this.button_supprimer.setVisible(true);
-            this.valider.setVisible(true);
+            if(type == 1){
+                    this.button_supprimer.setVisible(true);
+            
+            }
+            if(comServ.presenceFactureFinale(com) == false && type == 0){
+                this.button_supprimer.setVisible(true);
+            }
         }
     }
     public void nonAfficheModification(){
@@ -217,13 +221,12 @@ public class FactureAvance {
     }
     /// facturation final
     public void ajoutFactureFinal(FacturationService factureServ,CommandeFinal commande)throws Erreur{
-        prixAvance = commande.getResteApayer();
+        this.dateFacturation = LocalDate.now();
         this.type = 1;
         factureServ.nouveauFactureAvance(this, commande);
     }
 
     public FactureAvance(){
-   
         LocalDateTime now = LocalDateTime.now();
         this.numeroFacture = "FBP_"+now.format(DateTimeFormatter.ofPattern("YYYYMMDD-hhmmssSSS")); 
     }

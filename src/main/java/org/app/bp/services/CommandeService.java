@@ -61,6 +61,17 @@ public class CommandeService {
         }
     }
 
+    public void validerLivraison(CommandeFinal commande){
+        String query = "UPDATE  commande set livre=1 where id_commande="+commande.getIdCommande();
+        System.out.println(query);
+        try{
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.executeUpdate();;
+        } catch (SQLException sqlException){
+            sqlException.printStackTrace();
+        }
+    }
+
     public ObservableList<CommandeFinal> getListeCommmandeFinal(Clients client){
         String query = "SELECT * FROM commande where id_clients="+client.getId_client();
         System.out.println(query);
@@ -68,7 +79,6 @@ public class CommandeService {
         try {
             preparedStatement = connection.prepareStatement(query);
             resultSet = preparedStatement.executeQuery();
-            System.out.println("commande = "+ resultSet.getRow());
             while (resultSet.next()) {
                 CommandeFinal commandeFinal = new CommandeFinal();
                 commandeFinal.setClient(client);
@@ -77,8 +87,10 @@ public class CommandeService {
                 commandeFinal.setIdCommande(resultSet.getInt("id_commande"));
                 commandeFinal.setDateCommande(LocalDate.parse(resultSet.getString("date_commande")));
                 commandeFinal.setDateLivraison(LocalDate.parse(resultSet.getString("date_livraison")));
+                commandeFinal.setLivre(resultSet.getInt("livre"));
                 commandeFinal.setPrixTotal(getPrixTotalCommandeFinal(commandeFinal));
                 commandeFinal.setAvance(getPrixTotalAvance(commandeFinal));
+                commandeFinal.generationButtonLivrer(this);
                 data.add(commandeFinal);
             }
         } catch (SQLException sqlException) {
@@ -159,6 +171,7 @@ public class CommandeService {
                 commandeClient.setNombre(resultSet.getInt("nombre_article"));
                 commandeClient.setService(new Service(0, resultSet.getString("nom_service")));
                 commandeClient.setPrixUnitaire(resultSet.getDouble("prix_unitaire"));
+            
                 data.add(commandeClient);
             }
         } catch (SQLException sqlException) {
@@ -169,7 +182,7 @@ public class CommandeService {
     
     private void addCommandeFinal(CommandeFinal commande){
         commande.setIdCommande(getNombreCommande()+1);
-        String ajout_client_query = "INSERT INTO commande (id_commande,date_commande,date_livraison,code_commande,id_clients) VALUES (?,?,?,?,?)";
+        String ajout_client_query = "INSERT INTO commande (livre,id_commande,date_commande,date_livraison,code_commande,id_clients) VALUES (0,?,?,?,?,?)";
         try{
             preparedStatement = connection.prepareStatement(ajout_client_query);
             preparedStatement.setInt(1, commande.getIdCommande());

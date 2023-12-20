@@ -150,6 +150,7 @@ public class ListeCommande implements Initializable{
                 FactureAvance factureAvance = new FactureAvance();
         factureAvance.setDateFacturation(LocalDate.now());   
         try {
+            factureAvance.setPrixAvance(commandeFinal.getPrixTotal() - commandeFinal.getAvanceFinal());
             factureAvance.ajoutFactureFinal(factureServ, commandeFinal);
             afficheListeAvance();
             avanceProposer = 0;
@@ -169,8 +170,8 @@ public class ListeCommande implements Initializable{
                 hbox_payement_avance.setVisible(false);
                 bt_facture_tout.setVisible(false);
             }else{
-                lbl_payement_avance.setVisible(true);
-            hbox_payement_avance.setVisible(true);
+                lbl_payement_avance.setVisible(false);
+            hbox_payement_avance.setVisible(false);
             bt_facture_tout.setVisible(true);    
         
             }
@@ -220,14 +221,16 @@ public class ListeCommande implements Initializable{
               = new TableColumn<CommandeFinal, String>("Date livraison");
         TableColumn<CommandeFinal, String> total 
               = new TableColumn<CommandeFinal, String>("Prix total");
-      
+        TableColumn<CommandeFinal, Button> livrer 
+              = new TableColumn<CommandeFinal, Button>("");      
         codeCommande.setCellValueFactory(new PropertyValueFactory<>("code"));
         dateCom.setCellValueFactory(new PropertyValueFactory<>("dateCommande"));
         dateLivr.setCellValueFactory(new PropertyValueFactory<>("dateLivraison"));
         total.setCellValueFactory(new PropertyValueFactory<>("prixTotalAffiche"));
+        livrer.setCellValueFactory(new PropertyValueFactory<>("buttonLivre"));
         System.out.println(listeCommandeFinal);
         tableCommande.setItems(listeCommandeFinal);
-        tableCommande.getColumns().addAll(codeCommande,dateCom,dateLivr,total);
+        tableCommande.getColumns().addAll(codeCommande,dateCom,dateLivr,total,livrer);
         afficheDetailsCommandeFinal();
     } 
 
@@ -249,7 +252,7 @@ public class ListeCommande implements Initializable{
         type.setCellValueFactory(new PropertyValueFactory<>("afficheType"));
 
         tableAvance = new TableView<>();
-        tableAvance.getColumns().addAll(numFact,type,date_facture,avanceColumn,button_facture,button_supprimer,button_payer);
+        tableAvance.getColumns().addAll(numFact,type,date_facture,avanceColumn,button_facture,button_supprimer);
         
     }
 
@@ -277,7 +280,11 @@ public class ListeCommande implements Initializable{
 
       @FXML
       private void handleSelectedCommandeFinal(){
+        if(commandeFinal != null){
+            commandeFinal.nonModifiable();
+        }
         commandeFinal = (CommandeFinal)tableCommande.getSelectionModel().getSelectedItem();
+        commandeFinal.verificationLivraison(this);
         afficheDetailsCommandeFinal();
         verificationAvance();
         }
@@ -331,10 +338,9 @@ public class ListeCommande implements Initializable{
             if(factureAvanceSelected != null){
                 factureAvanceSelected.nonAfficheModification();
             }
-
             factureAvanceSelected = (FactureAvance)tableDroite.getSelectionModel().getSelectedItem();
             if(factureAvanceSelected != null){
-                factureAvanceSelected.modifierFactureAvance(this);
+                factureAvanceSelected.modifierFactureAvance(commandeFinal,this,commandeServ);
             }
         }
       }

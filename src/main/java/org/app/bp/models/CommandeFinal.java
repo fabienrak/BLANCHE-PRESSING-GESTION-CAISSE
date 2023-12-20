@@ -5,9 +5,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import org.app.bp.controller.ListeCommande;
+import org.app.bp.services.CommandeService;
+import org.app.bp.services.FacturationService;
 import org.app.bp.utils.Erreur;
 
 import javafx.collections.ObservableList;
+import javafx.scene.control.Button;
+import javafx.scene.paint.Paint;
 
 public class CommandeFinal {
     private int idCommande = 0;
@@ -20,11 +25,112 @@ public class CommandeFinal {
     private double prixTotal = 0.0;
     private double avance = 0.0;
     private double reste = 0.0;
+    private int livre = 0;
+    private Button buttonLivre = null;
+    
+    /**
+     * @return the buttonLivre
+     */
+    
+     public Button getButtonLivre() {
+        return buttonLivre;
+    }
+
+    public double getAvanceFinal(){
+        return avanceFinal;
+    }
+    /**
+     * @param buttonLivre the buttonLivre to set
+     */
+    public void setButtonLivre(Button buttonLivre) {
+        this.buttonLivre = buttonLivre;
+    }
+    private ListeCommande lComControlleur = null;
+    
+    public void generationButtonLivrer(CommandeService comServ){
+        this.buttonLivre = new Button("Livrer");
+        this.buttonLivre.setStyle("-fx-background-color: yellow;");
+        this.buttonLivre.setTextFill(Paint.valueOf("black"));
+        this.buttonLivre.setVisible(false);
+        this.buttonLivre.setOnAction(event->{
+           // factureServ.validerEtatFacture(this);
+           
+            validationLivraison(comServ, new FacturationService());
+            livre = 1;
+            lComControlleur.afficheListeAvance();
+            verificationLivraison(lComControlleur);
+        });
+    }
+
+    public void nonModifiable(){
+        if(this.buttonLivre == null){
+            generationButtonLivrer(new CommandeService());
+        }
+        this.buttonLivre.setVisible(false);
+    }
+
+    public void verificationLivraison(ListeCommande com){
+        if(this.buttonLivre == null){
+            generationButtonLivrer(new CommandeService());
+        }
+        this.lComControlleur = com;
+        buttonLivre.setVisible(true);
+        if(livre == 1){
+            buttonLivre.setText("Déjà livrer");
+            buttonLivre.setDisable(true);
+        }else{
+            buttonLivre.setText("Livrer");
+        }
+    }
+    
+    public void validationLivraison(CommandeService comServ,FacturationService factServ){
+        int i = 0;
+        if(listeFactureAvance == null){
+            listeFactureAvance = factServ.getListeFactureAvance(this);            
+        }
+        if(comServ.presenceFactureFinale(this) == false){
+            FactureAvance factureAvance = new FactureAvance();
+            factureAvance.setPrixAvance(prixTotal - avanceFinal);
+            factureAvance.setDateFacturation(LocalDate.now());
+            factureAvance.setType(1);
+            try {
+                factureAvance.ajoutFactureFinal(factServ, this);
+            } catch (Erreur e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            listeFactureAvance = factServ.getListeFactureAvance(this);                
+        }
+        for (int j = 0; j < listeFactureAvance.size(); j++) {
+            factServ.validerEtatFacture(listeFactureAvance.get(j));
+        }
+        comServ.validerLivraison(this);
+    }
+    
+    /**
+     * @return the livre
+     */
+    public int getLivre() {
+        return livre;
+    }
+
+    /**
+     * @param livre the livre to set
+     */
+    public void setLivre(int livre) {
+        this.livre = livre;
+    }
+
     /**
      * @return the reste
      */
     public double getReste() {
-        return (prixTotal - avance);
+        if(livre == 1){
+            reste = 0;
+        }else{
+            reste = prixTotal;
+        }
+        return reste;
     }
 
     /**
@@ -70,7 +176,7 @@ public class CommandeFinal {
     }
 
     public double getResteApayer(){
-        return getPrixTotal() - getTotalAvance();
+        return getReste();
     }
 
     public CommandeFinal(){
@@ -184,13 +290,18 @@ public class CommandeFinal {
     /**
      * @param listeFactureAvance the listeFactureAvance to set
      */
+    private double avanceFinal = 0;
     public void setListeFactureAvance(ObservableList<FactureAvance> listeFactureAvance) {
         this.listeFactureAvance = listeFactureAvance;
         avance = 0.0;
+        avanceFinal = 0;
         if(listeFactureAvance != null){
             for(FactureAvance fac : listeFactureAvance){
                 if(fac.getEtat() == 1){
                     avance = avance + fac.getPrixAvance();
+                }
+                if(fac.getType() == 0){
+                    avanceFinal = avanceFinal + fac.getPrixAvance();
                 }
             }
         }

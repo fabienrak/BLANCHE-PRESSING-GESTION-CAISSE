@@ -66,7 +66,7 @@ public class PdfService {
             PdfPCell lbl_montant = new PdfPCell(new Paragraph("Total Avance ",fontNomPrenom));
             aligementGauche(lbl_montant);
             table.addCell(lbl_montant);
-            PdfPCell montant = new PdfPCell(new Paragraph(NumberFormat.getInstance(java.util.Locale.FRENCH).format(commande.getTotalAvance() - facture.getDejaPayerFinal()) +" Ar ",fontNomPrenom));
+            PdfPCell montant = new PdfPCell(new Paragraph(NumberFormat.getInstance(java.util.Locale.FRENCH).format(commande.getAvanceFinal()) +" Ar ",fontNomPrenom));
             aligementdROITE(montant);
             table.addCell(montant); 
 
@@ -280,7 +280,7 @@ public class PdfService {
          PdfPCell pU = null;
          PdfPCell totalPU = null;
          for(i = 0 ; i < listeFact.size() ; i++){
-            if(listeFact.get(i).getEtat() == 1 && listeFact.get(i).getType() == 0 ){
+            if(listeFact.get(i).getEtat() == 0 && listeFact.get(i).getType() == 0 ){
                 desc = new PdfPCell(new Paragraph("Facture "+listeFact.get(i).getNumeroFacture()+" le "+listeFact.get(i).getDateFacturation(),fontNomPrenom));
                 aligementGauche(cell);
                 desc.setPadding(5);

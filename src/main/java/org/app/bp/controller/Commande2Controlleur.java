@@ -19,6 +19,7 @@ import org.app.bp.services.MarchandisesServices;
 import org.app.bp.services.ServiceServices;
 import org.app.bp.utils.Erreur;
 import org.app.bp.utils.Utils;
+import org.controlsfx.control.MaskerPane;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -44,6 +45,9 @@ public class Commande2Controlleur implements Initializable{
     
     @FXML
     private ComboBox cbx_type_article;
+
+    @FXML
+    private MaskerPane loading_enregistrement;
     @FXML
     private ComboBox cbx_type_services;
     @FXML
@@ -112,6 +116,8 @@ private void calculPrixTotal(){
 
 public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("commande milay be");
+        loading_enregistrement.setDisable(true);
+        loading_enregistrement.toBack();
         txt_prix_reste.setEditable(false);
         txt_prix_total.setEditable(false);
         lbl_erreur_avance.setVisible(false);
@@ -130,9 +136,14 @@ public void initializeComboboxArticle(){
 }
 @FXML
 private void generationDeFactureAvance(ActionEvent actionEvent) throws IOException {
-      enregistrementCommande();
-      FactureAvance factureAvance = generateFactureAvance();
-      detailsClientCommande(actionEvent, commande);
+      try {
+            enregistrementCommande();            
+            FactureAvance factureAvance = generateFactureAvance();
+            detailsClientCommande(actionEvent, commande);     
+      } catch (Erreur e) {
+            // TODO Auto-generated catch block
+            appUtils.warningAlertDialog("AVERTISSEMENT",e.getMessage().toUpperCase());
+      }
 }
 
 private FactureAvance generateFactureAvance(){
@@ -150,11 +161,10 @@ private FactureAvance generateFactureAvance(){
             return null;
       }
 }
-private void enregistrementCommande(){
+private void enregistrementCommande()throws Erreur{
       try {      
             if(datePicker_livraison.getValue() == null){
-                  throw new Erreur("Veuiller remplir le date de livraison");
-                  
+                  throw new Erreur("Veuiller remplir le date de livraison");                  
             }
             commande.setDateCommande(datePicker_commande.getValue());
             commande.setDateLivraison(datePicker_livraison.getValue());
@@ -164,8 +174,8 @@ private void enregistrementCommande(){
       } catch (Erreur e) {
                   // TODO Auto-generated catch block
             //      e.printStackTrace();
-            appUtils.warningAlertDialog("AVERTISSEMENT",e.getMessage().toUpperCase());
-            }
+            throw e;      
+      }
 }
 
 private void ecritureAvance(){
