@@ -2,6 +2,7 @@ package org.app.bp.controller;
 
 import java.io.IOException;
 import java.text.DateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -34,6 +35,9 @@ public class DashboardController {
 
     @FXML
     private AnchorPane content_home;
+
+    @FXML
+    private AnchorPane content_total;
 
     @FXML
     private Button btn_g_users;
@@ -92,6 +96,21 @@ public class DashboardController {
         stage.setTitle("GESTION SERVICE");
         content_home.getChildren().removeAll();
         content_home.getChildren().setAll(parent);
+    }
+
+     @FXML
+    private void scenehISTORIQUE(ActionEvent actionEvent) throws IOException {
+        Node node_source = (Node) actionEvent.getSource();
+        stage = (Stage) node_source.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/historique/historique-livraison.fxml"));
+        Parent parent = loader.load();
+        ListeCommande listeCommande = loader.getController();
+        listeCommande.setLicteLivrasion(LocalDate.now());
+        listeCommande.initializeTableCommande();
+        listeCommande.setClassInitial(getClass());
+        stage.setTitle("HISTORIQUE");
+        content_total.getChildren().removeAll();
+        content_total.getChildren().setAll(parent);
     }
 
     @FXML

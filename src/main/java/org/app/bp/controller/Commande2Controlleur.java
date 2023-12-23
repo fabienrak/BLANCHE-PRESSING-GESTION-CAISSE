@@ -114,16 +114,7 @@ private void calculPrixTotal(){
 }
 
 
-public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("commande milay be");
-        loading_enregistrement.setDisable(true);
-        loading_enregistrement.toBack();
-        txt_prix_reste.setEditable(false);
-        txt_prix_total.setEditable(false);
-        lbl_erreur_avance.setVisible(false);
-        ecritureAvance();
-        //initializeTableCommande();
-}
+
 public void initializeComboboxArticle(){
       javafx.concurrent.Service<List<Articles>> articleService = marchandisesServices.getAllArticleData();
         articleService.setOnSucceeded(event -> {
@@ -297,4 +288,16 @@ private void initializeClientInfo(){
         tableCommande.setItems(listeCommande);
         tableCommande.getColumns().addAll(nomArticle,nombre,service,prixUnitaire,total,boutonSupp);
       } 
+
+      public void initialize(URL url, ResourceBundle resourceBundle) {
+            this.commande.genererCode();
+        System.out.println("commande milay be");
+        loading_enregistrement.setDisable(true);
+        loading_enregistrement.toBack();
+        txt_prix_reste.setEditable(false);
+        txt_prix_total.setEditable(false);
+        lbl_erreur_avance.setVisible(false);
+        ecritureAvance();
+        //initializeTableCommande();
+}
 }

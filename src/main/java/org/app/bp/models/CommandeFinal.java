@@ -2,12 +2,12 @@ package org.app.bp.models;
 
 import java.text.NumberFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.app.bp.controller.ListeCommande;
 import org.app.bp.services.CommandeService;
 import org.app.bp.services.FacturationService;
+import org.app.bp.services.SiteServices;
 import org.app.bp.utils.Erreur;
 
 import javafx.collections.ObservableList;
@@ -27,7 +27,27 @@ public class CommandeFinal {
     private double reste = 0.0;
     private int livre = 0;
     private Button buttonLivre = null;
+    private String afficheLivre = null;
     
+    /**
+     * @return the afficheLivre
+     */
+    public String getAfficheLivre() {
+        if (livre == 0) {
+            afficheLivre = "NON";
+        }else{
+            afficheLivre = "OUI";
+        }
+        return afficheLivre;
+    }
+
+    /**
+     * @param afficheLivre the afficheLivre to set
+     */
+    public void setAfficheLivre(String afficheLivre) {
+        this.afficheLivre = afficheLivre;
+    }
+
     /**
      * @return the buttonLivre
      */
@@ -78,8 +98,10 @@ public class CommandeFinal {
         if(livre == 1){
             buttonLivre.setText("Déjà livrer");
             buttonLivre.setDisable(true);
+            afficheLivre = "OUI";
         }else{
             buttonLivre.setText("Livrer");
+            afficheLivre = "NON";
         }
     }
     
@@ -180,8 +202,26 @@ public class CommandeFinal {
     }
 
     public CommandeFinal(){
-        LocalDateTime now = LocalDateTime.now();
-        this.code = "CBP_"+now.format(DateTimeFormatter.ofPattern("YYYYMMDD-hhmmssSSS"));
+
+    }
+
+    public void genererCode(){
+        LocalDate date = LocalDate.now();
+        CommandeService commandeService = new CommandeService();
+        Sites sites = new SiteServices().getSites();
+        int t = commandeService.getNombreCommandeDATE(date);
+        this.code = date.format(DateTimeFormatter.ofPattern("yyMM"))+sites.getCode()+genererNumero(t+1);
+    }
+
+
+    private String genererNumero(int t){
+        String value = String.valueOf(t);
+        int taille = 3, i = value.length();
+        while(i < 3){
+            value = "0"+value;
+            i++;
+        }
+        return value;
     }
     
     /**

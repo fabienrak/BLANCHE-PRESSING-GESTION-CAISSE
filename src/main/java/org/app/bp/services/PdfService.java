@@ -254,7 +254,8 @@ public class PdfService {
     }
 
         private static void addListeFactureAvancePourFactureFinal(Document document,List<FactureAvance> listeFact,CommandeFinal commande)throws Exception{
-         PdfPTable table = new PdfPTable(4);
+            System.out.println("Facture : "+listeFact);
+            PdfPTable table = new PdfPTable(4);
          table.setWidthPercentage(100);
          float[] columnWidths = {4f, 1f,1f,1f};
          table.setWidths(columnWidths);
@@ -280,7 +281,7 @@ public class PdfService {
          PdfPCell pU = null;
          PdfPCell totalPU = null;
          for(i = 0 ; i < listeFact.size() ; i++){
-            if(listeFact.get(i).getEtat() == 0 && listeFact.get(i).getType() == 0 ){
+            if( listeFact.get(i).getType() == 0 ){
                 desc = new PdfPCell(new Paragraph("Facture "+listeFact.get(i).getNumeroFacture()+" le "+listeFact.get(i).getDateFacturation(),fontNomPrenom));
                 aligementGauche(cell);
                 desc.setPadding(5);

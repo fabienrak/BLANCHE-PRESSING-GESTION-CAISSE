@@ -87,9 +87,14 @@ public class ClientController implements Initializable {
     private AnchorPane content_info_client;
 
     public boolean handleValidateForm(){
-        if (txt_nom_client.getText().isEmpty() || txt_prenom_client.getText().isEmpty() || txt_contact_client_1.getText().isEmpty() || txt_adresse_client_1.getText().isEmpty()){
-            appUtils.warningAlertDialog("AVERTISSEMENT","VEUILLEZ COMPLETEZ TOUS LES CHAMPS");
-            return false;
+        boolean is = true;
+        if (txt_nom_client.getText().isEmpty()){
+            appUtils.warningAlertDialog("AVERTISSEMENT","VEUILLEZ ENTRER LE NOM DU CLIENT");
+            is = false;
+        }
+        if (txt_contact_client_1.getText().isEmpty()){
+            appUtils.warningAlertDialog("AVERTISSEMENT","VEUILLEZ ENTRER LE CONTACT 1 DU CLIENT");
+            is = false;
         }
         return true;
     }
@@ -121,9 +126,18 @@ public class ClientController implements Initializable {
                     Service<Integer> getLastIdClients = clientServices.getLastIdFromClientTable();
                     getLastIdClients.setOnSucceeded((t) -> {
                         nouveau_client.setId_client(getLastIdClients.getValue());
-                        table_client.getItems().add(nouveau_client);
-                        appUtils.successAlertDialog("SUCCESS",nouveau_client.getNom_client() + " Ajouter ");
-                        clearForm();
+                        try {
+                            clientSelected = nouveau_client;
+                            detailsClientPourNouveauCommande(actionEvent);
+
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        //table_client.getItems().add(nouveau_client);
+                        
+                        //appUtils.successAlertDialog("SUCCESS",nouveau_client.getNom_client() + " Ajouter ");
+                        //clearForm();
                     });
                     getLastIdClients.start();
                 } else {

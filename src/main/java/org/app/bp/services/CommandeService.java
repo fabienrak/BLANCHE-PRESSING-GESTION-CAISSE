@@ -5,11 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import org.app.bp.models.Articles;
 import org.app.bp.models.Clients;
 import org.app.bp.models.CommandeClient;
 import org.app.bp.models.CommandeFinal;
+import org.app.bp.models.EtatLivraison;
 import org.app.bp.models.Service;
 import org.app.bp.utils.DBUtils;
 import org.app.bp.utils.Erreur;
@@ -72,6 +74,74 @@ public class CommandeService {
         }
     }
 
+    public ObservableList<CommandeFinal> getHistoriqueListeCommmandeFinal(Clients client,LocalDate dateLivraison,
+    LocalDate dateCommande,String code,EtatLivraison etat){
+        String query = "SELECT * FROM commande where 1=1 ";
+        if(dateLivraison != null){
+            query = query + "  and date_livraison='"+dateLivraison.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))+"'";
+        }
+        if(dateCommande != null){
+            query = query + "  and date_commande='"+dateCommande.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "'";
+        }
+        if(code.isEmpty() == false){
+            query = query + " and code_commande like '%"+code+"%'";
+        }
+        if(EtatLivraison.valueRecherche(etat).isEmpty() == false){
+            query = query + " and livre="+EtatLivraison.valueRecherche(etat);
+        }
+        if(client != null){
+            query = query + " and id_clients="+client.getId_client();
+        }
+        System.out.println(query);
+        ObservableList<CommandeFinal> data = FXCollections.observableArrayList();
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                CommandeFinal commandeFinal = new CommandeFinal();
+                commandeFinal.setClient(getClients(resultSet.getInt("id_clients")));
+                commandeFinal.setCode(resultSet.getString("code_commande"));
+                System.out.println(commandeFinal.getCode());
+                commandeFinal.setIdCommande(resultSet.getInt("id_commande"));
+                commandeFinal.setDateCommande(LocalDate.parse(resultSet.getString("date_commande")));
+                commandeFinal.setDateLivraison(LocalDate.parse(resultSet.getString("date_livraison")));
+                commandeFinal.setLivre(resultSet.getInt("livre"));
+                commandeFinal.setPrixTotal(getPrixTotalCommandeFinal(commandeFinal));
+                commandeFinal.setAvance(getPrixTotalAvance(commandeFinal));
+                commandeFinal.generationButtonLivrer(this);
+                data.add(commandeFinal);
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }catch(Erreur er){
+
+        }
+        return data;
+    
+    }
+    public Clients getClients(int id_client){
+        Clients clients = null;
+        String liste_client_query = "SELECT * FROM clients where id_client="+id_client;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(liste_client_query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Clients nouveau_client = new Clients(
+                        resultSet.getInt("id_client"),
+                        resultSet.getString("nom_client"),
+                        resultSet.getString("prenom_client"),
+                        resultSet.getString("contact_client_1"),
+                        resultSet.getString("contact_client_2"),
+                        resultSet.getString("adresse_client_1"),
+                        resultSet.getString("adresse_client_2")
+                );
+                clients = nouveau_client;
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return clients;
+    }
     public ObservableList<CommandeFinal> getListeCommmandeFinal(Clients client){
         String query = "SELECT * FROM commande where id_clients="+client.getId_client();
         System.out.println(query);
@@ -102,6 +172,7 @@ public class CommandeService {
     
     }
 
+
     public double getPrixTotalAvance(CommandeFinal commande){
         double t = 0;
         String liste_site_query = "SELECT sum(prix) from facturation where etat=1 and id_commande="+commande.getIdCommande();
@@ -111,6 +182,23 @@ public class CommandeService {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 t = resultSet.getDouble("sum(prix)");
+                System.out.println(t);
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return t;
+    }
+
+    public int getNombreCommandeDATE(LocalDate date){
+        int t = 0;
+        String liste_site_query = "select count(*) from commande WHERE date_commande like '"+date.format(DateTimeFormatter.ofPattern("YYYY-MM"))+"%' ;";
+        System.out.println(liste_site_query);
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(liste_site_query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                t = resultSet.getInt("count(*)");
                 System.out.println(t);
             }
         } catch (SQLException sqlException) {

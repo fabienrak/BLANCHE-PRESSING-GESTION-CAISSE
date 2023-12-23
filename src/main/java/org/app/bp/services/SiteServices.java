@@ -15,13 +15,14 @@ public class SiteServices {
     Connection connection = DBUtils.getConnection();
 
     public void modificationSite(Sites site){
-        String ajout_client_query = "UPDATE sites set lieu=? , contact=?,email=? where id_site="+site.getId_site();
+        String ajout_client_query = "UPDATE sites set lieu=? , contact=?,email=?,code=? where id_site="+site.getId_site();
         try{
             preparedStatement = connection.prepareStatement(ajout_client_query);
             preparedStatement.setString(1, site.getLieu());
             preparedStatement.setString(2, site.getContact());
             preparedStatement.setString(3,site.getEmail());
-            preparedStatement.executeUpdate();;
+            preparedStatement.setString(4, site.getCode());
+            preparedStatement.executeUpdate();
         } catch (SQLException sqlException){
             sqlException.printStackTrace();
         }
@@ -39,6 +40,7 @@ public class SiteServices {
                 sites.setId_site(resultSet.getInt("id_site"));
                 sites.setContact(resultSet.getString("contact"));
                 sites.setEmail(resultSet.getString("email"));
+                sites.setCode(resultSet.getString("code"));
                 break;
             }
         } catch (SQLException sqlException) {

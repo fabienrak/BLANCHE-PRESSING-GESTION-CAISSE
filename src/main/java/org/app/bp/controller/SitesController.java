@@ -28,7 +28,11 @@ public class SitesController implements Initializable {
 
     @FXML
     private Label lbl_email;
+    @FXML
+    private Label lbl_code;
 
+    @FXML
+    private TextField txt_code;
     @FXML
     private TextField txt_lieu;
     @FXML
@@ -62,9 +66,11 @@ public class SitesController implements Initializable {
         lbl_lieu.setText(site.getLieu());
         lbl_contact.setText(site.getContact());
         lbl_email.setText(site.getEmail());
+        lbl_code.setText(site.getCode());
         txt_lieu.setText(site.getLieu());
         txt_contact.setText(site.getContact());
         txt_mail.setText(site.getEmail());
+        txt_code.setText(site.getCode());
         if(dashboard != null){
         dashboard.affichageSite();
     
@@ -76,6 +82,7 @@ public class SitesController implements Initializable {
         site.setLieu(txt_lieu.getText());
         site.setContact(txt_contact.getText());
         site.setEmail(txt_mail.getText());
+        site.setCode(txt_code.getText());
         siteServ.modificationSite(site);
         entrerSiteDansLabel();
     }

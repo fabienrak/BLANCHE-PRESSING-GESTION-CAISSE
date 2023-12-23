@@ -15,8 +15,9 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
 
-<AnchorPane fx:id="content_liste_commande" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.app.bp.controller.ListeCommande">
+<AnchorPane fx:id="content_liste_commande" style="-fx-background-color: #5869C5;" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.app.bp.controller.ListeCommande">
     <children>
             <AnchorPane prefHeight="100">
                 <Button fx:id="btn_retour" layoutX="24.0" layoutY="11.0" mnemonicParsing="false" onAction="#backToInfoClient"  prefHeight="35.0" prefWidth="121.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #cea716;" text="Retour" textFill="WHITE">
@@ -31,7 +32,7 @@
                         </ImageView>
                     </graphic>
                 </Button>
-                <Label  layoutX="10.0" layoutY="70.0" prefHeight="46.0" prefWidth="400.0" text="LISTE COMMANDES" textFill="WHITE" style="-fx-font-weight: bold;">
+                <Label  layoutX="10.0" layoutY="70.0" prefHeight="46.0" prefWidth="400.0" text="HISTORIQUE LIVRAISON" textFill="WHITE" style="-fx-font-weight: bold;">
                     <font>
                        <Font name="Lato Bold" size="27.0" />
                     </font>
@@ -47,28 +48,7 @@
             <children>
                 <AnchorPane prefHeight="523.0" prefWidth="600.0" style="-fx-background-color: '#2f4aa1'">
                     <children>
-                        <Pane layoutX="0.0" layoutY="0.0" prefHeight="83.0" prefWidth="600.0">
-                            <children>
-                                <VBox spacing="2">
-                                    <Label fx:id="lbl_client" layoutX="22.0" layoutY="8.0" prefHeight="25.0" prefWidth="339.0" text="Client : " textFill="WHITE">
-                                        <font>
-                                           <Font name="Lato Bold" size="16.0" />
-                                        </font>
-                                     </Label>
-                                     <Label fx:id="lbl_client_adresse" layoutX="22.0" layoutY="38.0" prefHeight="25.0" prefWidth="339.0" text="Adresse &amp; Contact : " textFill="WHITE">
-                                        <font>
-                                           <Font name="Lato Bold" size="16.0" />
-                                        </font>
-                                     </Label>
-                                     <Label fx:id="lbl_client_contact" layoutX="22.0" layoutY="38.0" prefHeight="25.0" prefWidth="339.0" text="Adresse &amp; Contact : " textFill="WHITE">
-                                       <font>
-                                          <Font name="Lato Bold" size="16.0" />
-                                       </font>
-                                    </Label>
-                                </VBox>
-                            </children>
-                        </Pane>
-                        <Pane layoutX="0.0" layoutY="90.0" prefHeight="60.0" prefWidth="600.0">
+                        <Pane layoutX="0.0" layoutY="0.0" prefHeight="60.0" prefWidth="600.0">
                             <children>
                                 <HBox spacing="5">  
                                     <VBox spacing = "3">
@@ -112,9 +92,9 @@
                                 </HBox>      
                             </children>
                         </Pane>
-                        <Pane layoutX="0.0" layoutY="160.0" prefHeight="400.0" prefWidth="600.0">
+                        <Pane layoutX="0.0" layoutY="60.0" prefHeight="300.0" prefWidth="600.0">
                             <children>
-                                <TableView fx:id="tableCommande" onMouseClicked="#handleSelectedCommandeFinal" prefHeight="277.0" prefWidth="600.0">
+                                <TableView fx:id="tableCommande" onMouseClicked="#handleSelectedCommandeFinal" prefHeight="400.0" prefWidth="600.0">
                                     
                                 </TableView>
                             </children>

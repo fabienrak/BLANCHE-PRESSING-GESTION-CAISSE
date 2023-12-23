@@ -217,12 +217,18 @@ public class FactureAvance {
             throw new Erreur("Votre avance est insuffisant");    
         }
         this.type = 0;
+        generateNumero(commande, "A");
         factureServ.nouveauFactureAvance(this, commande);
+    }
+
+    private void generateNumero(CommandeFinal commande,String a){
+        this.numeroFacture = "F"+commande.getCode()+a;
     }
     /// facturation final
     public void ajoutFactureFinal(FacturationService factureServ,CommandeFinal commande)throws Erreur{
         this.dateFacturation = LocalDate.now();
         this.type = 1;
+        generateNumero(commande, "F");
         factureServ.nouveauFactureAvance(this, commande);
     }
 

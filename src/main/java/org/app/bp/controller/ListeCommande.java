@@ -9,12 +9,14 @@ import java.util.ResourceBundle;
 import org.app.bp.models.Clients;
 import org.app.bp.models.CommandeClient;
 import org.app.bp.models.CommandeFinal;
+import org.app.bp.models.EtatLivraison;
 import org.app.bp.models.FactureAvance;
 import org.app.bp.services.CommandeService;
 import org.app.bp.services.FacturationService;
 import org.app.bp.utils.Erreur;
 import org.app.bp.utils.Utils;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,7 +25,9 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -78,6 +82,15 @@ public class ListeCommande implements Initializable{
 
     @FXML
     private Button bt_facture_tout;
+
+    @FXML
+    private TextField search_code;
+    @FXML
+    private DatePicker search_date_com;
+    @FXML 
+    private DatePicker search_date_livraison;
+    @FXML
+    private ComboBox cbx_etat_livraison;
     @FXML
     private TableView tableDroite;
     private TableView tableCommandeClient;
@@ -119,13 +132,22 @@ public class ListeCommande implements Initializable{
         if(classInitial == ClientController.class){
             parent = FXMLLoader.load(getClass().getResource("/fxml/facture/info-client.fxml"));
             stage.setTitle("FACTURATION");
+        content_liste_commande.getChildren().removeAll();
+        content_liste_commande.getChildren().setAll(parent);
         
         }else if(classInitial == Commande2Controlleur.class){
             parent = FXMLLoader.load(getClass().getResource("/fxml/commande/info-client.fxml"));
-      stage.setTitle("COMMANDE");
+            stage.setTitle("COMMANDE");
+            content_liste_commande.getChildren().removeAll();
+            content_liste_commande.getChildren().setAll(parent);
+    
+    }else{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/home/dashboard.fxml"));
+        Parent premiereSceneParent = loader.load();
+        Scene premiereScene = new Scene(premiereSceneParent);
+        stage.setScene(premiereScene);
+        stage.show();
         }
-        content_liste_commande.getChildren().removeAll();
-        content_liste_commande.getChildren().setAll(parent);
     }
     private double avanceProposer = 0;
 
@@ -199,19 +221,6 @@ public class ListeCommande implements Initializable{
   }
 
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        creationTablePourListeCommandeClient();
-        creationTablePourListeAvance();
-        lbl_erreur_avance.setVisible(false);
-        val_prix_avance.setAlignment(Pos.CENTER_RIGHT);
-        val_prix_total.setAlignment(Pos.CENTER_RIGHT);
-        val_reste.setAlignment(Pos.CENTER_RIGHT);
-        datePicker_commande.setEditable(false);
-        datePicker_livraison.setEditable(false);
-        ecritureAvance();
-        
-    }
     public void initializeTableCommande(){
         TableColumn<CommandeFinal, String> codeCommande 
               = new TableColumn<CommandeFinal, String>("Code commande");
@@ -223,16 +232,26 @@ public class ListeCommande implements Initializable{
               = new TableColumn<CommandeFinal, String>("Prix total");
         TableColumn<CommandeFinal, Button> livrer 
               = new TableColumn<CommandeFinal, Button>("");      
-        codeCommande.setCellValueFactory(new PropertyValueFactory<>("code"));
+        TableColumn<CommandeFinal, String> etatLivraison 
+              = new TableColumn<CommandeFinal, String>("Etat Livraison");      
+        
+              codeCommande.setCellValueFactory(new PropertyValueFactory<>("code"));
         dateCom.setCellValueFactory(new PropertyValueFactory<>("dateCommande"));
         dateLivr.setCellValueFactory(new PropertyValueFactory<>("dateLivraison"));
         total.setCellValueFactory(new PropertyValueFactory<>("prixTotalAffiche"));
         livrer.setCellValueFactory(new PropertyValueFactory<>("buttonLivre"));
+        etatLivraison.setCellValueFactory(new PropertyValueFactory<>("afficheLivre"));
+        
         System.out.println(listeCommandeFinal);
-        tableCommande.setItems(listeCommandeFinal);
-        tableCommande.getColumns().addAll(codeCommande,dateCom,dateLivr,total,livrer);
+        setItemTableCommande();
+        tableCommande.getColumns().addAll(codeCommande,dateCom,dateLivr,total,etatLivraison,livrer);
         afficheDetailsCommandeFinal();
     } 
+
+    private void setItemTableCommande(){
+        tableCommande.getItems().clear();
+        tableCommande.setItems(listeCommandeFinal);
+    }
 
     public void creationTablePourListeAvance(){
         TableColumn<FactureAvance,String> numFact = new TableColumn<FactureAvance,String>("Code Facture");
@@ -287,6 +306,10 @@ public class ListeCommande implements Initializable{
         commandeFinal.verificationLivraison(this);
         afficheDetailsCommandeFinal();
         verificationAvance();
+        }
+
+        private void entrerDonneeComboboxEtatLivraison(){
+            cbx_etat_livraison.setItems(FXCollections.observableArrayList(EtatLivraison.getListeEtatLivraison()));
         }
 
 
@@ -373,12 +396,54 @@ public class ListeCommande implements Initializable{
      * @param client the client to set
      */
     public void setClient(Clients client) {
+        search_date_com.setValue(LocalDate.now());
         this.client = client;
-        this.listeCommandeFinal = commandeServ.getListeCommmandeFinal(client);
+        this.listeCommandeFinal = commandeServ.getHistoriqueListeCommmandeFinal(client,null,LocalDate.now(),"",null);
         lbl_client.setText("Clients : "+client.getNom_client() +"  "+ client.getPrenom_client());
         lbl_client_adresse.setText("Adresse : "+client.getAdresse_client_1()+" | "+client.getAdresse_client_2());
         lbl_client_contact.setText("Contact : "+client.getContact_client_1()+" | "+client.getContact_client_2());
     
+    }
+
+    public void setLicteLivrasion(LocalDate date){
+        search_date_livraison.setValue(date);
+        listeCommandeFinal = commandeServ.getHistoriqueListeCommmandeFinal(null,date,null,"",null);
+    }
+
+    private void recherche(){
+        
+        search_code.textProperty().addListener((observable, oldValue, newValue) -> {
+            listeCommandeFinal = commandeServ.getHistoriqueListeCommmandeFinal(client, search_date_livraison.getValue(), search_date_com.getValue(), newValue, (EtatLivraison)cbx_etat_livraison.getSelectionModel().getSelectedItem());
+            setItemTableCommande();
+        });
+        search_date_com.valueProperty().addListener((observable, oldValue, newValue) -> {
+            listeCommandeFinal = commandeServ.getHistoriqueListeCommmandeFinal(client, search_date_livraison.getValue(), newValue, search_code.getText(), (EtatLivraison)cbx_etat_livraison.getSelectionModel().getSelectedItem());
+            setItemTableCommande();    
+        });
+        search_date_livraison.valueProperty().addListener((observable, oldValue, newValue) -> {
+            listeCommandeFinal = commandeServ.getHistoriqueListeCommmandeFinal(client, newValue, search_date_com.getValue(), search_code.getText(), (EtatLivraison)cbx_etat_livraison.getSelectionModel().getSelectedItem());
+            setItemTableCommande();    
+        });
+        cbx_etat_livraison.valueProperty().addListener((observable, oldValue, newValue) -> {
+            listeCommandeFinal = commandeServ.getHistoriqueListeCommmandeFinal(client, search_date_livraison.getValue(), search_date_com.getValue(), search_code.getText(), (EtatLivraison)newValue);
+            setItemTableCommande();    
+        });
+    }
+
+        @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        creationTablePourListeCommandeClient();
+        creationTablePourListeAvance();
+        lbl_erreur_avance.setVisible(false);
+        val_prix_avance.setAlignment(Pos.CENTER_RIGHT);
+        val_prix_total.setAlignment(Pos.CENTER_RIGHT);
+        val_reste.setAlignment(Pos.CENTER_RIGHT);
+        datePicker_commande.setEditable(false);
+        datePicker_livraison.setEditable(false);
+        entrerDonneeComboboxEtatLivraison();
+        ecritureAvance();
+        recherche();
+
     }
 
 }

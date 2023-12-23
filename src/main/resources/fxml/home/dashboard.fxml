@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.app.bp.controller.DashboardController">
+<AnchorPane fx:id="content_total" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.app.bp.controller.DashboardController">
    <children>
       <VBox prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #5869C5;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -148,7 +148,7 @@
                                     <Font name="Lato Bold" size="16.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="btn_commande1" contentDisplay="TOP" layoutX="48.0" layoutY="420.0" mnemonicParsing="false" onAction="#sceneCommande" prefHeight="125.0" prefWidth="194.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #cea716;" text="Historique" textFill="WHITE">
+                              <Button fx:id="btn_historique" contentDisplay="TOP" layoutX="48.0" layoutY="420.0" mnemonicParsing="false" onAction="#scenehISTORIQUE" prefHeight="125.0" prefWidth="194.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #cea716;" text="Historique" textFill="WHITE">
                                  <graphic>
                                     <ImageView fitHeight="75.0" fitWidth="82.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
