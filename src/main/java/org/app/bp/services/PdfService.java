@@ -22,6 +22,7 @@ import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Font.FontFamily;
 import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -31,19 +32,20 @@ import javafx.collections.ObservableList;
 
 public class PdfService {
     private static float marge = 10f;
-    private static Font fontNomEntreprise = new Font(FontFamily.TIMES_ROMAN,16,Font.BOLD,BaseColor.BLACK);
-    private static Font fontNomPrenom = new Font(FontFamily.TIMES_ROMAN,12,Font.NORMAL,BaseColor.BLACK);
-    private static Font fontNumeroFac = new Font(FontFamily.TIMES_ROMAN,12,Font.BOLD,BaseColor.BLACK);
+    private static Font fontNomEntreprise = new Font(FontFamily.TIMES_ROMAN,11,Font.BOLD,BaseColor.BLACK);
+    private static Font fontNomPrenom = new Font(FontFamily.TIMES_ROMAN,7,Font.NORMAL,BaseColor.BLACK);
+    private static Font fontNumeroFac = new Font(FontFamily.TIMES_ROMAN,7,Font.BOLD,BaseColor.BLACK);
     
-    private static Font fontTitreTableau = new Font(FontFamily.TIMES_ROMAN,12,Font.BOLD,BaseColor.WHITE);
+    private static Font fontTitreTableau = new Font(FontFamily.TIMES_ROMAN,7,Font.BOLD,BaseColor.WHITE);
     
-    private static Font fontMontantFin = new Font(FontFamily.TIMES_ROMAN,16,Font.BOLD,BaseColor.BLACK);
+    private static Font fontMontantFin = new Font(FontFamily.TIMES_ROMAN,11,Font.BOLD,BaseColor.BLACK);
     
     public static void generationDeFactureFinal(CommandeFinal commande,FactureAvance facture){
         String pdfFilePath = "./facture/"+"F_Final_"+facture.getNumeroFacture()+".pdf";
             Document document = new Document();
         try {
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(pdfFilePath));
+            document.setPageSize(PageSize.A6);
             document.open();
             addDetailsBlanchePressing(document,commande.getClient(),facture.getDateFacturation(),"FACTURE FINAL : "+facture.getNumeroFacture(),"Facture final du commande "+commande.getCode());
             List<FactureAvance> list = commande.getListeFactureAvance();
@@ -117,6 +119,7 @@ public class PdfService {
             Document document = new Document();
         try {
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(pdfFilePath));
+            document.setPageSize(PageSize.A6);
             document.open();
             addDetailsBlanchePressing(document,commande.getClient(),facture.getDateFacturation(),"FACTURE D'AVANCE : "+facture.getNumeroFacture(),"Avance du commande "+commande.getCode());
             List<FactureAvance> list = new ArrayList<>();
@@ -309,7 +312,7 @@ public class PdfService {
             
         // definition de logo
         Image logo = Image.getInstance("E:\\STAGE\\BLANCHE_PRESSING_GESTION_CAISSE\\gestion-caisse-final\\src\\main\\resources\\img\\logo.png");
-            logo.scaleAbsolute(100,100);
+            logo.scaleAbsolute(60,60);
             logo.setBackgroundColor(colorFont());
             logo.setBorderColor(BaseColor.BLACK);
         SiteServices siteServices = new SiteServices();

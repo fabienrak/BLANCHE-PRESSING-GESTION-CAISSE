@@ -1,17 +1,17 @@
 package org.app.bp.services;
 
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
-import org.app.bp.models.Articles;
-import org.app.bp.models.Users;
-import org.app.bp.utils.DBUtils;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.app.bp.models.Articles;
+import org.app.bp.utils.DBUtils;
+
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 
 public class MarchandisesServices {
 
@@ -77,18 +77,44 @@ public class MarchandisesServices {
             }
         };
     }
+
+    public void delete(Articles marchandise) throws SQLException{
+        String sql="update articles set etat=1 where id_article=?";
+        try{
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, marchandise.getId_article());
+            preparedStatement.executeUpdate();;
+        } catch (SQLException sqlException){
+            throw sqlException;
+        }
+    }
+    public void update(Articles marchandise) throws SQLException{
+        String sql="update articles set nom_article=?,prefix_code=?,prix=? where id_article=?";
+        try{
+            preparedStatement = connection.prepareStatement(sql);
+             preparedStatement.setString(1, marchandise.getNom_article());
+              preparedStatement.setString(2, marchandise.getPrefix_code());
+               preparedStatement.setDouble(3, marchandise.getPrix());
+            preparedStatement.setInt(4, marchandise.getId_article());
+            preparedStatement.executeUpdate();
+        } catch (SQLException sqlException){
+            throw sqlException;
+        }
+    }
+
     
     /**
      * Recuperer liste Article
      * */
     public Service<List<Articles>> getAllArticleData(){
+        MarchandisesServices mar = this;
         Service<List<Articles>> articleService = new Service(){
             @Override
             protected Task<List<Articles>> createTask() {
                 return new Task<>() {
                     @Override
                     protected List<Articles> call() {
-                        String liste_article_query = "SELECT * FROM articles";
+                        String liste_article_query = "SELECT * FROM articles where etat=0";
                         List<Articles> data_article = new ArrayList<>();
                         try {
                             preparedStatement = connection.prepareStatement(liste_article_query);
@@ -100,7 +126,7 @@ public class MarchandisesServices {
                                         resultSet.getInt("prix"),
                                         resultSet.getString("prefix_code")
                                 );
-
+                                nouveau_article.generateTextField(mar);
                                 data_article.add(nouveau_article);
                             }
                         } catch (SQLException sqlException) {

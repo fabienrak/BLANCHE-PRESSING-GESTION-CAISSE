@@ -171,6 +171,7 @@ public class ListeCommande implements Initializable{
       private void handleFacturerTout(ActionEvent actionEvent) throws IOException {
                 FactureAvance factureAvance = new FactureAvance();
         factureAvance.setDateFacturation(LocalDate.now());   
+            commandeFinal.setListeFactureAvance(factureServ.getListeFactureAvance(commandeFinal));
         try {
             factureAvance.setPrixAvance(commandeFinal.getPrixTotal() - commandeFinal.getAvanceFinal());
             factureAvance.ajoutFactureFinal(factureServ, commandeFinal);

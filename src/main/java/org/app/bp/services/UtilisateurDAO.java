@@ -58,7 +58,7 @@ public class UtilisateurDAO {
         }
     }
     public ObservableList<Utilisateur> getAll() {
-        String query = "SELECT * FROM utilisateur where role = 1";
+        String query = "SELECT * FROM utilisateur ";
         System.out.println(query);
         ObservableList<Utilisateur> data = FXCollections.observableArrayList();
         try {

@@ -54,6 +54,13 @@ public class DashboardController {
     private Button btn_configuration;
 
     @FXML
+    private Button btn_commande;
+    @FXML
+    private Button btn_facturation;
+    @FXML 
+    private Button btn_historique;
+
+    @FXML
     private Label lbl_site;
 
     private Stage stage;
@@ -73,6 +80,15 @@ public class DashboardController {
             btn_g_marchandise.setVisible(false);
             btn_g_users.setVisible(false);
             btn_site.setVisible(false);
+
+            btn_commande.setLayoutX(btn_g_users.getLayoutX());
+            btn_commande.setLayoutY(btn_g_users.getLayoutY());
+
+            btn_facturation.setLayoutX(btn_site.getLayoutX());
+            btn_facturation.setLayoutY(btn_site.getLayoutY());
+
+            btn_historique.setLayoutX(btn_g_marchandise.getLayoutX());
+            btn_historique.setLayoutY(btn_g_marchandise.getLayoutY());
         }
         Date androany = new Date();
         DateFormat fullDateFormat = DateFormat.getDateInstance(DateFormat.FULL);

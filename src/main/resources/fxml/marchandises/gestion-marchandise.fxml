@@ -44,6 +44,8 @@
                                         <TableColumn fx:id="COL_TYPE_ARTICLE" prefWidth="75.0" text="TYPE" />
                                         <TableColumn fx:id="COL_PRIX_ARTICLE" prefWidth="139.0" text="PRIX (En Ariary)" />
                                         <TableColumn fx:id="COL_CODE_ARTICLE" prefWidth="68.0" text="CODE" />
+                                        <TableColumn fx:id="COL_MODIFIER" prefWidth="100.0" text="" />
+                                        <TableColumn fx:id="COL_SUPPRIMER" prefWidth="100.0" text="" />
                                     </columns>
                                 </TableView>
                                 <Pane prefHeight="170.0" prefWidth="679.0">

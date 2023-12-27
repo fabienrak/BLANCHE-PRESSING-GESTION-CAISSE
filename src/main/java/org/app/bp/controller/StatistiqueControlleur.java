@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import org.app.bp.models.SatistiqueParMoi;
 import org.app.bp.models.StatStiqueAnnee;
 import org.app.bp.models.Statisitique;
+import org.app.bp.services.PdfCaisse;
 import org.app.bp.services.StatDAO;
 
 import javafx.collections.FXCollections;
@@ -47,6 +48,7 @@ public class StatistiqueControlleur implements Initializable{
     private NumberAxis yAxis = null;
     private StatDAO dao = new StatDAO();
     private int affiche = 0;
+
 
     /* Statistique Par Jour */
     public void afficheStatistiqueParJour(SatistiqueParMoi moi){
@@ -308,6 +310,10 @@ public class StatistiqueControlleur implements Initializable{
                 afficheStatistiqueParSemaine(moisSelect);
             }
         }
+    @FXML
+    private void generatePDF(){
+        PdfCaisse.generatePdf(lbl_tab.getText(), table_state);
+    }
     @FXML
      private void changementScene(){
         Object newValue = cbx_search.getSelectionModel().getSelectedItem();

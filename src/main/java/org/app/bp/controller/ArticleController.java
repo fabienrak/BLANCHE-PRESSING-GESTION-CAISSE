@@ -1,5 +1,15 @@
 package org.app.bp.controller;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
+
+import org.app.bp.models.Articles;
+import org.app.bp.services.MarchandisesServices;
+import org.app.bp.utils.Utils;
+import org.controlsfx.control.MaskerPane;
+
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.event.ActionEvent;
@@ -9,18 +19,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import org.app.bp.models.Articles;
-import org.app.bp.services.MarchandisesServices;
-import org.app.bp.utils.Utils;
-import org.controlsfx.control.MaskerPane;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
 
 public class ArticleController implements Initializable {
 
@@ -35,11 +42,17 @@ public class ArticleController implements Initializable {
     @FXML
     private TableColumn<Articles, Integer> COL_NUMERO_ARTICLE;
     @FXML
-    private TableColumn<Articles, String> COL_TYPE_ARTICLE;
+    private TableColumn<Articles, TextField> COL_TYPE_ARTICLE;
     @FXML
-    private TableColumn<Articles, String> COL_PRIX_ARTICLE;
+    private TableColumn<Articles, TextField> COL_PRIX_ARTICLE;
     @FXML
-    private TableColumn<Articles, String> COL_CODE_ARTICLE;
+    private TableColumn<Articles, TextField> COL_CODE_ARTICLE;
+
+    @FXML
+    private TableColumn<Articles, Button> COL_MODIFIER;
+
+    @FXML
+    private TableColumn<Articles, Button> COL_SUPPRIMER;
     @FXML
     private Button btn_enregistrer_article;
     @FXML
@@ -72,21 +85,16 @@ public class ArticleController implements Initializable {
         txt_prix_article.clear();
         txt_code_article.clear();
     }
+    private Articles articleSelected;
 
     @FXML
     private void handleSelectedClient(){
-        Articles articleSelected = table_article.getSelectionModel().getSelectedItem();
-        if(articleSelected != null) {
-            lbl_type_article.setVisible(true);
-            lbl_type_article.setText(" TYPE : " + articleSelected.getNom_article());
-
-            lbl_prix_article.setVisible(true);
-            lbl_prix_article.setText(" PRIX UNITAIRE : " + articleSelected.getPrix() + " Ariary");
-
-            lbl_code_article.setVisible(true);
-            lbl_code_article.setText(" CODE : " + articleSelected.getPrefix_code());
-        } else {
-            appUtils.warningAlertDialog("AVERTISSEMENT","Veuillez selectionner un item");
+        if(articleSelected != null){
+            articleSelected.deselectionner();
+        }
+        articleSelected  = table_article.getSelectionModel().getSelectedItem();
+        if(articleSelected != null){
+            articleSelected.selectionneer(this);
         }
     }
 
@@ -117,6 +125,10 @@ public class ArticleController implements Initializable {
             });
             addNewArticleService.start();
         }
+    }
+    public void afficheERREUR(String erreur){
+           appUtils.erreurAlertDialog("ERREUR",erreur);
+            
     }
 
     @FXML
@@ -159,16 +171,18 @@ public class ArticleController implements Initializable {
         MarchandisesServices marchandisesServices = new MarchandisesServices();
 
         COL_NUMERO_ARTICLE.setCellValueFactory(new PropertyValueFactory<>("id_article"));
-        COL_TYPE_ARTICLE.setCellValueFactory(new PropertyValueFactory<>("nom_article"));
-        COL_PRIX_ARTICLE.setCellValueFactory(new PropertyValueFactory<>("prix"));
-        COL_CODE_ARTICLE.setCellValueFactory(new PropertyValueFactory<>("prefix_code"));
+        COL_TYPE_ARTICLE.setCellValueFactory(new PropertyValueFactory<>("txt_nom"));
+        COL_PRIX_ARTICLE.setCellValueFactory(new PropertyValueFactory<>("txt_prix"));
+        COL_CODE_ARTICLE.setCellValueFactory(new PropertyValueFactory<>("txt_prefix_code"));
+        COL_MODIFIER.setCellValueFactory(new PropertyValueFactory<>("modifier"));
+        COL_SUPPRIMER.setCellValueFactory(new PropertyValueFactory<>("delete"));
 
         ContextMenu contextMenu = new ContextMenu();
         MenuItem edit_menu = new MenuItem("EDITER");
         MenuItem delete_menu = new MenuItem("EFFACER");
         contextMenu.getItems().addAll(edit_menu, delete_menu);
         table_article.setContextMenu(contextMenu);
-
+        
         delete_menu.setOnAction((event) -> {
             handleDeleteMenu();
         });
@@ -184,5 +198,20 @@ public class ArticleController implements Initializable {
             });
             getArticleDataService.start();
         });
+    }
+
+    public void reinitialisation(){
+                Platform.runLater(() -> {
+            table_article_loading.setDisable(false);
+            table_article_loading.toFront();
+            Service<List<Articles>> getArticleDataService = marchandisesServices.getAllArticleData();
+            getArticleDataService.setOnSucceeded(onSucceededEvent -> {
+                table_article.getItems().setAll(getArticleDataService.getValue());
+                table_article_loading.setDisable(true);
+                table_article_loading.toBack();
+            });
+            getArticleDataService.start();
+        });
+
     }
 }

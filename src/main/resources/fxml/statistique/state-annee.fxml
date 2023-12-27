@@ -82,11 +82,16 @@
                                 <children>
                                     
                                     <HBox spacing="10">
-                                        <Label fx:id="lbl_tab" layoutX="22.0" layoutY="8.0" prefHeight="40.0" prefWidth="400.0" text="Statistique " textFill="WHITE">
+                                        <Label fx:id="lbl_tab" layoutX="22.0" layoutY="8.0" prefHeight="40.0" prefWidth="390.0" text="Statistique " textFill="WHITE">
                                             <font>
                                                <Font name="Lato Bold" size="20.0" />
                                             </font>
                                          </Label>
+                                         <Button fx:id="btn_pdf" layoutX="24.0" layoutY="11.0" mnemonicParsing="false" onAction="#generatePDF"  prefHeight="35.0" prefWidth="121.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: green;" text="Imprimer" textFill="WHITE">
+                                            <font>
+                                                <Font name="Lato Bold" size="13.0" />
+                                            </font>
+                                        </Button>
                                     </HBox>
             
                                 </children>

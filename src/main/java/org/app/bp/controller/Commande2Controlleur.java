@@ -129,7 +129,7 @@ public void initializeComboboxArticle(){
 private void generationDeFactureAvance(ActionEvent actionEvent) throws IOException {
       try {
             enregistrementCommande();            
-            FactureAvance factureAvance = generateFactureAvance();
+             FactureAvance factureAvance = generateFactureAvance();
             detailsClientCommande(actionEvent, commande);     
       } catch (Erreur e) {
             // TODO Auto-generated catch block

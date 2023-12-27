@@ -35,8 +35,27 @@ public class Utilisateur {
     TextField txt_contact;
     Button modifier;
     Button delete;
+    
+    String typeUtilisateur;
  
 
+    /**
+     * @return the typeUtilisateur
+     */
+    public String getTypeUtilisateur() {
+        if(role == 1){
+            typeUtilisateur = "UTILISATEUR";
+        }else{
+            typeUtilisateur = "ADMIN";
+        }
+        return typeUtilisateur;
+    }
+    /**
+     * @param typeUtilisateur the typeUtilisateur to set
+     */
+    public void setTypeUtilisateur(String typeUtilisateur) {
+        this.typeUtilisateur = typeUtilisateur;
+    }
     /**
      * @return the delete
      */

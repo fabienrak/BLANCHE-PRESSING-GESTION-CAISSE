@@ -11,7 +11,6 @@ import org.app.bp.services.UtilisateurDAO;
 import org.app.bp.utils.Erreur;
 import org.app.bp.utils.Utils;
 
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -117,6 +116,10 @@ public class UtilisateurControlleur implements Initializable{
         }
     }
     public void creationTableUsers(){
+                TableColumn<Utilisateur, TextField> type_utilisateur
+              = new TableColumn<Utilisateur, TextField>("TYPE");     
+type_utilisateur.setCellValueFactory(new PropertyValueFactory<>("typeUtilisateur"));
+        
         TableColumn<Utilisateur, TextField> nom 
               = new TableColumn<Utilisateur, TextField>("Nom");      
               nom.setCellValueFactory(new PropertyValueFactory<>("txt_nom"));
@@ -139,9 +142,8 @@ public class UtilisateurControlleur implements Initializable{
         
          TableColumn<Utilisateur, Button> delete 
               = new TableColumn<Utilisateur, Button>("");      
-              delete.setCellValueFactory(new PropertyValueFactory<>("delete"));
-        
-              table_users.getColumns().addAll(nom,prenom,nom_utilisateur,contact,mot_de_Passe,modifier,delete);
+              delete.setCellValueFactory(new PropertyValueFactory<>("delete"));   
+              table_users.getColumns().addAll(type_utilisateur,nom,prenom,nom_utilisateur,contact,mot_de_Passe,modifier,delete);
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
