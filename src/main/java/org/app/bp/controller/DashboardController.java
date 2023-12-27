@@ -8,7 +8,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import org.app.bp.models.Sites;
+import org.app.bp.models.Utilisateur;
 import org.app.bp.services.SiteServices;
+import org.app.bp.services.UtilisateurDAO;
 import org.app.bp.utils.Utils;
 
 import javafx.animation.Animation;
@@ -43,7 +45,7 @@ public class DashboardController {
     private Button btn_g_users;
 
     @FXML
-    private Button btn_commande;
+    private Button btn_site;
 
     @FXML
     private Button btn_g_marchandise;
@@ -64,7 +66,14 @@ public class DashboardController {
     }
     @FXML
     public void initialize(){
-
+        Utilisateur utilisateur = UtilisateurDAO.getUtilisateur();
+        if(utilisateur.getRole() == 1){
+            System.out.println("utilisateur = "+utilisateur.getRole());
+            btn_configuration.setVisible(false);
+            btn_g_marchandise.setVisible(false);
+            btn_g_users.setVisible(false);
+            btn_site.setVisible(false);
+        }
         Date androany = new Date();
         DateFormat fullDateFormat = DateFormat.getDateInstance(DateFormat.FULL);
         label_date.setText(fullDateFormat.format(androany).toUpperCase());
@@ -160,9 +169,13 @@ public class DashboardController {
 
 
     @FXML
-    private void sceneConfiguration() {
-        btn_configuration.setOnAction(event -> {
-            appUtils.warningAlertDialog("AVERTISSEMENT","BIENTOT DISPONIBLE");
-        });
+    private void sceneConfiguration(ActionEvent actionEvent) throws IOException  {
+         Node node_source = (Node) actionEvent.getSource();
+        stage = (Stage) node_source.getScene().getWindow();
+        Parent parent = FXMLLoader.load(getClass().getResource("/fxml/statistique/state-annee.fxml"));
+//        Parent parent = FXMLLoader.load(getClass().getResource("/fxml/commande/gestion-commande.fxml"));
+        stage.setTitle("STATISTIQUE");
+        content_total.getChildren().removeAll();
+        content_total.getChildren().setAll(parent);
     }
 }

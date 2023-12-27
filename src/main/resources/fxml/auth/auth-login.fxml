@@ -36,7 +36,7 @@
                         <Font name="Lato Bold" size="16.0" />
                      </font>
                   </Label>
-                  <Button fx:id="btn_login" layoutX="255.0" layoutY="453.0" mnemonicParsing="false" onAction="#switchToDashboard" prefHeight="38.0" prefWidth="151.0" style="-fx-border-radius: 20; -fx-background-radius: 20; -fx-background-color: #cea716;" text="Entrer" textFill="WHITE">
+                  <Button fx:id="btn_login" layoutX="255.0" layoutY="391.0" mnemonicParsing="false" onAction="#connection" prefHeight="38.0" prefWidth="151.0" style="-fx-border-radius: 20; -fx-background-radius: 20; -fx-background-color: #cea716;" text="Entrer" textFill="WHITE">
                      <font>
                         <Font name="Lato Bold" size="16.0" />
                      </font>
@@ -48,12 +48,12 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <TextField fx:id="txtfield_username" layoutX="165.0" layoutY="274.0" prefHeight="38.0" prefWidth="241.0">
+                  <TextField fx:id="txt_username" layoutX="165.0" layoutY="274.0" prefHeight="38.0" prefWidth="241.0">
                      <font>
                         <Font name="Lato Bold" size="14.0" />
                      </font>
                   </TextField>
-                  <PasswordField layoutX="165.0" layoutY="327.0" prefHeight="38.0" prefWidth="241.0">
+                  <PasswordField fx:id="txt_password" layoutX="165.0" layoutY="327.0" prefHeight="38.0" prefWidth="241.0">
                      <font>
                         <Font name="Lato Bold" size="14.0" />
                      </font>
@@ -63,13 +63,7 @@
                         <Image url="@../../img/logo.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="14.0" layoutY="391.0" prefHeight="25.0" prefWidth="119.0" text="Sites :" textFill="WHITE">
-                     <font>
-                        <Font name="Lato Bold" size="16.0" />
-                     </font>
-                  </Label>
-                  <ComboBox fx:id="cbx_site" layoutX="165.0" layoutY="384.0" prefHeight="38.0" prefWidth="241.0" promptText="Choisissez votre site" />
-                  <Label layoutX="95.0" layoutY="566.0" prefHeight="18.0" prefWidth="324.0" text="Copyright - BLANCHE PRESSING 2023" textFill="WHITE">
+                 <Label layoutX="95.0" layoutY="566.0" prefHeight="18.0" prefWidth="324.0" text="Copyright - BLANCHE PRESSING 2023" textFill="WHITE">
                      <font>
                         <Font name="Lato Bold" size="12.0" />
                      </font>

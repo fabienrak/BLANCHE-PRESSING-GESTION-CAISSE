@@ -17,7 +17,7 @@
 <?import javafx.scene.text.Font?>
 <?import org.controlsfx.control.MaskerPane?>
 
-<AnchorPane prefHeight="634.0" prefWidth="1200.0" style="-fx-background-color: #5869c5;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.app.bp.controller.UserController">
+<AnchorPane prefHeight="634.0" prefWidth="1200.0" style="-fx-background-color: #5869c5;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.app.bp.controller.UtilisateurControlleur">
    <children>
       <Button fx:id="btn_retour" layoutX="24.0" layoutY="11.0" mnemonicParsing="false" onAction="#retourVersPremiereScene" prefHeight="35.0" prefWidth="121.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #cea716;" text="Retour" textFill="WHITE">
          <font>
@@ -33,22 +33,14 @@
       </Button>
       <HBox layoutX="11.0" layoutY="133.0" prefHeight="491.0" prefWidth="1178.0">
          <children>
-            <StackPane prefHeight="568.0" prefWidth="679.0">
+            <AnchorPane prefHeight="400.0" prefWidth="679.0">
                <children>
-                  <MaskerPane fx:id="table_loading" />
-                  <TableView fx:id="table_users" prefHeight="502.0" prefWidth="679.0">
-                    <columns>
-                        <TableColumn fx:id="COL_USERS_USERNAME" prefWidth="89.0" text="NOM UTILISATEUR" />
-                      <TableColumn fx:id="COL_USERS_NOM" prefWidth="75.0" text="NOM" />
-                        <TableColumn fx:id="COL_USERS_PRENOM" prefWidth="89.0" text="PRENOM" />
-                        <TableColumn fx:id="COL_USERS_SITES" prefWidth="106.0" text="SITES" />
-                        <TableColumn fx:id="COL_USERS_CONTACT" prefWidth="126.0" text="CONTACT" />
-                        <TableColumn fx:id="COL_USERS_ROLE" prefWidth="107.0" text="ROLE" />
-                        <TableColumn fx:id="COL_USERS_MATRICULE" prefWidth="107.0" text="MATRICULE" />
-                    </columns>
-                  </TableView>
+                 
+                  <TableView fx:id="table_users" onMouseClicked="#handleSelectedTableUser" prefHeight="400.0" prefWidth="679.0">
+                  
+               </TableView>
                </children>
-            </StackPane>
+            </AnchorPane>
             <StackPane prefHeight="568.0" prefWidth="499.0">
                <children>
                   <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #2f4aa1;">
@@ -67,7 +59,7 @@
                               </Label>
                            </children>
                         </Pane>
-                        <Pane prefHeight="330.0" prefWidth="499.0">
+                        <Pane prefHeight="280.0" prefWidth="499.0">
                            <children>
                               <Label layoutX="14.0" layoutY="11.0" prefHeight="25.0" prefWidth="86.0" text="Nom :" textFill="WHITE">
                                  <font>
@@ -87,35 +79,31 @@
                                  </font>
                               </Label>
                               <TextField fx:id="txt_contact" layoutX="161.0" layoutY="140.0" prefHeight="35.0" prefWidth="300.0" />
-                              <Label layoutX="14.0" layoutY="191.0" prefHeight="25.0" prefWidth="86.0" text="Sites :" textFill="WHITE">
+                              <Label layoutX="14.0" layoutY="193.0" prefHeight="25.0" prefWidth="86.0" text="Role :" textFill="WHITE">
                                  <font>
                                     <Font name="Lato Bold" size="16.0" />
                                  </font>
                               </Label>
-                              <ComboBox fx:id="cbx_sites" layoutX="161.0" layoutY="186.0" prefHeight="35.0" prefWidth="300.0" />
-                              <Label layoutX="14.0" layoutY="241.0" prefHeight="25.0" prefWidth="86.0" text="Role :" textFill="WHITE">
-                                 <font>
-                                    <Font name="Lato Bold" size="16.0" />
-                                 </font>
-                              </Label>
-                              <ComboBox fx:id="cbx_role" layoutX="161.0" layoutY="232.0" prefHeight="35.0" prefWidth="300.0" />
-                              <Label layoutX="14.0" layoutY="281.0" prefHeight="25.0" prefWidth="86.0" text="Matricule :" textFill="WHITE">
-                                 <font>
-                                    <Font name="Lato Bold" size="16.0" />
-                                 </font>
-                              </Label>
-                              <TextField fx:id="txt_matricule" layoutX="161.0" layoutY="276.0" prefHeight="35.0" prefWidth="300.0" />
+                              <ComboBox fx:id="cbx_role" layoutX="161.0" layoutY="188.0" prefHeight="35.0" prefWidth="300.0" />
                               <Label layoutX="14.0" layoutY="51.0" prefHeight="25.0" prefWidth="86.0" text="Prenom :" textFill="WHITE">
                                  <font>
                                     <Font name="Lato Bold" size="16.0" />
                                  </font>
                               </Label>
                               <TextField fx:id="txt_prenom" layoutX="161.0" layoutY="51.0" prefHeight="35.0" prefWidth="300.0" />
+                              
+                              <TextField fx:id="txt_mdp" layoutX="161.0" layoutY="232.0" prefHeight="35.0" prefWidth="300.0" />
+                              <Label layoutX="14.0" layoutY="240.0" prefHeight="25.0" prefWidth="152.0" text="mot de passe :" textFill="WHITE">
+                                 <font>
+                                    <Font name="Lato Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              
                            </children>
                         </Pane>
                         <Pane prefHeight="74.0" prefWidth="499.0">
                            <children>
-                              <Button fx:id="btn_enregistrer" layoutX="222.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleAddClubButton" prefHeight="41.0" prefWidth="199.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #cea716;" text="Enregistrer" textFill="WHITE">
+                              <Button fx:id="btn_enregistrer" layoutX="222.0" onAction="#ajout" layoutY="14.0" mnemonicParsing="false"  prefHeight="41.0" prefWidth="199.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #cea716;" text="Enregistrer" textFill="WHITE">
                                  <font>
                                     <Font name="Lato Bold" size="15.0" />
                                  </font>

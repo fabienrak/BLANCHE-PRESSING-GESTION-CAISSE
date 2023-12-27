@@ -1,8 +1,10 @@
 package org.app.bp.models;
 
+import java.text.DateFormatSymbols;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 import org.app.bp.controller.ListeCommande;
 import org.app.bp.services.CommandeService;
@@ -107,9 +109,10 @@ public class CommandeFinal {
     
     public void validationLivraison(CommandeService comServ,FacturationService factServ){
         int i = 0;
-        if(listeFactureAvance == null){
-            listeFactureAvance = factServ.getListeFactureAvance(this);            
-        }
+      //  if(listeFactureAvance == null){
+            listeFactureAvance = factServ.getListeFactureAvance(this);    
+            setListeFactureAvance(listeFactureAvance);
+        //}
         if(comServ.presenceFactureFinale(this) == false){
             FactureAvance factureAvance = new FactureAvance();
             factureAvance.setPrixAvance(prixTotal - avanceFinal);
@@ -127,6 +130,14 @@ public class CommandeFinal {
             factServ.validerEtatFacture(listeFactureAvance.get(j));
         }
         comServ.validerLivraison(this);
+    }
+    public static void main (String[] args){
+        String[] list = DateFormatSymbols.getInstance(Locale.FRENCH).getMonths();
+        int i = 0 , j = 0;
+        for(i = 0 ; i < list.length ; i++){
+            j = i + 1;
+            System.out.println("("+j+" , "+list[i]+")");
+        }
     }
     
     /**
