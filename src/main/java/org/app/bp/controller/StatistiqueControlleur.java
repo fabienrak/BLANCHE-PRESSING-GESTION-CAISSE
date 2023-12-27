@@ -3,6 +3,7 @@ package org.app.bp.controller;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.util.ResourceBundle;
 
 import org.app.bp.models.SatistiqueParMoi;
@@ -44,11 +45,19 @@ public class StatistiqueControlleur implements Initializable{
     private Label lbl_tab;
     @FXML
     private ComboBox cbx_search;
+    @FXML
+    private Label lbl_total;
+
     private CategoryAxis xAxis = null;  
     private NumberAxis yAxis = null;
     private StatDAO dao = new StatDAO();
     private int affiche = 0;
+    private double total = 0;
 
+
+    public void afficheTotal(){
+        lbl_total.setText("TOTAL : "+NumberFormat.getInstance(java.util.Locale.FRENCH).format(total));   
+    }
 
     /* Statistique Par Jour */
     public void afficheStatistiqueParJour(SatistiqueParMoi moi){
@@ -56,6 +65,8 @@ public class StatistiqueControlleur implements Initializable{
         affiche = 3;
         try {
             ObservableList<Statisitique> jour = dao.getParJOUR(moi);
+            calculTotalPrixParJour(jour);
+            afficheTotal();
             System.out.println("--------------------------"+jour);
             afficheTitreAndChoiseParJour("par Jour "+moi.getMoi()+" "+moi.getAnnee(), jour);
             creationStatistiqueParJour(moi, jour);
@@ -64,8 +75,15 @@ public class StatistiqueControlleur implements Initializable{
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-            
-        
+    }
+    
+    public void calculTotalPrixParJour(ObservableList<Statisitique> jour){
+        total = 0;
+        int i = 0;
+        total = 0;
+        for( i = 0 ; i < jour.size() ; i++){
+            total = total + jour.get(i).getPrix();
+        }
     }
     private void afficheTitreAndChoiseParJour(String titre,ObservableList<Statisitique> list){
             lbl_titre.setText("Statistique "+titre);
@@ -120,12 +138,22 @@ public class StatistiqueControlleur implements Initializable{
             moisSelect = moi;
             affiche = 2;
             ObservableList<Statisitique> semaine = dao.getStatParSemaine(moi);
+            calculTotalParSemaine(semaine);
+            afficheTotal();
             afficheTitreAndChoiseParSemaine(" par semaine "+moi.getMoi()+" "+moi.getAnnee(), semaine);
             creationStatistiqueParSemaine(moi, semaine);
             creationTableauStatistiqueParSemaine(moi, semaine);
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }
+    }
+    private void calculTotalParSemaine(ObservableList<Statisitique> jour){
+        total = 0;
+        int i = 0;
+        total = 0;
+        for( i = 0 ; i < jour.size() ; i++){
+            total = total + jour.get(i).getPrix();
         }
     }
     private void afficheTitreAndChoiseParSemaine(String titre,ObservableList<Statisitique> list){
@@ -180,6 +208,8 @@ public class StatistiqueControlleur implements Initializable{
             anneeSelect = annee;
             affiche = 1;
             ObservableList<SatistiqueParMoi> stateMois = dao.getStatParMOI(annee);
+            calculTotalParMois(stateMois);
+            afficheTotal();
             afficheTitreAndChoiseParMois(" par mois de l'année "+annee, stateMois);
             System.out.println("pi = "+stateMois);
             creationStatistiqueParMois(annee, stateMois);
@@ -187,6 +217,15 @@ public class StatistiqueControlleur implements Initializable{
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }
+    }
+
+    private void calculTotalParMois(ObservableList<SatistiqueParMoi> jour){
+        total = 0;
+        int i = 0;
+        total = 0;
+        for( i = 0 ; i < jour.size() ; i++){
+            total = total + jour.get(i).getPrix();
         }
     }
     private void afficheTitreAndChoiseParMois(String titre,ObservableList<SatistiqueParMoi> list){
@@ -240,6 +279,8 @@ public class StatistiqueControlleur implements Initializable{
         try {
             affiche = 0;
             ObservableList<StatStiqueAnnee> state = dao.getStatParANNEE();
+            calculTotalParAnnee(state);
+            afficheTotal();
             afficheTitreAndChoiseParAnnee(" par année", state);
             creationStatistiqueParAnnee(state);
             creationTableauStatiqueParAnnee(state);
@@ -248,6 +289,16 @@ public class StatistiqueControlleur implements Initializable{
             e.printStackTrace();
         }
     }
+    private void calculTotalParAnnee(ObservableList<StatStiqueAnnee> jour){
+        total = 0;
+        int i = 0;
+        total = 0;
+        for( i = 0 ; i < jour.size() ; i++){
+            total = total + jour.get(i).getPrix();
+        }
+    }
+    
+    
 
     private void afficheTitreAndChoiseParAnnee(String titre,ObservableList<StatStiqueAnnee> list){
         lbl_titre.setText("Statistique "+titre);

@@ -1,3 +1,5 @@
 #welcomeText {
-    -fx-background-color: green;
+    -fx-background-color: #fdfdfd;
+    -fx-border-color: #383737;
+
 }
