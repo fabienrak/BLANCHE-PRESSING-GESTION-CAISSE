@@ -57,7 +57,7 @@ public class PdfCaisse {
         try {
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(pdfFilePath));
             document.open();
-            Image logo = Image.getInstance("E:\\STAGE\\BLANCHE_PRESSING_GESTION_CAISSE\\gestion-caisse-final\\src\\main\\resources\\img\\logo.png");
+            Image logo = Image.getInstance("src\\main\\resources\\img\\logo.png");
             logo.scaleAbsolute(90,90);
             logo.setBackgroundColor(colorFont());
             logo.setBorderColor(BaseColor.BLACK);
