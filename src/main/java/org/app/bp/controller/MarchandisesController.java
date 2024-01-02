@@ -21,6 +21,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -77,6 +78,17 @@ public class MarchandisesController implements Initializable {
     public MarchandisesController(){
         instance = this;
     }
+     @FXML
+    private void backACCEUIL(ActionEvent actionEvent) throws IOException {
+        Node node_source = (Node) actionEvent.getSource();
+        Stage stage = (Stage) node_source.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/home/dashboard.fxml"));
+        Parent premiereSceneParent = loader.load();
+        Scene premiereScene = new Scene(premiereSceneParent);
+        stage.setScene(premiereScene);
+        stage.show();       
+    }
+
     public static MarchandisesController getInstance(){
         return instance;
     }

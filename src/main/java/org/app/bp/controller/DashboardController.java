@@ -62,6 +62,8 @@ public class DashboardController {
 
     @FXML
     private Label lbl_site;
+    @FXML
+    private Button btn_caisse_jour;
 
     private Stage stage;
 
@@ -89,6 +91,9 @@ public class DashboardController {
 
             btn_historique.setLayoutX(btn_g_marchandise.getLayoutX());
             btn_historique.setLayoutY(btn_g_marchandise.getLayoutY());
+            
+            btn_caisse_jour.setLayoutX(btn_configuration.getLayoutX());
+            btn_caisse_jour.setLayoutY(btn_configuration.getLayoutY());
         }
         Date androany = new Date();
         DateFormat fullDateFormat = DateFormat.getDateInstance(DateFormat.FULL);
@@ -112,7 +117,15 @@ public class DashboardController {
         content_home.getChildren().removeAll();
         content_home.getChildren().setAll(parent);
     }
-
+    @FXML
+    private void sceneCaisseJour(ActionEvent actionEvent) throws IOException {
+        Node node_source = (Node) actionEvent.getSource();
+        stage = (Stage) node_source.getScene().getWindow();
+        Parent parent = FXMLLoader.load(getClass().getResource("/fxml/statistique/caisse-jour.fxml"));
+        stage.setTitle("GESTION CAISSE");
+        content_home.getChildren().removeAll();
+        content_home.getChildren().setAll(parent);
+    }
     @FXML
     private void sceneGestionService(ActionEvent actionEvent) throws IOException {
         Node node_source = (Node) actionEvent.getSource();

@@ -183,6 +183,17 @@ public class ListeCommande implements Initializable{
             appUtils.warningAlertDialog("AVERTISSEMENT",e.getMessage().toUpperCase());
         }
         }
+        @FXML
+        private void backACCEUIL(ActionEvent actionEvent) throws IOException {
+            Node node_source = (Node) actionEvent.getSource();
+            Stage stage = (Stage) node_source.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/home/dashboard.fxml"));
+            Parent premiereSceneParent = loader.load();
+            Scene premiereScene = new Scene(premiereSceneParent);
+            stage.setScene(premiereScene);
+            stage.show();       
+        }
+    
     private void verificationReste(){
         if(commandeFinal.getReste() == 0){
             lbl_payement_avance.setVisible(false);

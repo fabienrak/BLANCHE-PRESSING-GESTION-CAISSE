@@ -93,5 +93,15 @@ public class SitesController implements Initializable {
         entrerSiteDansLabel();
     }
 
+    @FXML
+    private void backACCEUIL(ActionEvent actionEvent) throws IOException {
+        Node node_source = (Node) actionEvent.getSource();
+        Stage stage = (Stage) node_source.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/home/dashboard.fxml"));
+        Parent premiereSceneParent = loader.load();
+        Scene premiereScene = new Scene(premiereSceneParent);
+        stage.setScene(premiereScene);
+        stage.show();       
+    }
 
 }

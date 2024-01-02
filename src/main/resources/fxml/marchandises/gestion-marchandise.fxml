@@ -30,6 +30,19 @@
                 </ImageView>
             </graphic>
         </Button>
+        <Button  layoutX="160.0" layoutY="11.0" mnemonicParsing="false" onAction="#backACCEUIL"  prefHeight="35.0" prefWidth="121.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #cea716;" text="Accueil" textFill="WHITE">
+            <font>
+                <Font name="Lato Bold" size="13.0" />
+            </font>
+            <graphic>
+                <ImageView fitHeight="19.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../img/acceuil.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+  
         <HBox layoutX="10.0" layoutY="121.0" prefHeight="523.0" prefWidth="1199.0">
             <children>
                 <StackPane prefHeight="568.0" prefWidth="679.0">

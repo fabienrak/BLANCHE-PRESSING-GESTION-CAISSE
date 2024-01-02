@@ -342,6 +342,17 @@ public class StatistiqueControlleur implements Initializable{
               table_state.getColumns().addAll(annee,prix);
         table_state.setItems(state);
       }
+      @FXML
+      private void backACCEUIL(ActionEvent actionEvent) throws IOException {
+          Node node_source = (Node) actionEvent.getSource();
+          Stage stage = (Stage) node_source.getScene().getWindow();
+          FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/home/dashboard.fxml"));
+          Parent premiereSceneParent = loader.load();
+          Scene premiereScene = new Scene(premiereSceneParent);
+          stage.setScene(premiereScene);
+          stage.show();       
+      }
+  
       private SatistiqueParMoi moisSelect;
      @FXML
     private void backToInfoClient(ActionEvent actionEvent) throws IOException {
