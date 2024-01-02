@@ -120,7 +120,7 @@ public class StatistiqueControlleur implements Initializable{
               semaine.setCellValueFactory(new PropertyValueFactory<>("date"));
         
          TableColumn<Statisitique, String> prix 
-              = new TableColumn<Statisitique, String>("Montant total");      
+              = new TableColumn<Statisitique, String>("Montant total (Ariary)");      
               prix.setCellValueFactory(new PropertyValueFactory<>("affichePrix"));
         table_state.getColumns().clear();
             table_state.getItems().clear();
@@ -192,7 +192,7 @@ public class StatistiqueControlleur implements Initializable{
               semaine.setCellValueFactory(new PropertyValueFactory<>("num_semaine_moi"));
         
          TableColumn<Statisitique, String> prix 
-              = new TableColumn<Statisitique, String>("Montant total");      
+              = new TableColumn<Statisitique, String>("Montant total (Ariary)");      
               prix.setCellValueFactory(new PropertyValueFactory<>("affichePrix"));
         table_state.getColumns().clear();
             table_state.getItems().clear();
@@ -266,7 +266,7 @@ public class StatistiqueControlleur implements Initializable{
               mois.setCellValueFactory(new PropertyValueFactory<>("moi"));
         
          TableColumn<SatistiqueParMoi, String> prix 
-              = new TableColumn<SatistiqueParMoi, String>("Montant total");      
+              = new TableColumn<SatistiqueParMoi, String>("Montant total (Ariary)");      
               prix.setCellValueFactory(new PropertyValueFactory<>("affichePrix"));
         table_state.getColumns().clear();
             table_state.getItems().clear();
@@ -335,7 +335,7 @@ public class StatistiqueControlleur implements Initializable{
               annee.setCellValueFactory(new PropertyValueFactory<>("annee"));
         
          TableColumn<StatStiqueAnnee, String> prix 
-              = new TableColumn<StatStiqueAnnee, String>("Montant total");      
+              = new TableColumn<StatStiqueAnnee, String>("Montant total (Ariary)");      
               prix.setCellValueFactory(new PropertyValueFactory<>("affichePrix"));
             table_state.getColumns().clear();
             table_state.getItems().clear();

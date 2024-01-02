@@ -19,15 +19,16 @@ public class FacturationService {
     Connection connection = DBUtils.getConnection();
 
     public void nouveauFactureAvance(FactureAvance facture,CommandeFinal commande){
-        String ajout_client_query = "INSERT INTO facturation (etat,type,id_commande,prix,date_payement,num_facture) VALUES (0,?,?,?,?,?)";
+        String ajout_client_query = "INSERT INTO facturation (etat,type,id_commande,prix,date_payement,num_facture) VALUES (?,?,?,?,?,?)";
         try{
             preparedStatement = connection.prepareStatement(ajout_client_query);
-            preparedStatement.setInt(1, facture.getType());
-            preparedStatement.setInt(2, commande.getIdCommande());
-            preparedStatement.setDouble(3, facture.getPrixAvance());
-            preparedStatement.setString(4, facture.getDateFacturation().toString());
-            preparedStatement.setString(5, facture.getNumeroFacture());
-            preparedStatement.executeUpdate();;
+            preparedStatement.setInt(1, facture.getEtat());
+            preparedStatement.setInt(2, facture.getType());
+            preparedStatement.setInt(3, commande.getIdCommande());
+            preparedStatement.setDouble(4, facture.getPrixAvance());
+            preparedStatement.setString(5, facture.getDateFacturation().toString());
+            preparedStatement.setString(6, facture.getNumeroFacture());
+            preparedStatement.executeUpdate();
         } catch (SQLException sqlException){
             sqlException.printStackTrace();
         }

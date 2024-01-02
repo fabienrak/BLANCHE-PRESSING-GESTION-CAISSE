@@ -173,9 +173,10 @@ public class ListeCommande implements Initializable{
         factureAvance.setDateFacturation(LocalDate.now());   
             commandeFinal.setListeFactureAvance(factureServ.getListeFactureAvance(commandeFinal));
         try {
-            factureAvance.setPrixAvance(commandeFinal.getPrixTotal() - commandeFinal.getAvanceFinal());
+            factureAvance.setPrixAvance(commandeFinal.getReste());
             factureAvance.ajoutFactureFinal(factureServ, commandeFinal);
-            afficheListeAvance();
+            factureAvance.ImprimerFacture(commandeFinal, commandeServ, factureServ);
+            //afficheListeAvance();
             avanceProposer = 0;
             txt_avance.setText("");
         } catch (Erreur e) {
@@ -186,16 +187,16 @@ public class ListeCommande implements Initializable{
         if(commandeFinal.getReste() == 0){
             lbl_payement_avance.setVisible(false);
             hbox_payement_avance.setVisible(false);
-            bt_facture_tout.setVisible(false);
+            //bt_facture_tout.setVisible(false);
         }else{
             if(commandeServ.presenceFactureFinale(commandeFinal) == true){
                 lbl_payement_avance.setVisible(false);
                 hbox_payement_avance.setVisible(false);
-                bt_facture_tout.setVisible(false);
+               // bt_facture_tout.setVisible(false);
             }else{
                 lbl_payement_avance.setVisible(false);
-            hbox_payement_avance.setVisible(false);
-            bt_facture_tout.setVisible(true);    
+                hbox_payement_avance.setVisible(false);
+           // bt_facture_tout.setVisible(true);    
         
             }
         }
@@ -272,7 +273,7 @@ public class ListeCommande implements Initializable{
         type.setCellValueFactory(new PropertyValueFactory<>("afficheType"));
 
         tableAvance = new TableView<>();
-        tableAvance.getColumns().addAll(numFact,type,date_facture,avanceColumn,button_facture,button_supprimer);
+        tableAvance.getColumns().addAll(numFact,type,date_facture,avanceColumn);
         
     }
 

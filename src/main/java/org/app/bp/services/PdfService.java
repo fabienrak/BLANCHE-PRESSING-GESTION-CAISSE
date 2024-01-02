@@ -4,7 +4,6 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -26,7 +25,6 @@ import com.itextpdf.text.Font.FontFamily;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -35,33 +33,13 @@ import javafx.collections.ObservableList;
 
 public class PdfService {
     private static float marge = 10f;
-     BaseFont bf = null;
-    /**
-     * @return the bf
-     */
-    public BaseFont getBf() {
-        try {
-            bf = BaseFont.createFont(BaseFont.TIMES_ROMAN, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-        } catch (DocumentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return bf;
-    }
-    /**
-     * @param bf the bf to set
-     */
-    public void setBf(BaseFont bf) {
-        this.bf = bf;
-    }
 
-    private static Font fontNomEntreprise = new Font(FontFamily.TIMES_ROMAN,9,Font.BOLD,BaseColor.BLACK);
+    private static Font fontNomEntreprise = new Font(FontFamily.TIMES_ROMAN,5,Font.BOLD,BaseColor.BLACK);
     private static Font fontNomPrenom = new Font(FontFamily.TIMES_ROMAN,5,Font.NORMAL,BaseColor.BLACK);
     private static Font fontNumeroFac = new Font(FontFamily.TIMES_ROMAN,5,Font.BOLD,BaseColor.BLACK);
     private static Font fontTitreTableau = new Font(FontFamily.TIMES_ROMAN,5,Font.BOLD,BaseColor.WHITE);
+    private static Font fontnumberSimple = new Font(FontFamily.UNDEFINED,5,Font.NORMAL,BaseColor.BLACK);
+    private static Font fontnumberBold = new Font(FontFamily.UNDEFINED,5,Font.NORMAL,BaseColor.BLACK);
     
     private static Font fontMontantFin = new Font(FontFamily.TIMES_ROMAN,5,Font.BOLD,BaseColor.BLACK);
     
@@ -73,34 +51,32 @@ public class PdfService {
             Document document = new Document();
         try {
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(pdfFilePath));
-            document.setPageSize(PageSize.A6);
+            document.setPageSize(PageSize.A7);
             document.open();
             addDetailsBlanchePressing(document,commande.getClient(),facture.getDateFacturation(),"FACTURE FINAL : "+facture.getNumeroFacture(),"Facture final du commande "+commande.getCode());
             List<FactureAvance> list = commande.getListeFactureAvance();
             if(list == null){
                 list = new ArrayList<>();
             }
-            document.add(new Paragraph("\n"));
+     //       document.add(new Paragraph("\n"));
             addListeCommandeClient(document, commande.getListeCommandeClient());
-            document.add(new Paragraph("\n"));
-            addListeFactureAvancePourFactureFinal(document, list,commande);
-            document.add(new Paragraph("\n"));
+            //document.add(new Paragraph("\n"));
+            //addListeFactureAvancePourFactureFinal(document, list,commande);
+            //document.add(new Paragraph("\n"));
             PdfPTable table = new PdfPTable(3);
             table.setWidthPercentage(100);
-            float[] columnWidths = {2f, 1f,1f};
+            float[] columnWidths = {0.5f, 1f,1f};
             table.setWidths(columnWidths);
 
             PdfPCell inv = new PdfPCell();
             inv.setBorder(0);
             table.addCell(inv);
-            PdfPCell lbl_montant = new PdfPCell(new Paragraph("Total Avance ",fontNomPrenom));
+            PdfPCell lbl_montant = new PdfPCell(new Paragraph("Total Déjà Payé ",fontNomPrenom));
             aligementGauche(lbl_montant);
             table.addCell(lbl_montant);
-            PdfPCell montant = new PdfPCell(new Paragraph(convertDoubleMoney(commande.getAvanceFinal()) +" Ar ",fontNomPrenom));
+            PdfPCell montant = new PdfPCell(new Paragraph(convertDoubleMoney(commande.getAvance()) +" Ar ",fontNomPrenom));
             aligementdROITE(montant);
             table.addCell(montant); 
-
-
              inv = new PdfPCell();
             inv.setBorder(0);
             table.addCell(inv);
@@ -194,26 +170,28 @@ public class PdfService {
 
     private static PdfPCell aligementGauche(PdfPCell cell){
             cell.setHorizontalAlignment(Element.ALIGN_LEFT); 
-            cell.setPadding(5);
+            cell.setPadding(1);
+            cell.setBorder(0);
             return cell;
         }
     private static PdfPCell aligementdROITE(PdfPCell cell){
             cell.setHorizontalAlignment(Element.ALIGN_RIGHT); 
-            cell.setPadding(5);
+            cell.setPadding(1);
+            cell.setBorder(0);
             return cell;
         }
 
     private static void addListeCommandeClient(Document document,ObservableList<CommandeClient> liste)throws Exception{
-         PdfPTable table = new PdfPTable(5);
+         PdfPTable table = new PdfPTable(4);
          table.setWidthPercentage(100);
-        float[] columnWidths = {2f, 1f, 1f, 1f ,1f};
+        float[] columnWidths = {2f, 1f, 1f ,1f};
          table.setWidths(columnWidths);
-        String[] titre = new String[]{"Article","Service","Quantité","Prix","Total"};
+        String[] titre = new String[]{"Article","Q","PU(Ar)","Total"};
          int i = 0;
          PdfPCell cell = null;
          for(i = 0 ; i < titre.length ; i++){
             cell = new PdfPCell(new Paragraph(titre[i],fontTitreTableau));
-            if(i == 0 || i == 1){
+            if(i == 0 ){
                 cell.setBackgroundColor(colorFont());
                 aligementGauche(cell);
             
@@ -222,17 +200,18 @@ public class PdfService {
                 aligementdROITE(cell);
             }
             cell.setBackgroundColor(colorFont());
-            cell.setPadding(5);
+            cell.setPadding(3);
+            cell.setBorder(0);
             table.addCell(cell);
          }
 
          for(i = 0 ; i < liste.size() ; i++){
             CommandeClient commandeClient = liste.get(i);
             table.addCell(aligementGauche(new PdfPCell(new Paragraph(commandeClient.getArticle().getNom_article(),fontNomPrenom))));
-            table.addCell(aligementGauche(new PdfPCell(new Paragraph(commandeClient.getService().toString(),fontNomPrenom))));
+            //table.addCell(aligementGauche(new PdfPCell(new Paragraph(commandeClient.getService().toString(),fontNomPrenom))));
             table.addCell(aligementdROITE(new PdfPCell(new Paragraph(String.valueOf(commandeClient.getNombre()),fontNomPrenom))));
-            table.addCell(aligementdROITE(new PdfPCell(new Paragraph(String.valueOf(convertDoubleMoney(commandeClient.getPrixUnitaire())+" Ar "),fontNomPrenom))));
-            table.addCell(aligementdROITE(new PdfPCell(new Paragraph(String.valueOf(convertDoubleMoney(commandeClient.getPrixTotal())+" Ar "),fontNomPrenom))));
+            table.addCell(aligementdROITE(new PdfPCell(new Paragraph(String.valueOf(convertDoubleMoney(commandeClient.getPrixUnitaire())+""),fontNomPrenom))));
+            table.addCell(aligementdROITE(new PdfPCell(new Paragraph(String.valueOf(convertDoubleMoney(commandeClient.getPrixTotal())+""),fontNomPrenom))));
         }
         document.add(table);
     }
@@ -321,7 +300,7 @@ public class PdfService {
                 aligementdROITE(qt);
                 qt.setPadding(5);
                 table.addCell(qt);
-                pU = new PdfPCell(new Paragraph(convertDoubleMoney(listeFact.get(i).getPrixAvance())+" Ar ",fontNomPrenom));
+                pU = new PdfPCell(new Paragraph(convertDoubleMoney(listeFact.get(i).getPrixAvance())+" Ar ",fontnumberSimple));
                 totalPU = new PdfPCell(new Paragraph(convertDoubleMoney(listeFact.get(i).getPrixAvance())+" Ar ",fontNomPrenom));
                 pU.setPadding(5);
                 totalPU.setPadding(5);
@@ -340,7 +319,7 @@ public class PdfService {
             
         // definition de logo
         Image logo = Image.getInstance("src\\main\\resources\\img\\logo.png");
-            logo.scaleAbsolute(60,60);
+            logo.scaleAbsolute(40,40);
             logo.setBackgroundColor(colorFont());
             logo.setBorderColor(BaseColor.BLACK);
         SiteServices siteServices = new SiteServices();
@@ -399,19 +378,19 @@ public class PdfService {
         cellClient.addElement(adresseClient);
         cellClient.addElement(telClient);
         cellClient.setHorizontalAlignment(Element.ALIGN_CENTER);
-        cellClient.setPadding(10f);
+        cellClient.setPadding(5f);
         table.addCell(cellEntreprise);
         table.addCell(cellClient);
         document.add(table);
         
         Paragraph codeClient = new Paragraph("Code Client : "+client.getId_client(),fontNomPrenom);
         codeClient.setAlignment(Element.ALIGN_RIGHT);
-        document.add(codeClient);
+        //document.add(codeClient);
 
-        document.add(new Paragraph("\n"));
-        document.add(new Paragraph("\n"));
+        //document.add(new Paragraph("\n"));
+        //document.add(new Paragraph("\n"));
         Paragraph objet = new Paragraph("Objet : "+objetFac,fontNomPrenom);
-        document.add(objet);
+       // document.add(objet);
     }
 
     private static BaseColor colorFont(){

@@ -133,7 +133,7 @@
                                 </Pane>
                                 <Pane prefHeight="74.0" prefWidth="499.0">
                                     <children>
-                                        <Button fx:id="btn_enregistrer_article" layoutX="301.0" layoutY="-176.0" mnemonicParsing="false" onAction="#handleSaveArticleButton" prefHeight="41.0" prefWidth="160.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #cea716;" text="Enregistrer" textFill="WHITE">
+                                        <Button fx:id="btn_enregistrer_article" layoutX="301.0" layoutY="-176.0" mnemonicParsing="false" onAction="#handleSaveArticleButton" prefHeight="41.0" prefWidth="160.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #cea716;" text="AJOUTER" textFill="WHITE">
                                             <font>
                                                 <Font name="Lato Bold" size="15.0" />
                                             </font>

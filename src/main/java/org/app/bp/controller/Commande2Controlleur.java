@@ -96,6 +96,10 @@ public Clients getClients() {
       return clients;
 }
 
+public void clearForm(){
+      txt_nbr_article.setText("");
+      cbx_type_article.getSelectionModel().clearSelection();
+}
 /**
  * @param clients the clients to set
  */
@@ -129,7 +133,6 @@ public void initializeComboboxArticle(){
 private void generationDeFactureAvance(ActionEvent actionEvent) throws IOException {
       try {
             enregistrementCommande();            
-             FactureAvance factureAvance = generateFactureAvance();
             detailsClientCommande(actionEvent, commande);     
       } catch (Erreur e) {
             // TODO Auto-generated catch block
@@ -137,31 +140,26 @@ private void generationDeFactureAvance(ActionEvent actionEvent) throws IOExcepti
       }
 }
 
-private FactureAvance generateFactureAvance(){
+private FactureAvance generateFactureAvance()throws Erreur{
       FactureAvance factureAvance =  new FactureAvance();
       factureAvance.setDateFacturation(LocalDate.now());
+      factureAvance.setEtat(1);
       factureAvance.setPrixAvance(prixAvance);
-      if(prixAvance > 0){
-            try {
-                  factureAvance.ajout(factureServ, commande);
-            } catch (Erreur e) {
-                  appUtils.warningAlertDialog("AVERTISSEMENT",e.getMessage().toUpperCase());
-            }
-            return factureAvance;      
-      }else{
-            return null;
-      }
+      factureAvance.verificationAvance(commande);
+      return factureAvance;
 }
 private void enregistrementCommande()throws Erreur{
       try {      
             if(datePicker_livraison.getValue() == null){
                   throw new Erreur("Veuiller remplir le date de livraison");                  
             }
-            commande.setDateCommande(datePicker_commande.getValue());
+            commande.setDateCommande(LocalDate.now());
             commande.setDateLivraison(datePicker_livraison.getValue());
             commande.setClient(clients);
             commande.setListeCommandeClient(listeCommande);
+             FactureAvance factureAvance = generateFactureAvance();
             commandeServ.nouveauCommande(commande);
+            factureAvance.ajout(factureServ, commande);
       } catch (Erreur e) {
                   // TODO Auto-generated catch block
             //      e.printStackTrace();
@@ -208,6 +206,7 @@ private void enregistrementCommandeArticle(ActionEvent actionEvent) throws IOExc
             commandeClient.setService((Service)cbx_type_services.getValue());
             commandeClient.generateButtonSupprimer(this, listeCommande);
             listeCommande.add(commandeClient);
+            clearForm();
             miseAJourTableViewCommande();
       }
 }
@@ -257,6 +256,7 @@ private void initializeClientInfo(){
       lbl_client_adresse.setText("Adresse : "+clients.getAdresse_client_1()+" | "+clients.getAdresse_client_2());
       lbl_client_contact.setText("Contact : "+clients.getContact_client_1()+" | "+clients.getContact_client_2());
       datePicker_commande.setValue(LocalDate.now());
+      datePicker_commande.setEditable(false);
       txt_code.setEditable(false);
       txt_code.setText(commande.getCode());
 }

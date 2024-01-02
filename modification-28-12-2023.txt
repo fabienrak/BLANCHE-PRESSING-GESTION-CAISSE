@@ -1,0 +1,18 @@
+Gestion article (S) VITA
+    Button enregistrer = ajout
+
+Comande et facturation (S)
+    LISTE DES FACTURATION = VERIFICATION vita
+    AVANCE TSYSY fACTURE SY ANULER vita
+    avance tode payer vita 
+    bOUTON FACTURER TOUT = GENERER FACTURE / IMPRIMER vita
+
+Menu miverina premier package (S)
+
+caisse par jour     (S)
+    total avance :
+    total facture final (Livraison)
+
+Impression historique A4 (I)
+    Liste des commande avec les article et nombre
+    Liste total par article

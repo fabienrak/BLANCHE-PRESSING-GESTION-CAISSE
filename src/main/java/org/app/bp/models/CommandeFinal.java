@@ -120,6 +120,8 @@ public class CommandeFinal {
             factureAvance.setType(1);
             try {
                 factureAvance.ajoutFactureFinal(factServ, this);
+                factureAvance.setType(1);
+                factServ.nouveauFactureAvance(factureAvance, this);
             } catch (Erreur e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -158,12 +160,7 @@ public class CommandeFinal {
      * @return the reste
      */
     public double getReste() {
-        if(livre == 1){
-            reste = 0;
-        }else{
-            reste = prixTotal;
-        }
-        return reste;
+        return prixTotal - avance;
     }
 
     /**

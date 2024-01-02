@@ -181,7 +181,7 @@
                                     <HBox spacing="2">
                                         <Pane prefHeight="300" prefWidth="200">
                                             <VBox spacing = "5">
-                                                <Button onAction="#clickAfficheListeAvance" layoutX="0.0" layoutY="0.0" mnemonicParsing="false"  prefHeight="20.0" prefWidth="200.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #cdcecd;" text="LISTES DES FACTURES" textFill="BLACK">
+                                                <Button onAction="#clickAfficheListeAvance" layoutX="0.0" layoutY="0.0" mnemonicParsing="false"  prefHeight="20.0" prefWidth="200.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #cdcecd;" text="VERIFICATION" textFill="BLACK">
                                                     <font>
                                                         <Font name="Lato Bold" size="12.0" />
                                                     </font>
@@ -190,7 +190,7 @@
                                                     <font>
                                                        <Font name="Lato Bold" size="16.0" />
                                                     </font>
-                                                 </Label>    
+                                                 </Label>
                                                  <HBox fx:id="hbox_payement_avance" spacing = "5" >
                                                     <TextField fx:id="txt_avance" layoutX="0.0" layoutY="0.0" prefHeight="20.0" prefWidth="100.0">
                                                     </TextField>

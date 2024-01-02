@@ -146,6 +146,18 @@ public class FactureAvance {
         });
     }
 
+    public void ImprimerFacture(CommandeFinal commandeFinal,CommandeService comServ,FacturationService factureServ){
+                    try {
+                    commandeFinal.setListeCommandeClient(comServ.getListCommandeClient(commandeFinal));
+                } catch (Erreur e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                //commandeFinal.setListeFactureAvance(factureServ.getListeFactureAvance(commandeFinal));
+                PdfService.generationDeFactureFinal(commandeFinal, this);
+    }
+
+
     public double getDejaPayerFinal(){
         double  t = 0;
         if(etat == 1){
@@ -220,6 +232,17 @@ public class FactureAvance {
         generateNumero(commande, "A");
         factureServ.nouveauFactureAvance(this, commande);
     }
+    public void verificationAvance(CommandeFinal commande)throws Erreur{
+        if(prixAvance > commande.getResteApayer()){
+            throw new Erreur("Avance très élevée ");
+        }
+        if(prixAvance == commande.getResteApayer()){
+                throw new Erreur("Votre avance est egale au reste à payer");
+        }
+        if(prixAvance == 0){
+            throw new Erreur("Votre avance est insuffisant");    
+        }
+    }
 
     private void generateNumero(CommandeFinal commande,String a){
         this.numeroFacture = "F"+commande.getCode()+a;
@@ -229,7 +252,7 @@ public class FactureAvance {
         this.dateFacturation = LocalDate.now();
         this.type = 1;
         generateNumero(commande, "F");
-        factureServ.nouveauFactureAvance(this, commande);
+        //factureServ.nouveauFactureAvance(this, commande);
     }
 
     public FactureAvance(){
