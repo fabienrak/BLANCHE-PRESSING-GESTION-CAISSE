@@ -42,7 +42,7 @@ public class PdfService {
     private static Font fontnumberBold = new Font(FontFamily.UNDEFINED,5,Font.NORMAL,BaseColor.BLACK);
     
     private static Font fontMontantFin = new Font(FontFamily.TIMES_ROMAN,5,Font.BOLD,BaseColor.BLACK);
-    
+  
     public static String convertDoubleMoney(double a){
         return NumberFormat.getNumberInstance(Locale.getDefault()).format(a);
     }

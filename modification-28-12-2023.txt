@@ -7,9 +7,9 @@ Comande et facturation (S)
     avance tode payer vita 
     bOUTON FACTURER TOUT = GENERER FACTURE / IMPRIMER vita
 
-Menu miverina premier package (S)
+Menu miverina premier package (S) vita
 
-caisse par jour     (S)
+caisse par jour     (S) vita 
     total avance :
     total facture final (Livraison)
 

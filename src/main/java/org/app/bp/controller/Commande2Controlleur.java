@@ -158,6 +158,7 @@ private FactureAvance generateFactureAvance()throws Erreur{
       factureAvance.setEtat(1);
       factureAvance.setPrixAvance(prixAvance);
       factureAvance.verificationAvance(commande);
+      System.out.println("avance = "+prixAvance);
       return factureAvance;
 }
 private void enregistrementCommande()throws Erreur{
@@ -171,8 +172,11 @@ private void enregistrementCommande()throws Erreur{
             commande.setListeCommandeClient(listeCommande);
              FactureAvance factureAvance = generateFactureAvance();
             commandeServ.nouveauCommande(commande);
-            factureAvance.ajout(factureServ, commande);
-      } catch (Erreur e) {
+            System.out.println("avance = "+factureAvance.getPrixAvance());
+            if(factureAvance.getPrixAvance() > 0){
+                  factureAvance.ajout(factureServ, commande);
+            }
+            } catch (Erreur e) {
                   // TODO Auto-generated catch block
             //      e.printStackTrace();
             throw e;      

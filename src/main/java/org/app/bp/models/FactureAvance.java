@@ -219,18 +219,20 @@ public class FactureAvance {
     
     ///// facture avance
     public void ajout(FacturationService factureServ,CommandeFinal commande)throws Erreur{
-        if(prixAvance > commande.getResteApayer()){
-            throw new Erreur("Avance très élevée ");
-        }
-        if(prixAvance == commande.getResteApayer()){
+        if(prixAvance > 0){
+            if(prixAvance > commande.getResteApayer()){
+                throw new Erreur("Avance très élevée ");
+            }
+            if(prixAvance == commande.getResteApayer()){
                 throw new Erreur("Votre avance est egale au reste à payer");
+            }
+            if(prixAvance == 0){
+                throw new Erreur("Votre avance est insuffisant");    
+            }
+            this.type = 0;
+            generateNumero(commande, "A");
+            factureServ.nouveauFactureAvance(this, commande);
         }
-        if(prixAvance == 0){
-            throw new Erreur("Votre avance est insuffisant");    
-        }
-        this.type = 0;
-        generateNumero(commande, "A");
-        factureServ.nouveauFactureAvance(this, commande);
     }
     public void verificationAvance(CommandeFinal commande)throws Erreur{
         if(prixAvance > commande.getResteApayer()){
@@ -238,9 +240,6 @@ public class FactureAvance {
         }
         if(prixAvance == commande.getResteApayer()){
                 throw new Erreur("Votre avance est egale au reste à payer");
-        }
-        if(prixAvance == 0){
-            throw new Erreur("Votre avance est insuffisant");    
         }
     }
 

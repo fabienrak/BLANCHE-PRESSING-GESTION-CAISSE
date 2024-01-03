@@ -13,6 +13,7 @@ import org.app.bp.models.EtatLivraison;
 import org.app.bp.models.FactureAvance;
 import org.app.bp.services.CommandeService;
 import org.app.bp.services.FacturationService;
+import org.app.bp.services.PDFHistorique;
 import org.app.bp.utils.Erreur;
 import org.app.bp.utils.Utils;
 
@@ -192,6 +193,11 @@ public class ListeCommande implements Initializable{
             Scene premiereScene = new Scene(premiereSceneParent);
             stage.setScene(premiereScene);
             stage.show();       
+        }
+        private PDFHistorique pdfHistorique = new PDFHistorique();
+        @FXML
+        private void pdfHistoriques(){
+            pdfHistorique.generatePdf("historique",listeCommandeFinal);
         }
     
     private void verificationReste(){
