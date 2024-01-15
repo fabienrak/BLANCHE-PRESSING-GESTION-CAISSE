@@ -224,7 +224,7 @@
                               </Pane>
                               <Pane prefHeight="74.0" prefWidth="499.0">
                                  <children>
-                                    <Button fx:id="btn_enregistrer_client" layoutX="284.0" layoutY="-116.0" mnemonicParsing="false"  onAction="#enregistrementCommandeArticle" prefHeight="41.0" prefWidth="177.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #cea716;" text="Enregistrer" textFill="WHITE">
+                                    <Button fx:id="btn_enregistrer_client" layoutX="284.0" layoutY="-116.0" mnemonicParsing="false"  onAction="#enregistrementCommandeArticle" prefHeight="41.0" prefWidth="177.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #cea716;" text="Ajouter" textFill="WHITE">
                                        <font>
                                           <Font name="Lato Bold" size="15.0" />
                                        </font>

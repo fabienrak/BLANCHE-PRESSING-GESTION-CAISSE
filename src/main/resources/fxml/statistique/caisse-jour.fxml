@@ -92,6 +92,18 @@
                                             </font>
                                          </Label>
                                     </HBox>
+                                    <HBox spacing="5">
+                                        <Label layoutX="22.0" layoutY="8.0" prefHeight="35.0" prefWidth="170.0" text="GRAND TOTAL : " textFill="BLACK" style="-fx-font-weight: bold;">
+                                            <font>
+                                               <Font name="Lato Bold" size="16.0" />
+                                            </font>
+                                         </Label>
+                                        <Label fx:id="lbl_total" layoutX="22.0" layoutY="8.0" prefHeight="35.0" prefWidth="400.0" text=" " textFill="BLACK" style="-fx-font-weight: bold;">
+                                            <font>
+                                               <Font name="Lato Bold" size="16.0" />
+                                            </font>
+                                         </Label>
+                                    </HBox>
                                 </VBox>
                             </children>
                         </Pane>

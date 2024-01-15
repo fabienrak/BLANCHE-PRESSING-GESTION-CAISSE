@@ -31,7 +31,12 @@ public class PDFHistorique {
 
     private static Font fontTitreTableau = new Font(FontFamily.TIMES_ROMAN, 12, Font.BOLD, BaseColor.WHITE);
 
+    private static Font fontTitreSimple = new Font(FontFamily.TIMES_ROMAN, 8, Font.BOLD, BaseColor.WHITE);
+
     private static Font fontMontantFin = new Font(FontFamily.TIMES_ROMAN, 16, Font.BOLD, BaseColor.BLACK);
+
+    private static Font fontSimple = new Font(FontFamily.TIMES_ROMAN, 8, Font.NORMAL, BaseColor.BLACK);
+    private static Font fontGras = new Font(FontFamily.TIMES_ROMAN, 8, Font.BOLD, BaseColor.BLACK);
 
     private static BaseColor colorFont() {
         return BaseColor.BLUE;
@@ -39,13 +44,13 @@ public class PDFHistorique {
 
     private static PdfPCell aligementGauche(PdfPCell cell) {
         cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-        cell.setPadding(5);
+        cell.setPadding(3);
         return cell;
     }
 
     private static PdfPCell aligementdROITE(PdfPCell cell) {
         cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        cell.setPadding(5);
+        cell.setPadding(3);
         return cell;
     }
 
@@ -81,7 +86,7 @@ public class PDFHistorique {
             document.add(table);
             document.add(new Paragraph("\n"));
             int j = 0;
-            String[] titreColumns = new String[] { "Nom", "Nombre" };
+            String[] titreColumns = new String[] { "Désignation", "Nombre" };
             PdfPTable tabledernier = new PdfPTable(2);
             PdfPCell cellDernierTable = null;
             // int j=0;
@@ -95,10 +100,9 @@ public class PDFHistorique {
             tabledernier.addCell(cell3);
             for (j = 0; j < titreColumns.length; j++) {
                 cellDernierTable = new PdfPCell(new Paragraph(titreColumns[j], fontTitreTableau));
-                if (j == 0 || j == 1) {
+                if (j == 0) {
                     cellDernierTable.setBackgroundColor(colorFont());
                     aligementGauche(cellDernierTable);
-
                 } else {
                     cellDernierTable.setHorizontalAlignment(Element.ALIGN_CENTER);
                     aligementdROITE(cellDernierTable);
@@ -112,66 +116,53 @@ public class PDFHistorique {
             ObservableList<CommandeClient> listes = historiqueService.getTousLesCommandeDunDateDonnee(commandeFinal);
             for (j = 0; j < listes.size(); j++) {
                 CommandeClient commandeClient = listes.get(j);
-                tabledernier.addCell(aligementGauche(
-                        new PdfPCell(new Paragraph(commandeClient.getArticle().getNom_article(), fontNomPrenom))));
-                tabledernier.addCell(aligementdROITE(
-                        new PdfPCell(new Paragraph(String.valueOf(commandeClient.getNombre()), fontNomPrenom))));
+                PdfPCell cell = aligementGauche(
+                        new PdfPCell(new Paragraph(commandeClient.getArticle().getNom_article(), fontNomPrenom)));
+                cell.setPadding(5);
+                        tabledernier.addCell(cell);
+                cell = aligementdROITE(
+                        new PdfPCell(new Paragraph(String.valueOf(commandeClient.getNombre()), fontNomPrenom)));
+                cell.setPadding(5);
+                        tabledernier.addCell(cell);
             }
             document.add(tabledernier);
             document.add(new Paragraph("\n"));
-            PdfPTable tablesGand=new PdfPTable(2);
-            tablesGand.setWidths(new float[] { 1f, 1f });
-            
-            for (int i = 0; i < commandeFinal.size(); i++) {
-                PdfPCell cell = null;
-                PdfPTable tables = new PdfPTable(2);
-                tables.setWidths(new float[] { 1f, 1f });
-                PdfPCell cell4 = null;
-                Paragraph paragrapheTitre = new Paragraph("Commande : " , fontNumeroFac);
-                cell4 = new PdfPCell(paragrapheTitre);
-                cell4.setBorderWidthRight(0);
-                PdfPCell cell45 = new PdfPCell(new Paragraph( ""+commandeFinal.get(i).getCode(), fontNumeroFac));
-
-                tables.addCell(cell4);
-                cell45.setBorderWidthLeft(0);
-                tables.addCell(cell45);
-
-                for (j = 0; j < titreColumns.length; j++) {
-                    cell = new PdfPCell(new Paragraph(titreColumns[j], fontTitreTableau));
-                    // if(j== 0 || j== 1){
+            PdfPTable tablesGand=new PdfPTable(3);
+            tablesGand.setWidths(new float[] { 1f,1f, 1f });
+            PdfPCell cell = null;
+            String[] titres = new String[]{"Commande","Désignation","Nombre"};
+                for (j = 0; j < titres.length; j++) {
+                    cell = new PdfPCell(new Paragraph(titres[j], fontTitreSimple));
                     cell.setBackgroundColor(colorFont());
                     aligementGauche(cell);
-
-                    // }
                     cell.setBackgroundColor(colorFont());
-                    cell.setPadding(5);
+                    cell.setPadding(3);
                     System.out.println(cell + " " + j);
-                    tables.addCell(cell);
+                    tablesGand.addCell(cell);
                 }
-                System.out.println(i);
-                PdfPCell celltables=new PdfPCell();
-                // document.add(paragrapheTitre);
+            for (int i = 0; i < commandeFinal.size(); i++) {
+                PdfPCell cell4 = null;
+                Paragraph paragrapheTitre = new Paragraph(commandeFinal.get(i).getCode(), fontGras);
                 ObservableList<CommandeClient> liste = historiqueService.getListCommandeClient(commandeFinal.get(i));
-                // int x=liste.size();
                 for (j = 0; j < liste.size(); j++) {
                     CommandeClient commandeClient = liste.get(j);
-                    tables.addCell(aligementGauche(
-                            new PdfPCell(new Paragraph(commandeClient.getArticle().getNom_article(), fontNomPrenom))));
-                    tables.addCell(aligementdROITE(
-                            new PdfPCell(new Paragraph(String.valueOf(commandeClient.getNombre()), fontNomPrenom))));
+                    if(j == 0){
+                        cell4 = aligementGauche(
+                            new PdfPCell(paragrapheTitre));
+                    }else{
+                        cell4  = new PdfPCell();
+                    }
+                    if(liste.size() > 1){
+                        cell4.setBorderWidthBottom(0);
+                        cell4.setBorderWidthTop(0);
+                    }
+                    tablesGand.addCell(cell4);
+                    tablesGand.addCell(aligementGauche(
+                            new PdfPCell(new Paragraph(commandeClient.getArticle().getNom_article(),fontSimple))));
+                    tablesGand.addCell(aligementdROITE(
+                            new PdfPCell(new Paragraph(String.valueOf(commandeClient.getNombre()), fontSimple))));
                 }
-                // document.add(tables);
-                celltables.addElement(tables);
-                celltables.setBorder(0);
-                tablesGand.addCell(celltables);
-            }
-            int x=commandeFinal.size();
-            PdfPCell tableCell3=new PdfPCell(new Paragraph(""));
-            if (x % 2 == 0) {}
-            else{
-                tableCell3.setBorder(0);
-                tablesGand.addCell(tableCell3);
-            }
+             }
             document.add(tablesGand);
 
             document.close();

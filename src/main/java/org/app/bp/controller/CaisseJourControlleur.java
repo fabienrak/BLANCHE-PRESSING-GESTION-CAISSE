@@ -36,6 +36,8 @@ public class CaisseJourControlleur implements Initializable{
     private Label lbl_avance;
     @FXML
     private Label lbl_livraison;
+    @FXML
+    private Label lbl_total;
     private CaisseService caisseServ = new CaisseService();
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -44,9 +46,14 @@ public class CaisseJourControlleur implements Initializable{
         lbl_avance.setAlignment(Pos.BASELINE_RIGHT);
 
         lbl_livraison.setAlignment(Pos.BASELINE_RIGHT);
-        lbl_livraison.setText(NumberFormat.getInstance(Locale.FRENCH).format(caisseServ.getTotalLivraisonCaisse(LocalDate.now()))+" Ar ");
-        lbl_avance.setText(NumberFormat.getInstance(Locale.FRENCH).format(caisseServ.getTotalAvanceCaisse(LocalDate.now())) +" Ar ");
-         Date androany = new Date();
+        lbl_total.setAlignment(Pos.BASELINE_RIGHT);
+        
+        double l = caisseServ.getTotalLivraisonCaisse(LocalDate.now());
+        double a = caisseServ.getTotalAvanceCaisse(LocalDate.now());
+        lbl_livraison.setText(NumberFormat.getInstance(Locale.FRENCH).format(l)+" Ar ");
+        lbl_avance.setText(NumberFormat.getInstance(Locale.FRENCH).format(a) +" Ar ");
+        lbl_total.setText(NumberFormat.getInstance(Locale.FRENCH).format(l+a) + " Ar "); 
+        Date androany = new Date();
         DateFormat fullDateFormat = DateFormat.getDateInstance(DateFormat.FULL);
             
         Timeline timeline = new Timeline(
