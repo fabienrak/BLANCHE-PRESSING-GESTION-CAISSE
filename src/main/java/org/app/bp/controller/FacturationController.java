@@ -1,20 +1,21 @@
 package org.app.bp.controller;
 
-import java.io.IOException;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class FacturationController {
 
     @FXML
     private AnchorPane content_facturation;
-    
+
     @FXML
     private void backToInfoClient(ActionEvent actionEvent) throws IOException {
         Node node_source = (Node) actionEvent.getSource();

@@ -1,15 +1,5 @@
 package org.app.bp.controller;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
-
-import org.app.bp.models.Clients;
-import org.app.bp.services.ClientServices;
-import org.app.bp.utils.Utils;
-import org.controlsfx.control.MaskerPane;
-
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.event.ActionEvent;
@@ -19,16 +9,19 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import org.app.bp.models.Clients;
+import org.app.bp.services.ClientServices;
+import org.app.bp.utils.Utils;
+import org.controlsfx.control.MaskerPane;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class ClientController implements Initializable {
 
@@ -80,21 +73,16 @@ public class ClientController implements Initializable {
     private Label lbl_adresse_client_1;
     @FXML
     private Label lbl_adresse_client_2;
-    private ClientServices clientServices = new ClientServices();
-    private Utils appUtils = new Utils();
-    private Clients clientSelected = null;
+    ClientServices clientServices = new ClientServices();
+    Utils appUtils = new Utils();
+
     @FXML
     private AnchorPane content_info_client;
 
     public boolean handleValidateForm(){
-        boolean is = true;
-        if (txt_nom_client.getText().isEmpty()){
-            appUtils.warningAlertDialog("AVERTISSEMENT","VEUILLEZ ENTRER LE NOM DU CLIENT");
-            is = false;
-        }
-        if (txt_contact_client_1.getText().isEmpty()){
-            appUtils.warningAlertDialog("AVERTISSEMENT","VEUILLEZ ENTRER LE CONTACT 1 DU CLIENT");
-            is = false;
+        if (txt_nom_client.getText().isEmpty() || txt_prenom_client.getText().isEmpty() || txt_contact_client_1.getText().isEmpty() || txt_adresse_client_1.getText().isEmpty()){
+            appUtils.warningAlertDialog("AVERTISSEMENT","VEUILLEZ COMPLETEZ TOUS LES CHAMPS");
+            return false;
         }
         return true;
     }
@@ -126,18 +114,9 @@ public class ClientController implements Initializable {
                     Service<Integer> getLastIdClients = clientServices.getLastIdFromClientTable();
                     getLastIdClients.setOnSucceeded((t) -> {
                         nouveau_client.setId_client(getLastIdClients.getValue());
-                        try {
-                            clientSelected = nouveau_client;
-                            detailsClientPourNouveauCommande(actionEvent);
-
-                        } catch (IOException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                        //table_client.getItems().add(nouveau_client);
-                        
-                        //appUtils.successAlertDialog("SUCCESS",nouveau_client.getNom_client() + " Ajouter ");
-                        //clearForm();
+                        table_client.getItems().add(nouveau_client);
+                        appUtils.successAlertDialog("SUCCESS",nouveau_client.getNom_client() + " Ajouter ");
+                        clearForm();
                     });
                     getLastIdClients.start();
                 } else {
@@ -166,17 +145,6 @@ public class ClientController implements Initializable {
         deleteClient.start();
     }
     @FXML
-    private void backACCEUIL(ActionEvent actionEvent) throws IOException {
-        Node node_source = (Node) actionEvent.getSource();
-        Stage stage = (Stage) node_source.getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/home/dashboard.fxml"));
-        Parent premiereSceneParent = loader.load();
-        Scene premiereScene = new Scene(premiereSceneParent);
-        stage.setScene(premiereScene);
-        stage.show();       
-    }
-
-    @FXML
     private void retourVersPremiereScene(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/home/dashboard.fxml"));
         Parent premiereSceneParent = loader.load();
@@ -187,7 +155,7 @@ public class ClientController implements Initializable {
     }
     @FXML
     private void handleSelectedClient(){
-        clientSelected = table_client.getSelectionModel().getSelectedItem();
+        Clients clientSelected = table_client.getSelectionModel().getSelectedItem();
         if(clientSelected != null){
 
             lbl_nom_client.setVisible(true);
@@ -214,6 +182,9 @@ public class ClientController implements Initializable {
         }
     }
 
+    private Clients getSelectedClientFromTable() {
+        return table_client.getSelectionModel().getSelectedItem();
+    }
 
     @FXML
     private void nextSceneCommande(ActionEvent actionEvent) throws IOException {
@@ -224,7 +195,7 @@ public class ClientController implements Initializable {
 
             MarchandisesController marchandisesController = MarchandisesController.getInstance();
             if (marchandisesController != null){
-                marchandisesController.setClientData(clientSelected);
+                marchandisesController.setClientData(getSelectedClientFromTable());
             } else {
                 appUtils.erreurAlertDialog("ERREUR","UNE ERREUR EST SURVENUE, VEUILLEZ CHOISIR OU AJOUTER UN CLIENT");
             }
@@ -232,43 +203,6 @@ public class ClientController implements Initializable {
             content_info_client.getChildren().removeAll();
             content_info_client.getChildren().setAll(parent);
     }
-
-    @FXML
-    private void detailsClientPourNouveauCommande(ActionEvent event) throws IOException {
-            Node node_source = (Node) event.getSource();
-            Stage stage = (Stage) node_source.getScene().getWindow();
-            System.out.println("Nom = "+clientSelected.getNom_client());
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/commande/nouveau-commande.fxml"));
-            Parent parent = loader.load();
-            System.out.println("Contact = "+clientSelected.getNom_client());
-            Commande2Controlleur commande2Controlleur = loader.getController();
-            commande2Controlleur.setClients(clientSelected);
-            commande2Controlleur.initializeComboboxArticle();
-            commande2Controlleur.initializeComboboxService();
-            commande2Controlleur.initializeTableCommande();
-            stage.setTitle("NOUVEAU COMMANDE");
-            content_info_client.getChildren().removeAll();
-            content_info_client.getChildren().setAll(parent);  
-    }
-
-
-    @FXML
-    private void detailsClientCommande(ActionEvent event) throws IOException {
-            Node node_source = (Node) event.getSource();
-            Stage stage = (Stage) node_source.getScene().getWindow();
-            System.out.println("Nom = "+clientSelected.getNom_client());
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/facture/liste-commande.fxml"));
-            Parent parent = loader.load();
-            System.out.println("Contact = "+clientSelected.getNom_client());
-            ListeCommande listeCommande = loader.getController();
-            listeCommande.setClient(clientSelected);
-            listeCommande.initializeTableCommande();
-            listeCommande.setClassInitial(getClass());
-            stage.setTitle("FACTURATION");
-            content_info_client.getChildren().removeAll();
-            content_info_client.getChildren().setAll(parent);  
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 

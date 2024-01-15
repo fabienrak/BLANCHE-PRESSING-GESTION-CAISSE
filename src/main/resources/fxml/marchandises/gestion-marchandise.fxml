@@ -30,19 +30,6 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Button  layoutX="160.0" layoutY="11.0" mnemonicParsing="false" onAction="#backACCEUIL"  prefHeight="35.0" prefWidth="121.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #cea716;" text="Accueil" textFill="WHITE">
-            <font>
-                <Font name="Lato Bold" size="13.0" />
-            </font>
-            <graphic>
-                <ImageView fitHeight="19.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../../img/acceuil.png" />
-                    </image>
-                </ImageView>
-            </graphic>
-        </Button>
-  
         <HBox layoutX="10.0" layoutY="121.0" prefHeight="523.0" prefWidth="1199.0">
             <children>
                 <StackPane prefHeight="568.0" prefWidth="679.0">
@@ -57,8 +44,6 @@
                                         <TableColumn fx:id="COL_TYPE_ARTICLE" prefWidth="75.0" text="TYPE" />
                                         <TableColumn fx:id="COL_PRIX_ARTICLE" prefWidth="139.0" text="PRIX (En Ariary)" />
                                         <TableColumn fx:id="COL_CODE_ARTICLE" prefWidth="68.0" text="CODE" />
-                                        <TableColumn fx:id="COL_MODIFIER" prefWidth="100.0" text="" />
-                                        <TableColumn fx:id="COL_SUPPRIMER" prefWidth="100.0" text="" />
                                     </columns>
                                 </TableView>
                                 <Pane prefHeight="170.0" prefWidth="679.0">
@@ -146,7 +131,7 @@
                                 </Pane>
                                 <Pane prefHeight="74.0" prefWidth="499.0">
                                     <children>
-                                        <Button fx:id="btn_enregistrer_article" layoutX="301.0" layoutY="-176.0" mnemonicParsing="false" onAction="#handleSaveArticleButton" prefHeight="41.0" prefWidth="160.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #cea716;" text="AJOUTER" textFill="WHITE">
+                                        <Button fx:id="btn_enregistrer_article" layoutX="301.0" layoutY="-176.0" mnemonicParsing="false" onAction="#handleSaveArticleButton" prefHeight="41.0" prefWidth="160.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: #cea716;" text="Enregistrer" textFill="WHITE">
                                             <font>
                                                 <Font name="Lato Bold" size="15.0" />
                                             </font>

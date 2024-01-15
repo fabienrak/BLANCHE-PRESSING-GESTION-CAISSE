@@ -1,18 +1,5 @@
 package org.app.bp.controller;
 
-import java.io.IOException;
-import java.text.DateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-
-import org.app.bp.models.Sites;
-import org.app.bp.models.Utilisateur;
-import org.app.bp.services.SiteServices;
-import org.app.bp.services.UtilisateurDAO;
-import org.app.bp.utils.Utils;
-
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -21,11 +8,20 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.app.bp.utils.Utils;
+import org.controlsfx.control.action.Action;
+
+import java.io.IOException;
+import java.text.DateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class DashboardController {
 
@@ -39,13 +35,10 @@ public class DashboardController {
     private AnchorPane content_home;
 
     @FXML
-    private AnchorPane content_total;
-
-    @FXML
     private Button btn_g_users;
 
     @FXML
-    private Button btn_site;
+    private Button btn_commande;
 
     @FXML
     private Button btn_g_marchandise;
@@ -53,52 +46,18 @@ public class DashboardController {
     @FXML
     private Button btn_configuration;
 
-    @FXML
-    private Button btn_commande;
-    @FXML
-    private Button btn_facturation;
-    @FXML 
-    private Button btn_historique;
-
-    @FXML
-    private Label lbl_site;
-    @FXML
-    private Button btn_caisse_jour;
-
     private Stage stage;
 
     Utils appUtils = new Utils();
-    SiteServices siteServ = new SiteServices();
-    public void affichageSite(){
-        Sites sites = siteServ.getSites();
-        lbl_site.setText("Site : "+sites.getLieu());
-    }
+
+
     @FXML
     public void initialize(){
-        Utilisateur utilisateur = UtilisateurDAO.getUtilisateur();
-        if(utilisateur.getRole() == 1){
-            System.out.println("utilisateur = "+utilisateur.getRole());
-            btn_configuration.setVisible(false);
-            btn_g_marchandise.setVisible(false);
-            btn_g_users.setVisible(false);
-            btn_site.setVisible(false);
 
-            btn_commande.setLayoutX(btn_g_users.getLayoutX());
-            btn_commande.setLayoutY(btn_g_users.getLayoutY());
-
-            btn_facturation.setLayoutX(btn_site.getLayoutX());
-            btn_facturation.setLayoutY(btn_site.getLayoutY());
-
-            btn_historique.setLayoutX(btn_g_marchandise.getLayoutX());
-            btn_historique.setLayoutY(btn_g_marchandise.getLayoutY());
-            
-            btn_caisse_jour.setLayoutX(btn_configuration.getLayoutX());
-            btn_caisse_jour.setLayoutY(btn_configuration.getLayoutY());
-        }
         Date androany = new Date();
         DateFormat fullDateFormat = DateFormat.getDateInstance(DateFormat.FULL);
         label_date.setText(fullDateFormat.format(androany).toUpperCase());
-        affichageSite();
+
         Timeline timeline = new Timeline(
                 new KeyFrame(
                         Duration.ZERO, event -> label_time.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")))),
@@ -117,39 +76,6 @@ public class DashboardController {
         content_home.getChildren().removeAll();
         content_home.getChildren().setAll(parent);
     }
-    @FXML
-    private void sceneCaisseJour(ActionEvent actionEvent) throws IOException {
-        Node node_source = (Node) actionEvent.getSource();
-        stage = (Stage) node_source.getScene().getWindow();
-        Parent parent = FXMLLoader.load(getClass().getResource("/fxml/statistique/caisse-jour.fxml"));
-        stage.setTitle("GESTION CAISSE");
-        content_home.getChildren().removeAll();
-        content_home.getChildren().setAll(parent);
-    }
-    @FXML
-    private void sceneGestionService(ActionEvent actionEvent) throws IOException {
-        Node node_source = (Node) actionEvent.getSource();
-        stage = (Stage) node_source.getScene().getWindow();
-        Parent parent = FXMLLoader.load(getClass().getResource("/fxml/service/gestion-service.fxml"));
-        stage.setTitle("GESTION SERVICE");
-        content_home.getChildren().removeAll();
-        content_home.getChildren().setAll(parent);
-    }
-
-     @FXML
-    private void scenehISTORIQUE(ActionEvent actionEvent) throws IOException {
-        Node node_source = (Node) actionEvent.getSource();
-        stage = (Stage) node_source.getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/historique/historique-livraison.fxml"));
-        Parent parent = loader.load();
-        ListeCommande listeCommande = loader.getController();
-        listeCommande.setLicteLivrasion(LocalDate.now());
-        listeCommande.initializeTableCommande();
-        listeCommande.setClassInitial(getClass());
-        stage.setTitle("HISTORIQUE");
-        content_total.getChildren().removeAll();
-        content_total.getChildren().setAll(parent);
-    }
 
     @FXML
     private void sceneGestionMarchandises(ActionEvent actionEvent) throws IOException {
@@ -165,10 +91,7 @@ public class DashboardController {
     private void sceneGestionSite(ActionEvent actionEvent) throws IOException {
         Node node_source = (Node) actionEvent.getSource();
         stage = (Stage) node_source.getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/sites/gestion-sites.fxml"));
-            Parent parent = loader.load();
-        SitesController sitesController = loader.getController();
-        sitesController.setDashboard(this);
+        Parent parent = FXMLLoader.load(getClass().getResource("/fxml/sites/gestion-sites.fxml"));
         stage.setTitle("GESTION SITES");
         content_home.getChildren().removeAll();
         content_home.getChildren().setAll(parent);
@@ -186,25 +109,9 @@ public class DashboardController {
     }
 
     @FXML
-    private void sceneFacturation(ActionEvent actionEvent) throws IOException {
-        Node node_source = (Node) actionEvent.getSource();
-        stage = (Stage) node_source.getScene().getWindow();
-        Parent parent = FXMLLoader.load(getClass().getResource("/fxml/facture/info-client.fxml"));
-//        Parent parent = FXMLLoader.load(getClass().getResource("/fxml/commande/gestion-commande.fxml"));
-        stage.setTitle("FACTURATION");
-        content_home.getChildren().removeAll();
-        content_home.getChildren().setAll(parent);
-    }
-
-
-    @FXML
-    private void sceneConfiguration(ActionEvent actionEvent) throws IOException  {
-         Node node_source = (Node) actionEvent.getSource();
-        stage = (Stage) node_source.getScene().getWindow();
-        Parent parent = FXMLLoader.load(getClass().getResource("/fxml/statistique/state-annee.fxml"));
-//        Parent parent = FXMLLoader.load(getClass().getResource("/fxml/commande/gestion-commande.fxml"));
-        stage.setTitle("STATISTIQUE");
-        content_total.getChildren().removeAll();
-        content_total.getChildren().setAll(parent);
+    private void sceneConfiguration() {
+        btn_configuration.setOnAction(event -> {
+            appUtils.warningAlertDialog("AVERTISSEMENT","BIENTOT DISPONIBLE");
+        });
     }
 }
